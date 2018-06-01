@@ -1,0 +1,8 @@
+numpy
+scipy
+pandas
+glob
+deepdish
+lal
+lalsimulation
+NRSur7dq2
