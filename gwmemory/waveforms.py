@@ -1,5 +1,4 @@
 from __future__ import print_function, division
-import memory
 import harmonics
 import utils
 import qnms
@@ -14,8 +13,8 @@ from scipy.interpolate import interp1d
 class MemoryGenerator(object):
 
     def __init__(self, name, h_lm, times):
-        
-        self.name = name    
+
+        self.name = name
         self.h_lm = h_lm
         self.times = times
         self.modes = self.h_lm.keys()
@@ -26,7 +25,8 @@ class MemoryGenerator(object):
 
     def time_domain_memory(self, inc=None, pol=None, gamma_lmlm=None):
         """
-        Calculate the spherical harmonic decomposition of thenonlinear memory from a dictionary of spherical mode time series
+        Calculate the spherical harmonic decomposition of the nonlinear
+        memory from a dictionary of spherical mode time series
 
         Parameters
         ----------
@@ -58,7 +58,8 @@ class MemoryGenerator(object):
                 try:
                     index = (lm, lmp)
                     dhlm_dt_sq[index] = dhlm_dt[lm]*np.conjugate(dhlm_dt[lmp])
-                except: None
+                except:
+                    None
 
         if gamma_lmlm is None:
             gamma_lmlm = angles.load_gamma()
@@ -77,7 +78,7 @@ class MemoryGenerator(object):
                     continue
                 dh_mem_dt_lm[(ell, int(delta_m))] = np.sum(
                     [dhlm_dt_sq[((l1, m1), (l2, m2))] * gamma_lmlm[delta_m]['{}{}{}{}'.format(l1, m1, l2, m2)][ii]
-                    for (l1, m1), (l2, m2) in dhlm_dt_sq.keys() if m1-m2==int(delta_m)], axis=0)
+                     for (l1, m1), (l2, m2) in dhlm_dt_sq.keys() if m1-m2 == int(delta_m)], axis=0)
 
         h_mem_lm = {lm: const * np.cumsum(dh_mem_dt_lm[lm]) * self.delta_t for lm in dh_mem_dt_lm}
 
@@ -85,11 +86,11 @@ class MemoryGenerator(object):
             return h_mem_lm, self.times
         else:
             return combine_modes(h_mem_lm, inc, pol), self.times
-        
-    def set_time_array(times):
+
+    def set_time_array(self, times):
         """
         Change the time array on which the waveform is evaluated.
-        
+
         Parameters
         ----------
         times: array
@@ -97,7 +98,7 @@ class MemoryGenerator(object):
         """
         for mode in self.modes:
             interpolated_mode = interp1d(self.times, self.h_lm)
-            h_lm[mode] = interpolated_mode[times]
+            self.h_lm[mode] = interpolated_mode[times]
         self.times = times
 
 
@@ -130,7 +131,7 @@ class Surrogate(MemoryGenerator):
     def __init__(self, q, name='', MTot=None, S1=None, S2=None, distance=None, LMax=4, modes=None, times=None):
         """
         Initialise Surrogate MemoryGenerator
-        
+
         Parameters
         ----------
         name: str
@@ -182,14 +183,13 @@ class Surrogate(MemoryGenerator):
 
         self.h_lm = None
         self.times = None
-        
+
         if times is not None and max(times) < 10:
             times *= self.t_to_geo
 
         h_lm, times = self.time_domain_oscillatory(modes=modes, times=times)
 
         MemoryGenerator.__init__(self, name=name, h_lm=h_lm, times=times)
-
 
     def time_domain_oscillatory(self, times=None, modes=None, inc=None, pol=None):
         """
@@ -268,7 +268,7 @@ class SXSNumericalRelativity(MemoryGenerator):
     def __init__(self, name, modes=None, extraction='OutermostExtraction.dir', MTot=None, distance=None, times=None):
         """
         Initialise SXSNumericalRelativity MemoryGenerator
-        
+
         Parameters
         ----------
         name: str
@@ -297,17 +297,17 @@ class SXSNumericalRelativity(MemoryGenerator):
         else:
             self.h_to_geo = self.distance * utils.Mpc / self.MTot / utils.solar_mass / utils.GG * utils.cc**2
             self.t_to_geo = 1 / self.MTot / utils.solar_mass / utils.GG * utils.cc**3
-            
+
             for mode in self.h_lm:
                 self.h_lm /= self.h_to_geo
             self.times / self.t_to_geo
             # Rezero time array to the merger time
             self.times -= self.times[np.argmax(abs(self.h_lm[(2, 2)]))]
-            
+
         if times is not None:
             self.set_time_array(times)
 
-        MemoryGenerator.__init__(self, name=name, h_lm=h_lm, times=times)
+        MemoryGenerator.__init__(self, name=name, h_lm=self.h_lm, times=times)
 
     def time_domain_oscillatory(self, times=None, modes=None, inc=None, pol=None):
         """
@@ -328,17 +328,17 @@ class SXSNumericalRelativity(MemoryGenerator):
             Times on which waveform is evaluated.
         """
         if inc is None or pol is None:
-            return h_lm, times
+            return self.h_lm, times
         else:
-            return combine_modes(h_lm, inc, pol), times
+            return combine_modes(self.h_lm, inc, pol), times
 
 
-class Approximant(MemoryGenerator):        
+class Approximant(MemoryGenerator):
 
     def __init__(self, name, q, MTot=60, S1=None, S2=None, distance=400, times=None):
         """
         Initialise Surrogate MemoryGenerator
-        
+
         Parameters
         ----------
         name: str
@@ -379,7 +379,7 @@ class Approximant(MemoryGenerator):
         self.m2_SI = self.m2 * utils.solar_mass
         self.distance_SI = self.distance * utils.Mpc
 
-        if abs(self.S1[0])>0 or abs(self.S1[1])>0 or abs(self.S2[0])>0 or abs(self.S2[1])>0:
+        if abs(self.S1[0]) > 0 or abs(self.S1[1]) > 0 or abs(self.S2[0]) > 0 or abs(self.S2[1]) > 0:
             print('WARNING: Approximant decomposition works only for non-precessing waveforms.')
             print('Setting spins to be aligned')
             self.S1[0], self.S1[1] = 0., 0.
@@ -388,7 +388,7 @@ class Approximant(MemoryGenerator):
         else:
             self.S1 = list(self.S1)
             self.S2 = list(self.S2)
-        self.available_modes = list(set([(2,2),(2,-2)]))
+        self.available_modes = list(set([(2, 2), (2, -2)]))
 
         self.h_to_geo = self.distance_SI / (self.m1_SI+self.m2_SI) / utils.GG * utils.cc**2
         self.t_to_geo = 1 / (self.m1_SI+self.m2_SI) / utils.GG * utils.cc**3
@@ -452,7 +452,7 @@ class Approximant(MemoryGenerator):
                 delta_t = delta_t
 
             hplus, hcross = lalsim.SimInspiralChooseTDWaveform(
-                self.m1_SI, self.m2_SI, self.S1[0], self.S1[1], self.S1[2], self.S2[0], self.S2[1], self.S2[2], 
+                self.m1_SI, self.m2_SI, self.S1[0], self.S1[1], self.S1[2], self.S2[0], self.S2[1], self.S2[2],
                 self.distance_SI, theta, phi, longAscNodes, eccentricity, meanPerAno, delta_t, fmin, fRef,
                 WFdict, approx)
 
@@ -484,7 +484,7 @@ class MWM(MemoryGenerator):
             q = 1 / q
         self.q = q
         self.MTot = MTot
-        self.distance=distance
+        self.distance = distance
         self.m1 = self.MTot / (1 + self.q)
         self.m2 = self.m1 * self.q
 
@@ -624,7 +624,7 @@ class MWM(MemoryGenerator):
         cT = np.cos(inc)
 
         h_plus_coeff = 0.77 * eta * MM / (384 * np.pi) * sT**2 * (17 + cT**2) / dist_geo
-        h_mem = dict(plus = h_plus_coeff * h_MWM, cross=np.zeros_like(h_MWM))
+        h_mem = dict(plus=h_plus_coeff * h_MWM, cross=np.zeros_like(h_MWM))
 
         return h_mem, times
 
@@ -632,5 +632,5 @@ class MWM(MemoryGenerator):
 def combine_modes(h_lm, inc, pol):
     """Calculate the plus and cross polarisations of the waveform from the spherical harmonic decomposition."""
     total = sum([h_lm[(l, m)] * harmonics.sYlm(-2, l, m, inc, pol) for l, m in h_lm])
-    h_plus_cross = dict(plus = total.real, cross = -total.imag)
+    h_plus_cross = dict(plus=total.real, cross=-total.imag)
     return h_plus_cross
