@@ -1,8 +1,6 @@
 numpy
 scipy
 pandas
-glob
 deepdish
-lal
-lalsimulation
+lalsuite
 NRSur7dq2
