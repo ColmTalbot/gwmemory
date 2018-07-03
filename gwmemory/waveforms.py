@@ -1,10 +1,9 @@
 from __future__ import print_function, division
-import harmonics
-import utils
-import qnms
-import angles
+from . import harmonics
+from . import utils
+from . import qnms
+from . import angles
 import numpy as np
-import lal
 import lalsimulation as lalsim
 import NRSur7dq2
 from scipy.interpolate import interp1d
@@ -444,7 +443,7 @@ class Approximant(MemoryGenerator):
             eccentricity = 0.0
             meanPerAno = 0.0
             approx = lalsim.GetApproximantFromString(self.name)
-            WFdict = lal.CreateDict()
+            WFdict = None
 
             if delta_t is None:
                 delta_t = 0.1 * (self.m1_SI + self.m2_SI) * utils.GG / utils.cc**3

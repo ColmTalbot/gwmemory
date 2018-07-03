@@ -3,8 +3,8 @@
 # black hole modes
 
 import numpy as np
-from harmonics import sYlm
-import utils
+from .harmonics import sYlm
+from . import utils
 import os
 import pkg_resources
 

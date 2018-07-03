@@ -1,7 +1,7 @@
 #!/bin/python
 from __future__ import division, print_function
 import numpy as np
-import harmonics
+from . import harmonics
 import glob
 import pkg_resources
 import pandas as pd
