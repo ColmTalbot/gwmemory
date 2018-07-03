@@ -9,6 +9,7 @@ You can install from this repository in the usual way:
 ```bash
 git clone https://github.com/ColmTalbot/gwmemory.git
 cd gwmemory
+pip install -r requirements
 python setup.py install
 ```
 
