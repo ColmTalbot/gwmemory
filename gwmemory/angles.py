@@ -11,7 +11,7 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
     """
     Coefficients mapping the spherical harmonic components of the oscillatory strain to the memory.
 
-    Computed according to equation XYZ of Talbot et al. (2018), arXiv:18XX:ABCDE.
+    Computed according to equation 8 of Talbot et al. (2018), arXiv:1807.00990.
     Output modes with l=range(2, 20), m=m1-m2.
 
     Parameters
@@ -78,7 +78,8 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
 
 def lambda_matrix(inc, pol, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
     """
-    Angular integral for a specific ll'mm' as given by equation XYZ of Talbot et al. (2018), arXiv:18XX:ABCDE.
+    Angular integral for a specific ll'mm' as given by equation 7 of Talbot
+    et al. (2018), arXiv:1807.00990.
 
     The transverse traceless part of the integral over all binary orientations is returned.
 
@@ -153,7 +154,8 @@ def lambda_matrix(inc, pol, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
 
 def lambda_lmlm(inc, pol, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
     """
-    Angular integral for a specific ll'mm' as given by equation XYZ of Talbot et al. (2018), arXiv:18XX:ABCDE.
+    Angular integral for a specific ll'mm' as given by equation 7 of Talbot
+    et al. (2018), arXiv:1807.00990.
 
     The transverse traceless part of the integral over all binary orientations is returned.
 
