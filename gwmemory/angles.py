@@ -39,7 +39,7 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
 
     if incs is None:
         incs = np.linspace(0, np.pi, 500)
-    pol = 0
+    phase = 0
     if theta is None:
         theta = np.linspace(0, np.pi, 250)
     if phi is None:
@@ -54,13 +54,13 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
 
         y_lmlm_factor = harmonics.sYlm(s, l1, m1, th, ph) * (-1)**(l2+m2) * harmonics.sYlm(-s, l2, -m2, th, ph)
 
-    lambda_lm1_lm2 = np.array([lambda_lmlm(inc, pol, lm1, lm2, theta, phi, y_lmlm_factor) for inc in incs])
+    lambda_lm1_lm2 = np.array([lambda_lmlm(inc, phase, lm1, lm2, theta, phi, y_lmlm_factor) for inc in incs])
 
     sin_inc = np.sin(-incs)
 
     harm = {}
     for l, m in harmonics.lmax_modes(20):
-        harm['{}{}'.format(l, m)] = harmonics.sYlm(-2, l, m, incs, pol)
+        harm['{}{}'.format(l, m)] = harmonics.sYlm(-2, l, m, incs, phase)
 
     ells = np.arange(2, 21, 1)
 
