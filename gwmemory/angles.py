@@ -76,7 +76,7 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
     return gamma
 
 
-def lambda_matrix(inc, pol, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
+def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
     """
     Angular integral for a specific ll'mm' as given by equation 7 of Talbot
     et al. (2018), arXiv:1807.00990.
@@ -90,9 +90,9 @@ def lambda_matrix(inc, pol, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
     Parameters
     ----------
     inc: float
-        observer inclination
-    pol: float
-        oberser polarisation
+        binary inclination
+    phase: float
+        binary phase at coalescence
     lm1: str
         first lm value format is e.g., '22'
     lm1: str
@@ -126,7 +126,7 @@ def lambda_matrix(inc, pol, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
 
     n = [np.outer(np.cos(phi), np.sin(theta)), np.outer(np.sin(phi), np.sin(theta)),
          np.outer(np.ones_like(phi), np.cos(theta))]
-    N = [np.sin(inc) * np.cos(pol), np.sin(inc) * np.sin(pol), np.cos(inc)]
+    N = [np.sin(inc) * np.cos(phase), np.sin(inc) * np.sin(phase), np.cos(inc)]
     n_dot_N = sum(n_i * N_i for n_i, N_i in zip(n, N))
     n_dot_N[n_dot_N == 1] = 0
     denominator = 1/(1-n_dot_N)
@@ -152,7 +152,7 @@ def lambda_matrix(inc, pol, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
     return lambda_mat
 
 
-def lambda_lmlm(inc, pol, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
+def lambda_lmlm(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
     """
     Angular integral for a specific ll'mm' as given by equation 7 of Talbot
     et al. (2018), arXiv:1807.00990.
@@ -166,9 +166,9 @@ def lambda_lmlm(inc, pol, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
     Parameters
     ----------
     inc: float
-        observer inclination
-    pol: float
-        oberser polarisation
+        binary inclination
+    phase: float
+        binary phase at coalescence
     lm1: str
         first lm value format is e.g., '22'
     lm1: str
@@ -185,16 +185,16 @@ def lambda_lmlm(inc, pol, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
     lambda_lmlm: float, complex
         lambda_plus - i lambda_cross
     """
-    lambda_mat = lambda_matrix(inc, pol, lm1, lm2, theta, phi, y_lmlm_factor)
+    lambda_mat = lambda_matrix(inc, phase, lm1, lm2, theta, phi, y_lmlm_factor)
 
-    plus, cross = omega_ij_to_omega_pol(lambda_mat, inc, pol)
+    plus, cross = omega_ij_to_omega_pol(lambda_mat, inc, phase)
 
     lambda_lmlm = (plus - 1j * cross) / 2
 
     return lambda_lmlm
 
 
-def omega_ij_to_omega_pol(omega_ij, inc, pol):
+def omega_ij_to_omega_pol(omega_ij, inc, phase):
     '''
     Map from strain tensor to plus and cross modes.
 
@@ -206,15 +206,15 @@ def omega_ij_to_omega_pol(omega_ij, inc, pol):
         3x3 matrix describing strain or a proxy for strain
     inc: float
         inclination of source
-    pol: float
-        polarisation of source
+    phi: float
+        phase at coalescence of source
 
     output:
         hp, hx - (complex) time series
     '''
-    theta, phi, psi = inc, pol, 0.
+    psi = 0.
 
-    wx, wy, wz = wave_frame(theta, phi, psi)
+    wx, wy, wz = wave_frame(inc, phase, psi)
 
     omega_plus = np.einsum('ij,ij->', omega_ij, plus_tensor(wx, wy, wz))
     omega_cross = np.einsum('ij,ij->', omega_ij, cross_tensor(wx, wy, wz))
