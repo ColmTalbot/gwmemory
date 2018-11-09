@@ -26,15 +26,15 @@ def Cslm(s, l, m):
 # recursion function
 def s_lambda_lm(s, l, m, x):
     Pm = pow(-0.5, m)
-    if (m != s):
+    if m != s:
         Pm = Pm * pow(1.0+x, (m-s)*1.0/2)
-    if (m != -s):
+    if m != -s:
         Pm = Pm * pow(1.0-x, (m+s)*1.0/2)
     Pm = Pm * np.sqrt(fac(2*m + 1) * 1.0 / (4.0*np.pi * fac(m+s) * fac(m-s)))
-    if (l == m):
+    if l == m:
         return Pm
     Pm1 = (x + s*1.0/(m+1)) * Cslm(s, m+1, m) * Pm
-    if (l == m+1):
+    if l == m+1:
         return Pm1
     else:
         for n in range(m+2, l+1):
@@ -50,19 +50,19 @@ def sYlm(ss, ll, mm, theta, phi):
     l = ll
     m = mm
     s = ss
-    if (l < 0):
+    if l < 0:
         return 0
-    if (abs(m) > l or l < abs(s)):
+    if abs(m) > l or l < abs(s):
         return 0
-    if (abs(mm) < abs(ss)):
+    if abs(mm) < abs(ss):
         s = mm
         m = ss
-    if ((m+s) % 2):
+    if (m+s) % 2:
         Pm = -Pm
-    if (m < 0):
+    if m < 0:
         s = -s
         m = -m
-    if ((m+s) % 2):
+    if (m+s) % 2:
         Pm = -Pm
     result = Pm * s_lambda_lm(s, l, m, np.cos(theta))
     return result * np.cos(mm*phi) + result * np.sin(mm*phi) * 1j

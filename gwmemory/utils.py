@@ -3,14 +3,14 @@ import deepdish
 
 
 # Constants for conversions
-cc = 299792458.0  # speed of light in m/s
-GG = 6.67384e-11  # Newton in m^3 / (kg s^2)
-solar_mass = 1.98855 * 10**(30)  # solar mass in  kg
-kg = 1 / solar_mass
-metre = cc**2 / (GG * solar_mass)
-secs = cc * metre
+CC = 299792458.0  # speed of light in m/s
+GG = 6.67384e-11  # Newton in m^3 / (KG s^2)
+SOLAR_MASS = 1.98855 * 10 ** (30)  # solar mass in  KG
+KG = 1 / SOLAR_MASS
+METRE = CC ** 2 / (GG * SOLAR_MASS)
+SECOND = CC * METRE
 
-Mpc = 3.08568e+22  # Mpc in metres
+MPC = 3.08568e+22  # MPC in metres
 
 
 def m12_to_mc(m1, m2):
@@ -38,37 +38,37 @@ def mc_eta_to_m12(mc, eta):
 
 def m_sol_to_geo(mm):
     """convert from solar masses to geometric units"""
-    return mm / kg * GG / cc**2
+    return mm / KG * GG / CC ** 2
 
 
 def m_geo_to_sol(mm):
     """convert from geometric units to solar masses"""
-    return mm * kg / GG * cc**2
+    return mm * KG / GG * CC ** 2
 
 
 def time_s_to_geo(time):
     """convert time from seconds to geometric units"""
-    return time * cc
+    return time * CC
 
 
 def time_geo_to_s(time):
     """convert time from seconds to geometric units"""
-    return time / cc
+    return time / CC
 
 
 def freq_Hz_to_geo(freq):
     """convert freq from Hz to geometric units"""
-    return freq / cc
+    return freq / CC
 
 
 def freq_geo_to_Hz(freq):
     """convert freq from geometric units to Hz"""
-    return freq * cc
+    return freq * CC
 
 
 def dist_Mpc_to_geo(dist):
-    """convert distance from Mpc to geometric units (i.e., metres)"""
-    return dist * Mpc
+    """convert distance from MPC to geometric units (i.e., metres)"""
+    return dist * MPC
 
 
 def nfft(ht, sampling_frequency):
@@ -83,7 +83,8 @@ def nfft(ht, sampling_frequency):
     hf = single-sided FFT of ft normalised to units of strain / sqrt(Hz)
     f = frequencies associated with hf
     """
-    # add one zero padding if time series does not have even number of sampling times
+    # add one zero padding if time series does not have even number
+    # of sampling times
     if np.mod(len(ht), 2) == 1:
         ht = np.append(ht, 0)
     LL = len(ht)
@@ -100,7 +101,8 @@ def nfft(ht, sampling_frequency):
     return hf, ff
 
 
-def load_sxs_waveform(file_name, modes=None, extraction='OutermostExtraction.dir'):
+def load_sxs_waveform(file_name, modes=None,
+                      extraction='OutermostExtraction.dir'):
     """
     Load the spherical harmonic modes of an SXS numerical relativity waveform.
 
@@ -109,24 +111,28 @@ def load_sxs_waveform(file_name, modes=None, extraction='OutermostExtraction.dir
     file_name: str
         Name of file to be loaded.
     modes: dict
-        Dictionary of spherical harmonic modes to extract, default is all in ell<=4.
+        Dictionary of spherical harmonic modes to extract,
+        default is all in ell<=4.
     extraction: str
-        String representing extraction method, default is 'OutermostExtraction.dir'
+        String representing extraction method, default is
+        'OutermostExtraction.dir'
     Returns
     -------
     output: dict
         Dictionary of requested spherical harmonic modes.
     """
     waveform = deepdish.io.load(file_name)
+    output = dict()
     if modes is None:
-        output = dict()
         for ell in range(2, 5):
             for mm in range(-ell, ell + 1):
-                mode_array = waveform[extraction]['Y_l{}_m{}.dat'.format(ell, mm)[:, 1:]]
+                mode_array = waveform[extraction][
+                    'Y_l{}_m{}.dat'.format(ell, mm)[:, 1:]]
                 output[(ell, mm)] = mode_array[:, 1] + 1j * mode_array[:, 2]
     else:
         for mode in modes:
-            mode_array = waveform[extraction]['Y_l{}_m{}.dat'.format(mode[0], mode[1])]
+            mode_array = waveform[extraction][
+                'Y_l{}_m{}.dat'.format(mode[0], mode[1])]
             output[mode] = mode_array[:, 1] + 1j * mode_array[:, 2]
     times = mode_array[:, 0]
     return output, times

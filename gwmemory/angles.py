@@ -1,15 +1,18 @@
 #!/bin/python
 from __future__ import division, print_function
-import numpy as np
-from . import harmonics
-import glob
 import pkg_resources
+import glob
+
+import numpy as np
 import pandas as pd
+
+from . import harmonics
 
 
 def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
     """
-    Coefficients mapping the spherical harmonic components of the oscillatory strain to the memory.
+    Coefficients mapping the spherical harmonic components of the oscillatory
+    strain to the memory.
 
     Computed according to equation 8 of Talbot et al. (2018), arXiv:1807.00990.
     Output modes with l=range(2, 20), m=m1-m2.
@@ -23,15 +26,18 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
     incs: array, optional
         observer inclination values over which to compute the final integral
     theta: array, optional
-        1d array of binary inclination values, over which to compute first integral
+        1d array of binary inclination values, over which to compute first
+        integral
     phi: array, optional
-        1d array of binary polarisation values, over which to compute the first integral
+        1d array of binary polarisation values, over which to compute the first
+        integral
     y_lmlm_factor: array, optional
-        Array over of spherical harmonic factor evaluated on meshgrid of theta, phi
+        Array over of spherical harmonic factor evaluated on meshgrid of theta,
+        phi
 
     Return
     ------
-    gamma: list
+    gammas: list
         List of coefficients for output modes, l=range(2, 20), m=m1-m2
     """
     l1, m1 = int(lm1[0]), int(lm1[1:])
@@ -52,9 +58,11 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
         l1, m1 = int(lm1[0]), int(lm1[1:])
         l2, m2 = int(lm2[0]), int(lm2[1:])
 
-        y_lmlm_factor = harmonics.sYlm(s, l1, m1, th, ph) * (-1)**(l2+m2) * harmonics.sYlm(-s, l2, -m2, th, ph)
+        y_lmlm_factor = harmonics.sYlm(s, l1, m1, th, ph) * (-1)**(l2+m2) *\
+            harmonics.sYlm(-s, l2, -m2, th, ph)
 
-    lambda_lm1_lm2 = np.array([lambda_lmlm(inc, phase, lm1, lm2, theta, phi, y_lmlm_factor) for inc in incs])
+    lambda_lm1_lm2 = np.array([lambda_lmlm(
+        inc, phase, lm1, lm2, theta, phi, y_lmlm_factor) for inc in incs])
 
     sin_inc = np.sin(-incs)
 
@@ -65,26 +73,30 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
     ells = np.arange(2, 21, 1)
 
     delta_m = m1 - m2
-    gamma = []
+    gammas = []
     for ell in ells:
         if ell < abs(delta_m):
-            gamma.append(0)
+            gammas.append(0)
         else:
-            gamma.append(np.trapz(lambda_lm1_lm2 * np.conjugate(harm['{}{}'.format(ell, delta_m)])
-                                  * sin_inc, incs).real * 2 * np.pi)
+            gammas.append(
+                2 * np.pi * np.trapz(lambda_lm1_lm2 * np.real(np.conjugate(
+                    harm['{}{}'.format(ell, delta_m)]) * sin_inc), incs))
 
-    return gamma
+    return gammas
 
 
-def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
+def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None,
+                  y_lmlm_factor=None):
     """
     Angular integral for a specific ll'mm' as given by equation 7 of Talbot
     et al. (2018), arXiv:1807.00990.
 
-    The transverse traceless part of the integral over all binary orientations is returned.
+    The transverse traceless part of the integral over all binary orientations
+    is returned.
 
     The integral is given by:
-    \int_{S^{2}} d\Omega' Y^{-2}_{\ell_1 m_1}(\Omega') \bar{Y}^{-2}_{\ell_2 m_2}(\Omega') \times \\
+    \int_{S^{2}} d\Omega' Y^{-2}_{\ell_1 m_1}(\Omega')
+    \bar{Y}^{-2}_{\ell_2 m_2}(\Omega') \times \\
     \left[\frac{n_jn_k}{1-n_{l}N_{l}} \right]^{TT}
 
     Parameters
@@ -95,14 +107,15 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
         binary phase at coalescence
     lm1: str
         first lm value format is e.g., '22'
-    lm1: str
+    lm2: str
         second lm value format is e.g., '22'
     theta: array, optional
         1d array of binary inclination values, over which to integrate
     phi: array, optional
         1d array of binary polarisation values, over which to integrate
     y_lmlm_factor: array, optional
-        Array over of spherical harmonic factor evaluated on meshgrid of theta, phi
+        Array over of spherical harmonic factor evaluated on meshgrid of
+        theta, phi
 
     Return
     ------
@@ -122,9 +135,11 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
         l1, m1 = int(lm1[0]), int(lm1[1:])
         l2, m2 = int(lm2[0]), int(lm2[1:])
 
-        y_lmlm_factor = harmonics.sYlm(ss, l1, m1, th, ph) * (-1)**(l2+m2) * harmonics.sYlm(-ss, l2, -m2, th, ph)
+        y_lmlm_factor = harmonics.sYlm(ss, l1, m1, th, ph) * (-1)**(l2+m2) *\
+            harmonics.sYlm(-ss, l2, -m2, th, ph)
 
-    n = [np.outer(np.cos(phi), np.sin(theta)), np.outer(np.sin(phi), np.sin(theta)),
+    n = [np.outer(np.cos(phi), np.sin(theta)),
+         np.outer(np.sin(phi), np.sin(theta)),
          np.outer(np.ones_like(phi), np.cos(theta))]
     N = [np.sin(inc) * np.cos(phase), np.sin(inc) * np.sin(phase), np.cos(inc)]
     n_dot_N = sum(n_i * N_i for n_i, N_i in zip(n, N))
@@ -138,12 +153,17 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
     for j in range(3):
         for k in range(j + 1):
             # projection done here to avoid divergences
-            integrand = (n[j] * n[k] - (n[j] * N[k] + n[k] * N[j]) * n_dot_N + N[j] * N[k] * n_dot_N**2)\
-                        * sin_array * denominator * y_lmlm_factor
-            angle_integrals_r[j, k] = np.trapz(np.trapz(np.real(integrand), theta), phi)
-            angle_integrals_i[j, k] = np.trapz(np.trapz(np.imag(integrand), theta), phi)
-            angle_integrals_r[k, j] = np.trapz(np.trapz(np.real(integrand), theta), phi)
-            angle_integrals_i[k, j] = np.trapz(np.trapz(np.imag(integrand), theta), phi)
+            integrand = sin_array * denominator * y_lmlm_factor * (
+                n[j] * n[k] - (n[j] * N[k] + n[k] * N[j]) * n_dot_N +
+                N[j] * N[k] * n_dot_N**2)
+            angle_integrals_r[j, k] = np.trapz(
+                np.trapz(np.real(integrand), theta), phi)
+            angle_integrals_i[j, k] = np.trapz(
+                np.trapz(np.imag(integrand), theta), phi)
+            angle_integrals_r[k, j] = np.trapz(np.trapz(
+                np.real(integrand), theta), phi)
+            angle_integrals_i[k, j] = np.trapz(np.trapz(
+                np.imag(integrand), theta), phi)
 
     proj = np.identity(3) - np.outer(N, N)
     lambda_mat = angle_integrals_r + 1j * angle_integrals_i
@@ -152,16 +172,20 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
     return lambda_mat
 
 
-def lambda_lmlm(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
+def lambda_lmlm(inc, phase, lm1, lm2, theta=None, phi=None,
+                y_lmlm_factor=None):
     """
     Angular integral for a specific ll'mm' as given by equation 7 of Talbot
     et al. (2018), arXiv:1807.00990.
 
-    The transverse traceless part of the integral over all binary orientations is returned.
+    The transverse traceless part of the integral over all binary orientations
+    is returned.
 
     The integral is given by:
-    \frac{1}{2} \int_{S^{2}} d\Omega' Y^{-2}_{\ell_1 m_1}(\Omega') \bar{Y}^{-2}_{\ell_2 m_2}(\Omega') \times \\
-    \left[\frac{n_jn_k}{1-n_{l}N_{l}} \right]^{TT} (e^{+}_{jk} - i e^{\times}_{jk})
+    \frac{1}{2} \int_{S^{2}} d\Omega' Y^{-2}_{\ell_1 m_1}(\Omega')
+    \bar{Y}^{-2}_{\ell_2 m_2}(\Omega') \times \\
+    \left[\frac{n_jn_k}{1-n_{l}N_{l}} \right]^{TT} (e^{+}_{jk} -
+    i e^{\times}_{jk})
 
     Parameters
     ----------
@@ -171,14 +195,15 @@ def lambda_lmlm(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
         binary phase at coalescence
     lm1: str
         first lm value format is e.g., '22'
-    lm1: str
+    lm2: str
         second lm value format is e.g., '22'
     theta: array, optional
         1d array of binary inclination values, over which to integrate
     phi: array, optional
         1d array of binary polarisation values, over which to integrate
     y_lmlm_factor: array, optional
-        Array over of spherical harmonic factor evaluated on meshgrid of theta, phi
+        Array over of spherical harmonic factor evaluated on meshgrid of
+        theta, phi
 
     Return
     ------
@@ -195,7 +220,7 @@ def lambda_lmlm(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
 
 
 def omega_ij_to_omega_pol(omega_ij, inc, phase):
-    '''
+    """
     Map from strain tensor to plus and cross modes.
 
     We assume that only plus and cross are present.
@@ -206,12 +231,16 @@ def omega_ij_to_omega_pol(omega_ij, inc, phase):
         3x3 matrix describing strain or a proxy for strain
     inc: float
         inclination of source
-    phi: float
+    phase: float
         phase at coalescence of source
 
-    output:
-        hp, hx - (complex) time series
-    '''
+    Returns
+    -------
+    hp: float
+        Magnitude of plus mode.
+    hx: float
+        Magnitude of cross mode.
+    """
     psi = 0.
 
     wx, wy, wz = wave_frame(inc, phase, psi)
@@ -222,20 +251,28 @@ def omega_ij_to_omega_pol(omega_ij, inc, phase):
     return omega_plus, omega_cross
 
 
-def plus_tensor(wx, wy, wz=[0, 0, 1]):
-    '''Calculate the plus polarization tensor for some basis.c.f., eq. 2 of https://arxiv.org/pdf/1710.03794.pdf'''
+def plus_tensor(wx, wy, wz=None):
+    """
+    Calculate the plus polarization tensor for some basis.
+    c.f., eq. 2 of https://arxiv.org/pdf/1710.03794.pdf
+    """
     e_plus = np.outer(wx, wx) - np.outer(wy, wy)
     return e_plus
 
 
-def cross_tensor(wx, wy, wz=[0, 0, 1]):
-    '''Calculate the cross polarization tensor for some basis.c.f., eq. 2 of https://arxiv.org/pdf/1710.03794.pdf'''
+def cross_tensor(wx, wy, wz=None):
+    """
+    Calculate the cross polarization tensor for some basis.
+    c.f., eq. 2 of https://arxiv.org/pdf/1710.03794.pdf
+    """
     e_cross = np.outer(wx, wy) + np.outer(wy, wx)
     return e_cross
 
 
 def wave_frame(theta, phi, psi=0):
-    """generate wave-frame basis from three angles, see Nishizawa et al. (2009)"""
+    """
+    Generate wave-frame basis from three angles, see Nishizawa et al. (2009)
+    """
     cth, sth = np.cos(theta), np.sin(theta)
     cph, sph = np.cos(phi), np.sin(phi)
     cps, sps = np.cos(psi), np.sin(psi)
@@ -251,6 +288,20 @@ def wave_frame(theta, phi, psi=0):
 
 
 def load_gamma(data_dir=None):
+    """
+    Load the pre-calculated gamma_lmlm into a dictionary.
+
+    Parameters
+    ----------
+    data_dir: str, optional
+         Directory to look for data file in,
+         default will look for packaged data.
+
+    Returns
+    -------
+    gamma_lmlm: dict
+        Dictionary of gamma_lmlm.
+    """
     if data_dir is None:
         data_dir = pkg_resources.resource_filename(__name__, 'data')
     data_files = glob.glob('{}/gamma*.dat'.format(data_dir))

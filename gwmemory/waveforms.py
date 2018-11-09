@@ -1,12 +1,12 @@
 from __future__ import print_function, division
-from . import harmonics
-from . import utils
-from . import qnms
-from . import angles
+
 import numpy as np
+from scipy.interpolate import interp1d
+
 import lalsimulation as lalsim
 import NRSur7dq2
-from scipy.interpolate import interp1d
+
+from . import angles, harmonics, utils, qnms
 
 
 class MemoryGenerator(object):
@@ -30,13 +30,15 @@ class MemoryGenerator(object):
         Parameters
         ----------
         inc: float, optional
-            Inclination of the source, if None, the spherical harmonic modes will be returned.
+            Inclination of the source, if None, the spherical harmonic modes
+            will be returned.
         phase: float, optional
-            Reference phase of the source, if None, the spherical harmonic modes will be returned.
-            For CBCs this is the phase at coalesence.
+            Reference phase of the source, if None, the spherical harmonic
+            modes will be returned. For CBCs this is the phase at coalesence.
         gamma_lmlm: dict
-            Dictionary of arrays defining the angular dependence of the different memory modes, default=None
-            if None the function will attempt to load them
+            Dictionary of arrays defining the angular dependence of the
+            different memory modes, default=None if None the function will
+            attempt to load them.
 
         Return
         ------
@@ -67,7 +69,7 @@ class MemoryGenerator(object):
         # constant terms in SI units
         const = 1 / 4 / np.pi
         if self.distance is not None:
-            const *= self.distance * utils.Mpc / utils.cc
+            const *= self.distance * utils.MPC / utils.CC
 
         dh_mem_dt_lm = dict()
         for ii, ell in enumerate(gamma_lmlm['0'].l):
@@ -77,10 +79,13 @@ class MemoryGenerator(object):
                 if abs(int(delta_m)) > ell:
                     continue
                 dh_mem_dt_lm[(ell, int(delta_m))] = np.sum(
-                    [dhlm_dt_sq[((l1, m1), (l2, m2))] * gamma_lmlm[delta_m]['{}{}{}{}'.format(l1, m1, l2, m2)][ii]
-                     for (l1, m1), (l2, m2) in dhlm_dt_sq.keys() if m1-m2 == int(delta_m)], axis=0)
+                    [dhlm_dt_sq[((l1, m1), (l2, m2))] * gamma_lmlm[delta_m][
+                        '{}{}{}{}'.format(l1, m1, l2, m2)][ii]
+                     for (l1, m1), (l2, m2) in dhlm_dt_sq.keys()
+                     if m1 - m2 == int(delta_m)], axis=0)
 
-        h_mem_lm = {lm: const * np.cumsum(dh_mem_dt_lm[lm]) * self.delta_t for lm in dh_mem_dt_lm}
+        h_mem_lm = {lm: const * np.cumsum(dh_mem_dt_lm[lm]) * self.delta_t
+                    for lm in dh_mem_dt_lm}
 
         if inc is None or phase is None:
             return h_mem_lm, self.times
@@ -121,14 +126,15 @@ class Surrogate(MemoryGenerator):
     MTot: float, optional
         Total binary mass in solar units.
     distance: float, optional
-        Distance to the binary in Mpc.
+        Distance to the binary in MPC.
     S1: array
         Spin vector of more massive black hole.
     S2: array
         Spin vector of less massive black hole.
     """
 
-    def __init__(self, q, name='', MTot=None, S1=None, S2=None, distance=None, LMax=4, modes=None, times=None):
+    def __init__(self, q, name='', total_mass=None, spin_1=None, spin_2=None,
+                 distance=None, l_max=4, modes=None, times=None):
         """
         Initialise Surrogate MemoryGenerator
 
@@ -136,22 +142,23 @@ class Surrogate(MemoryGenerator):
         ----------
         name: str
             File name to load.
-        LMax: int
+        l_max: int
             Maximum ell value for oscillatory time series.
         modes: dict, optional
             Modes to load in, default is all ell<=4.
         q: float
             Binary mass ratio
-        MTot: float, optional
+        total_mass: float, optional
             Total binary mass in solar units.
         distance: float, optional
-            Distance to the binary in Mpc.
-        S1: array
+            Distance to the binary in MPC.
+        spin_1: array
             Spin vector of more massive black hole.
-        S2: array
+        spin_2: array
             Spin vector of less massive black hole.
         times: array
-            Time array to evaluate the waveforms on, default is np.linspace(-900, 100, 10001).
+            Time array to evaluate the waveforms on, default is
+            np.linspace(-900, 100, 10001).
         """
         self.name = name
         self.sur = NRSur7dq2.NRSurrogate7dq2()
@@ -161,25 +168,27 @@ class Surrogate(MemoryGenerator):
         if q > 2:
             print('WARNING: Surrogate waveform not tested for q>2.')
         self.q = q
-        self.MTot = MTot
-        if S1 is None:
+        self.MTot = total_mass
+        if spin_1 is None:
             self.S1 = np.array([0., 0., 0.])
         else:
-            self.S1 = np.array(S1)
-        if S2 is None:
+            self.S1 = np.array(spin_1)
+        if spin_2 is None:
             self.S2 = np.array([0., 0., 0.])
         else:
-            self.S2 = np.array(S2)
+            self.S2 = np.array(spin_2)
         self.distance = distance
-        self.LMax = LMax
+        self.LMax = l_max
         self.modes = modes
 
-        if MTot is None:
+        if total_mass is None:
             self.h_to_geo = 1
             self.t_to_geo = 1
         else:
-            self.h_to_geo = self.distance * utils.Mpc / self.MTot / utils.solar_mass / utils.GG * utils.cc**2
-            self.t_to_geo = 1 / self.MTot / utils.solar_mass / utils.GG * utils.cc**3
+            self.h_to_geo = self.distance * utils.MPC / self.MTot /\
+                utils.SOLAR_MASS / utils.GG * utils.CC ** 2
+            self.t_to_geo = 1 / self.MTot / utils.SOLAR_MASS / utils.GG *\
+                utils.CC ** 3
 
         self.h_lm = None
         self.times = None
@@ -191,13 +200,17 @@ class Surrogate(MemoryGenerator):
 
         MemoryGenerator.__init__(self, name=name, h_lm=h_lm, times=times)
 
-    def time_domain_oscillatory(self, times=None, modes=None, inc=None, phase=None):
+    def time_domain_oscillatory(self, times=None, modes=None, inc=None,
+                                phase=None):
         """
         Get the mode decomposition of the surrogate waveform.
 
-        Calculates a BBH waveform using the surrogate models of Field et al. (2014), Blackman et al. (2017)
-        http://journals.aps.org/prx/references/10.1103/PhysRevX.4.031006, https://arxiv.org/abs/1705.07089
-        See https://data.black-holes.org/surrogates/index.html for more information.
+        Calculates a BBH waveform using the surrogate models of Field et al.
+        (2014), Blackman et al. (2017)
+        http://journals.aps.org/prx/references/10.1103/PhysRevX.4.031006,
+        https://arxiv.org/abs/1705.07089
+        See https://data.black-holes.org/surrogates/index.html for more
+        information.
 
         Parameters
         ----------
@@ -206,9 +219,11 @@ class Surrogate(MemoryGenerator):
         modes: list, optional
             List of modes to try to generate.
         inc: float, optional
-            Inclination of the source, if None, the spherical harmonic modes will be returned.
+            Inclination of the source, if None, the spherical harmonic modes
+            will be returned.
         phase: float, optional
-            Phase at coalescence of the source, if None, the spherical harmonic modes will be returned.
+            Phase at coalescence of the source, if None, the spherical harmonic
+            modes will be returned.
 
         Returns
         -------
@@ -221,7 +236,8 @@ class Surrogate(MemoryGenerator):
             if times is None:
                 times = np.linspace(-900, 100, 10001)
             times = times / self.t_to_geo
-            h_lm = self.sur(self.q, self.S1, self.S2, MTot=self.MTot, distance=self.distance, t=times, LMax=self.LMax)
+            h_lm = self.sur(self.q, self.S1, self.S2, MTot=self.MTot,
+                            distance=self.distance, t=times, LMax=self.LMax)
 
             available_modes = set(h_lm.keys())
 
@@ -229,7 +245,8 @@ class Surrogate(MemoryGenerator):
                 modes = available_modes
 
             if not set(modes).issubset(available_modes):
-                print('Requested {} unavailable modes'.format(' '.join(set(modes).difference(available_modes))))
+                print('Requested {} unavailable modes'.format(
+                    ' '.join(set(modes).difference(available_modes))))
                 modes = list(set(modes).union(available_modes))
                 print('Using modes {}'.format(' '.join(modes)))
 
@@ -262,10 +279,11 @@ class SXSNumericalRelativity(MemoryGenerator):
     MTot: float, optional
         Total binary mass in solar units.
     distance: float, optional
-        Distance to the binary in Mpc.
+        Distance to the binary in MPC.
     """
 
-    def __init__(self, name, modes=None, extraction='OutermostExtraction.dir', MTot=None, distance=None, times=None):
+    def __init__(self, name, modes=None, extraction='OutermostExtraction.dir',
+                 total_mass=None, distance=None, times=None):
         """
         Initialise SXSNumericalRelativity MemoryGenerator
 
@@ -276,27 +294,32 @@ class SXSNumericalRelativity(MemoryGenerator):
         modes: dict, optional
             Modes to load in, default is all ell<=4.
         extraction: str
-            Extraction method, this specifies the outer object to use in the h5 file.
-        MTot: float
+            Extraction method, this specifies the outer object to use in the
+            h5 file.
+        total_mass: float
             Lab-frame total mass of the binary in solar masses.
         distace: float
-            Luminosity distance to the binary in Mpc.
+            Luminosity distance to the binary in MPC.
         times: array
-            Time array to evaluate the waveforms on, default is time array in h5 file.
+            Time array to evaluate the waveforms on, default is time array
+            in h5 file.
         """
         self.name = name
         self.modes = modes
-        self.h_lm, self.times = utils.load_sxs_waveform(name, modes=modes, extraction=extraction)
+        self.h_lm, self.times = utils.load_sxs_waveform(
+            name, modes=modes, extraction=extraction)
 
-        self.MTot = MTot
+        self.MTot = total_mass
         self.distance = distance
 
-        if MTot is None or distance is None:
+        if total_mass is None or distance is None:
             self.h_to_geo = 1
             self.t_to_geo = 1
         else:
-            self.h_to_geo = self.distance * utils.Mpc / self.MTot / utils.solar_mass / utils.GG * utils.cc**2
-            self.t_to_geo = 1 / self.MTot / utils.solar_mass / utils.GG * utils.cc**3
+            self.h_to_geo = self.distance * utils.MPC / self.MTot /\
+                utils.SOLAR_MASS / utils.GG * utils.CC ** 2
+            self.t_to_geo = 1 / self.MTot / utils.SOLAR_MASS / utils.GG *\
+                utils.CC ** 3
 
             for mode in self.h_lm:
                 self.h_lm /= self.h_to_geo
@@ -309,16 +332,19 @@ class SXSNumericalRelativity(MemoryGenerator):
 
         MemoryGenerator.__init__(self, name=name, h_lm=self.h_lm, times=times)
 
-    def time_domain_oscillatory(self, times=None, modes=None, inc=None, phase=None):
+    def time_domain_oscillatory(self, times=None, modes=None, inc=None,
+                                phase=None):
         """
         Get the mode decomposition of the numerical relativity waveform.
 
         Parameters
         ----------
         inc: float, optional
-            Inclination of the source, if None, the spherical harmonic modes will be returned.
+            Inclination of the source, if None, the spherical harmonic modes
+            will be returned.
         phase: float, optional
-            Phase at coalescence of the source, if None, the spherical harmonic modes will be returned.
+            Phase at coalescence of the source, if None, the spherical harmonic
+            modes will be returned.
 
         Returns
         -------
@@ -335,7 +361,8 @@ class SXSNumericalRelativity(MemoryGenerator):
 
 class Approximant(MemoryGenerator):
 
-    def __init__(self, name, q, MTot=60, S1=None, S2=None, distance=400, times=None):
+    def __init__(self, name, q, total_mass=60, spin_1=None, spin_2=None,
+                 distance=400, times=None):
         """
         Initialise Surrogate MemoryGenerator
 
@@ -345,16 +372,17 @@ class Approximant(MemoryGenerator):
             File name to load.
         q: float
             Binary mass ratio
-        MTot: float, optional
+        total_mass: float, optional
             Total binary mass in solar units.
         distance: float, optional
-            Distance to the binary in Mpc.
-        S1: array
+            Distance to the binary in MPC.
+        spin_1: array
             Spin vector of more massive black hole.
-        S2: array
+        spin_2: array
             Spin vector of less massive black hole.
         times: array
-            Time array to evaluate the waveforms on, default is time array from lalsimulation.
+            Time array to evaluate the waveforms on, default is time array
+            from lalsimulation.
             FIXME
         """
         self.name = name
@@ -362,25 +390,27 @@ class Approximant(MemoryGenerator):
             q = 1 / q
 
         self.q = q
-        self.MTot = MTot
-        if S1 is None:
+        self.MTot = total_mass
+        if spin_1 is None:
             self.S1 = np.array([0., 0., 0.])
         else:
-            self.S1 = np.array(S1)
-        if S2 is None:
+            self.S1 = np.array(spin_1)
+        if spin_2 is None:
             self.S2 = np.array([0., 0., 0.])
         else:
-            self.S2 = np.array(S2)
+            self.S2 = np.array(spin_2)
         self.distance = distance
 
         self.m1 = self.MTot / (1 + self.q)
         self.m2 = self.m1 * self.q
-        self.m1_SI = self.m1 * utils.solar_mass
-        self.m2_SI = self.m2 * utils.solar_mass
-        self.distance_SI = self.distance * utils.Mpc
+        self.m1_SI = self.m1 * utils.SOLAR_MASS
+        self.m2_SI = self.m2 * utils.SOLAR_MASS
+        self.distance_SI = self.distance * utils.MPC
 
-        if abs(self.S1[0]) > 0 or abs(self.S1[1]) > 0 or abs(self.S2[0]) > 0 or abs(self.S2[1]) > 0:
-            print('WARNING: Approximant decomposition works only for non-precessing waveforms.')
+        if abs(self.S1[0]) > 0 or abs(self.S1[1]) > 0 or abs(self.S2[0]) > 0\
+                or abs(self.S2[1]) > 0:
+            print('WARNING: Approximant decomposition works only for '
+                  'non-precessing waveforms.')
             print('Setting spins to be aligned')
             self.S1[0], self.S1[1] = 0., 0.
             self.S2[0], self.S2[1] = 0., 0.
@@ -388,10 +418,11 @@ class Approximant(MemoryGenerator):
         else:
             self.S1 = list(self.S1)
             self.S2 = list(self.S2)
-        self.available_modes = list(set([(2, 2), (2, -2)]))
+        self.available_modes = list({(2, 2), (2, -2)})
 
-        self.h_to_geo = self.distance_SI / (self.m1_SI+self.m2_SI) / utils.GG * utils.cc**2
-        self.t_to_geo = 1 / (self.m1_SI+self.m2_SI) / utils.GG * utils.cc**3
+        self.h_to_geo = self.distance_SI / (self.m1_SI+self.m2_SI) / utils.GG *\
+                        utils.CC ** 2
+        self.t_to_geo = 1 / (self.m1_SI+self.m2_SI) / utils.GG * utils.CC ** 3
 
         self.h_lm = None
         self.times = None
@@ -400,13 +431,15 @@ class Approximant(MemoryGenerator):
 
         MemoryGenerator.__init__(self, name=name, h_lm=h_lm, times=times)
 
-    def time_domain_oscillatory(self, delta_t=None, modes=None, inc=None, phase=None):
+    def time_domain_oscillatory(self, delta_t=None, modes=None, inc=None,
+                                phase=None):
         """
         Get the mode decomposition of the waveform approximant.
 
-        Since the waveforms we consider only contain content about the ell=|m|=2 modes.
-        We can therefore evaluate the waveform for a face-on system, where only the (2, 2) mode
-        is non-zero.
+        Since the waveforms we consider only contain content about the
+        ell=|m|=2 modes.
+        We can therefore evaluate the waveform for a face-on system, where
+        only the (2, 2) mode is non-zero.
 
         Parameters
         ----------
@@ -415,9 +448,11 @@ class Approximant(MemoryGenerator):
         modes: list, optional
             List of modes to try to generate.
         inc: float, optional
-            Inclination of the source, if None, the spherical harmonic modes will be returned.
+            Inclination of the source, if None, the spherical harmonic modes
+            will be returned.
         phase: float, optional
-            Phase at coalescence of the source, if None, the spherical harmonic modes will be returned.
+            Phase at coalescence of the source, if None, the spherical harmonic
+            modes will be returned.
 
         Returns
         -------
@@ -433,7 +468,8 @@ class Approximant(MemoryGenerator):
                 modes = modes
 
             if not set(modes).issubset(self.available_modes):
-                print('Requested {} unavailable modes'.format(' '.join(set(modes).difference(self.available_modes))))
+                print('Requested {} unavailable modes'.format(' '.join(
+                    set(modes).difference(self.available_modes))))
                 modes = list(set(modes).union(self.available_modes))
                 print('Using modes {}'.format(' '.join(modes)))
 
@@ -447,14 +483,16 @@ class Approximant(MemoryGenerator):
             WFdict = None
 
             if delta_t is None:
-                delta_t = 0.1 * (self.m1_SI + self.m2_SI) * utils.GG / utils.cc**3
+                delta_t = 0.1 * (self.m1_SI + self.m2_SI) * utils.GG /\
+                    utils.CC ** 3
             else:
                 delta_t = delta_t
 
             hplus, hcross = lalsim.SimInspiralChooseTDWaveform(
-                self.m1_SI, self.m2_SI, self.S1[0], self.S1[1], self.S1[2], self.S2[0], self.S2[1], self.S2[2],
-                self.distance_SI, theta, phi, longAscNodes, eccentricity, meanPerAno, delta_t, fmin, fRef,
-                WFdict, approx)
+                self.m1_SI, self.m2_SI, self.S1[0], self.S1[1], self.S1[2],
+                self.S2[0], self.S2[1], self.S2[2], self.distance_SI, theta,
+                phi, longAscNodes, eccentricity, meanPerAno, delta_t, fmin,
+                fRef, WFdict, approx)
 
             h = hplus.data.data - 1j * hcross.data.data
 
@@ -477,20 +515,21 @@ class Approximant(MemoryGenerator):
 
 class MWM(MemoryGenerator):
 
-    def __init__(self, q, MTot=60, distance=400, name='MWM', times=None):
+    def __init__(self, q, total_mass=60, distance=400, name='MWM', times=None):
         MemoryGenerator.__init__(self, name=name, h_lm=dict(), times=times)
         self.name = name
         if q > 1:
             q = 1 / q
         self.q = q
-        self.MTot = MTot
+        self.MTot = total_mass
         self.distance = distance
         self.m1 = self.MTot / (1 + self.q)
         self.m2 = self.m1 * self.q
 
-        self.h_to_geo = self.distance * utils.Mpc / (self.m1+self.m2) / utils.solar_mass\
-            / utils.GG * utils.cc**2
-        self.t_to_geo = 1 / (self.m1+self.m2) / utils.solar_mass / utils.GG * utils.cc**3
+        self.h_to_geo = self.distance * utils.MPC / (self.m1 + self.m2) /\
+            utils.SOLAR_MASS / utils.GG * utils.CC ** 2
+        self.t_to_geo = 1 / (self.m1+self.m2) / utils.SOLAR_MASS / utils.GG *\
+            utils.CC ** 3
 
         if times is None:
             times = np.linspace(-900, 100, 10001) / self.t_to_geo
@@ -527,10 +566,10 @@ class MWM(MemoryGenerator):
         if times is None:
             times = self.times
 
-        time_geo = utils.time_s_to_geo(times)    # units: metres
+        time_geo = utils.time_s_to_geo(times)  # units: metres
 
-        m1_geo = utils.m_sol_to_geo(self.m1)         # units: metres
-        m2_geo = utils.m_sol_to_geo(self.m2)         # units: metres
+        m1_geo = utils.m_sol_to_geo(self.m1)   # units: metres
+        m2_geo = utils.m_sol_to_geo(self.m2)   # units: metres
 
         dist_geo = utils.dist_Mpc_to_geo(self.distance)  # units: metres
 
@@ -540,7 +579,8 @@ class MWM(MemoryGenerator):
         # symmetric mass ratio
         eta = utils.m12_to_symratio(m1_geo, m2_geo)
 
-        # this is the orbital separation at the matching radius -- see Favata (2009) before eqn (8).
+        # this is the orbital separation at the matching radius --
+        # see Favata (2009) before eqn (8).
         # the default value for this is given as rm = 3 MM.
         rm *= MM
 
@@ -565,31 +605,45 @@ class MWM(MemoryGenerator):
         # some quantity defined after equation (7) of Favata
         trr = 5 * MM * rm**4 / (256 * eta * MM**4)
 
-        # calculate the A_{ell m n} matching coefficients.  Note that I've solved
-        # a matrix equation that solved for the three coefficients fron three equations
+        # calculate the A_{ell m n} matching coefficients.  Note that
+        # I've solved a matrix equation that solved for the three coefficients
+        # from three equations
         xi = 2 * np.sqrt(2 * np.pi / 5) * eta * MM * rm**2
         chi = -2 * 1j * np.sqrt(MM / rm**3)
 
-        A220 = xi * (sigma221 * sigma222 * chi**2 + sigma221 * chi**3 + sigma222 * chi**3 + chi**4)\
+        A220 = xi * (sigma221 * sigma222 * chi**2 + sigma221 * chi**3 +
+                     sigma222 * chi**3 + chi**4)\
             / ((sigma220 - sigma221) * (sigma220 - sigma222))
-        A221 = xi * (sigma220 * sigma222 * chi**2 + sigma220 * chi**3 + sigma222 * chi**3 + chi**4)\
+        A221 = xi * (sigma220 * sigma222 * chi**2 + sigma220 * chi**3 +
+                     sigma222 * chi**3 + chi**4)\
             / ((sigma221 - sigma220) * (sigma221 - sigma222))
-        A222 = xi * (sigma220 * sigma221 * chi**2 + sigma220 * chi**3 + sigma221 * chi**3 + chi**4)\
+        A222 = xi * (sigma220 * sigma221 * chi**2 + sigma220 * chi**3 +
+                     sigma221 * chi**3 + chi**4)\
             / ((sigma221 - sigma222) * (sigma220 - sigma222))
 
-        # Calculate the coefficients in the summed term of equation (9) from Favata (2009)
-        # this is a double sum, with each variable going from n = 0 to 2; therefore 9 terms
-        coeffSum00 = sigma220 * np.conj(sigma220) * A220 * np.conj(A220) / (sigma220 + np.conj(sigma220))
-        coeffSum01 = sigma220 * np.conj(sigma221) * A220 * np.conj(A221) / (sigma220 + np.conj(sigma221))
-        coeffSum02 = sigma220 * np.conj(sigma222) * A220 * np.conj(A222) / (sigma220 + np.conj(sigma222))
+        # Calculate the coefficients in the summed term of equation (9)
+        # from Favata (2009) this is a double sum, with each variable going
+        # from n = 0 to 2; therefore 9 terms
+        coeffSum00 = sigma220 * np.conj(sigma220) * A220 * np.conj(A220) /\
+            (sigma220 + np.conj(sigma220))
+        coeffSum01 = sigma220 * np.conj(sigma221) * A220 * np.conj(A221) /\
+            (sigma220 + np.conj(sigma221))
+        coeffSum02 = sigma220 * np.conj(sigma222) * A220 * np.conj(A222) /\
+            (sigma220 + np.conj(sigma222))
 
-        coeffSum10 = sigma221 * np.conj(sigma220) * A221 * np.conj(A220) / (sigma221 + np.conj(sigma220))
-        coeffSum11 = sigma221 * np.conj(sigma221) * A221 * np.conj(A221) / (sigma221 + np.conj(sigma221))
-        coeffSum12 = sigma221 * np.conj(sigma222) * A221 * np.conj(A222) / (sigma221 + np.conj(sigma222))
+        coeffSum10 = sigma221 * np.conj(sigma220) * A221 * np.conj(A220) /\
+            (sigma221 + np.conj(sigma220))
+        coeffSum11 = sigma221 * np.conj(sigma221) * A221 * np.conj(A221) /\
+            (sigma221 + np.conj(sigma221))
+        coeffSum12 = sigma221 * np.conj(sigma222) * A221 * np.conj(A222) /\
+            (sigma221 + np.conj(sigma222))
 
-        coeffSum20 = sigma222 * np.conj(sigma220) * A222 * np.conj(A220) / (sigma222 + np.conj(sigma220))
-        coeffSum21 = sigma222 * np.conj(sigma221) * A222 * np.conj(A221) / (sigma222 + np.conj(sigma221))
-        coeffSum22 = sigma222 * np.conj(sigma222) * A222 * np.conj(A222) / (sigma222 + np.conj(sigma222))
+        coeffSum20 = sigma222 * np.conj(sigma220) * A222 * np.conj(A220) /\
+            (sigma222 + np.conj(sigma220))
+        coeffSum21 = sigma222 * np.conj(sigma221) * A222 * np.conj(A221) /\
+            (sigma222 + np.conj(sigma221))
+        coeffSum22 = sigma222 * np.conj(sigma222) * A222 * np.conj(A222) /\
+            (sigma222 + np.conj(sigma222))
 
         # radial separation
         rr = rm * (1 - TT / trr)**(1 / 4)
@@ -601,17 +655,26 @@ class MWM(MemoryGenerator):
         h_MWM[TT <= 0] = 8 * np.pi * MM / rr[TT <= 0]
 
         # calculate strain for TT > 0.
-        term00 = coeffSum00 * (1 - np.exp(-TT[TT > 0] * (sigma220 + np.conj(sigma220))))
-        term01 = coeffSum01 * (1 - np.exp(-TT[TT > 0] * (sigma220 + np.conj(sigma221))))
-        term02 = coeffSum02 * (1 - np.exp(-TT[TT > 0] * (sigma220 + np.conj(sigma222))))
+        term00 = coeffSum00 * (1 - np.exp(-TT[TT > 0] *
+                                          (sigma220 + np.conj(sigma220))))
+        term01 = coeffSum01 * (1 - np.exp(-TT[TT > 0] *
+                                          (sigma220 + np.conj(sigma221))))
+        term02 = coeffSum02 * (1 - np.exp(-TT[TT > 0] *
+                                          (sigma220 + np.conj(sigma222))))
 
-        term10 = coeffSum10 * (1 - np.exp(-TT[TT > 0] * (sigma221 + np.conj(sigma220))))
-        term11 = coeffSum11 * (1 - np.exp(-TT[TT > 0] * (sigma221 + np.conj(sigma221))))
-        term12 = coeffSum12 * (1 - np.exp(-TT[TT > 0] * (sigma221 + np.conj(sigma222))))
+        term10 = coeffSum10 * (1 - np.exp(-TT[TT > 0] *
+                                          (sigma221 + np.conj(sigma220))))
+        term11 = coeffSum11 * (1 - np.exp(-TT[TT > 0] *
+                                          (sigma221 + np.conj(sigma221))))
+        term12 = coeffSum12 * (1 - np.exp(-TT[TT > 0] *
+                                          (sigma221 + np.conj(sigma222))))
 
-        term20 = coeffSum20 * (1 - np.exp(-TT[TT > 0] * (sigma222 + np.conj(sigma220))))
-        term21 = coeffSum21 * (1 - np.exp(-TT[TT > 0] * (sigma222 + np.conj(sigma221))))
-        term22 = coeffSum22 * (1 - np.exp(-TT[TT > 0] * (sigma222 + np.conj(sigma222))))
+        term20 = coeffSum20 * (1 - np.exp(-TT[TT > 0] *
+                                          (sigma222 + np.conj(sigma220))))
+        term21 = coeffSum21 * (1 - np.exp(-TT[TT > 0] *
+                                          (sigma222 + np.conj(sigma221))))
+        term22 = coeffSum22 * (1 - np.exp(-TT[TT > 0] *
+                                          (sigma222 + np.conj(sigma222))))
 
         sum_terms = np.real(term00 + term01 + term02 +
                             term10 + term11 + term12 +
@@ -623,14 +686,19 @@ class MWM(MemoryGenerator):
         sT = np.sin(inc)
         cT = np.cos(inc)
 
-        h_plus_coeff = 0.77 * eta * MM / (384 * np.pi) * sT**2 * (17 + cT**2) / dist_geo
+        h_plus_coeff = 0.77 * eta * MM / (384 * np.pi) * sT**2 * (17 + cT**2) /\
+            dist_geo
         h_mem = dict(plus=h_plus_coeff * h_MWM, cross=np.zeros_like(h_MWM))
 
         return h_mem, times
 
 
 def combine_modes(h_lm, inc, phase):
-    """Calculate the plus and cross polarisations of the waveform from the spherical harmonic decomposition."""
-    total = sum([h_lm[(l, m)] * harmonics.sYlm(-2, l, m, inc, phase) for l, m in h_lm])
+    """
+    Calculate the plus and cross polarisations of the waveform from the
+    spherical harmonic decomposition.
+    """
+    total = sum([h_lm[(l, m)] * harmonics.sYlm(-2, l, m, inc, phase)
+                 for l, m in h_lm])
     h_plus_cross = dict(plus=total.real, cross=-total.imag)
     return h_plus_cross

@@ -1,8 +1,2 @@
-from . import angles
-from . import waveforms
-from . import harmonics
-from . import qnms
-from . import utils
-from . import gwmemory
+from . import angles, gwmemory, harmonics, qnms, utils, waveforms
 from .gwmemory import time_domain_memory, frequency_domain_memory
-import inspect
