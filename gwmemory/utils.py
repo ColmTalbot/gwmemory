@@ -1,6 +1,8 @@
 import numpy as np
 import deepdish
 
+from .harmonics import sYlm
+
 
 # Constants for conversions
 CC = 299792458.0  # speed of light in m/s
@@ -136,3 +138,13 @@ def load_sxs_waveform(file_name, modes=None,
             output[mode] = mode_array[:, 1] + 1j * mode_array[:, 2]
     times = mode_array[:, 0]
     return output, times
+
+
+def combine_modes(h_lm, inc, phase):
+    """
+    Calculate the plus and cross polarisations of the waveform from the
+    spherical harmonic decomposition.
+    """
+    total = sum([h_lm[(l, m)] * sYlm(-2, l, m, inc, phase) for l, m in h_lm])
+    h_plus_cross = dict(plus=total.real, cross=-total.imag)
+    return h_plus_cross
