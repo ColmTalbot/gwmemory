@@ -1,5 +1,5 @@
-All of the likelihoods implemented.
-==============================
+Spin-weighted spherical harmonics.
+==================================
 
 .. automodule:: gwmemory.harmonics
     :members:
