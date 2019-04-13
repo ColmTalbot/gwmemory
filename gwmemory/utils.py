@@ -21,7 +21,7 @@ def m12_to_mc(m1, m2):
 
 
 def m12_to_symratio(m1, m2):
-    # convert m1 and m2 to symmetric mass ratio
+    """convert m1 and m2 to symmetric mass ratio"""
     return m1 * m2 / (m1 + m2)**2
 
 
