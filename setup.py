@@ -68,7 +68,8 @@ setup(name='gwmemory',
       version=VERSION,
       packages=['gwmemory', 'gwmemory.waveforms'],
       package_dir={'gwmemory': 'gwmemory'},
-      package_data={'gwmemory': ['data/gamma_coefficients*.dat', 'data/*WEB.dat']},
+      package_data={'gwmemory': [
+          'data/gamma_coefficients*.dat', 'data/*WEB.dat', '.version']},
       install_requires=['future', 'numpy', 'scipy', 'pandas', 'deepdish'],
       classifiers=[
           "Programming Language :: Python :: 2.7",
