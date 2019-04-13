@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>All of the likelihoods implemented. &mdash; GWMemory 0.2.0 documentation</title>
+  <title>Implemented waveform models &mdash; GWMemory 0.2.0 documentation</title>
   
 
   
@@ -86,11 +86,11 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Implemented waveform models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="angles.html">All of the likelihoods implemented.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="harmonics.html">All of the likelihoods implemented.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="qnms.html">All of the likelihoods implemented.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utils.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="harmonics.html">Spin-weighted spherical harmonics.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qnms.html">Quasi-normal mode functions.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils.</a></li>
 </ul>
 
             
@@ -136,7 +136,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>All of the likelihoods implemented.</li>
+      <li>Implemented waveform models</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -179,9 +179,125 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="all-of-the-likelihoods-implemented">
-<h1>All of the likelihoods implemented.<a class="headerlink" href="#all-of-the-likelihoods-implemented" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-gwmemory.waveforms"></span></div>
+<div class="section" id="module-gwmemory.waveforms.base">
+<span id="implemented-waveform-models"></span><h1>Implemented waveform models<a class="headerlink" href="#module-gwmemory.waveforms.base" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-gwmemory.waveforms.approximant"></span><span class="target" id="module-gwmemory.waveforms.surrogate"></span><dl class="class">
+<dt id="gwmemory.waveforms.surrogate.Surrogate">
+<em class="property">class </em><code class="descclassname">gwmemory.waveforms.surrogate.</code><code class="descname">Surrogate</code><span class="sig-paren">(</span><em>q</em>, <em>name='nrsur7dq2'</em>, <em>total_mass=None</em>, <em>spin_1=None</em>, <em>spin_2=None</em>, <em>distance=None</em>, <em>l_max=4</em>, <em>modes=None</em>, <em>times=None</em>, <em>minimum_frequency=10</em>, <em>sampling_frequency=4096</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.surrogate.Surrogate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Memory generator for a numerical relativity surrogate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>Name of file to extract waveform from.</p>
+</dd>
+<dt><strong>modes: dict</strong></dt><dd><p>Spherical harmonic modes which we have knowledge of, default is ell&lt;=4.</p>
+</dd>
+<dt><strong>h_lm: dict</strong></dt><dd><p>Spherical harmonic decomposed time-domain strain.</p>
+</dd>
+<dt><strong>times: array</strong></dt><dd><p>Array on which waveform is evaluated.</p>
+</dd>
+<dt><strong>q: float</strong></dt><dd><p>Binary mass ratio</p>
+</dd>
+<dt><strong>MTot: float, optional</strong></dt><dd><p>Total binary mass in solar units.</p>
+</dd>
+<dt><strong>distance: float, optional</strong></dt><dd><p>Distance to the binary in MPC.</p>
+</dd>
+<dt><strong>S1: array</strong></dt><dd><p>Spin vector of more massive black hole.</p>
+</dd>
+<dt><strong>S2: array</strong></dt><dd><p>Spin vector of less massive black hole.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="gwmemory.waveforms.surrogate.Surrogate.time_domain_oscillatory">
+<code class="descname">time_domain_oscillatory</code><span class="sig-paren">(</span><em>times=None</em>, <em>modes=None</em>, <em>inc=None</em>, <em>phase=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.surrogate.Surrogate.time_domain_oscillatory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the mode decomposition of the surrogate waveform.</p>
+<p>Calculates a BBH waveform using the surrogate models of Field et al.
+(2014), Blackman et al. (2017)
+<a class="reference external" href="http://journals.aps.org/prx/references/10.1103/PhysRevX.4.031006">http://journals.aps.org/prx/references/10.1103/PhysRevX.4.031006</a>,
+<a class="reference external" href="https://arxiv.org/abs/1705.07089">https://arxiv.org/abs/1705.07089</a>
+See <a class="reference external" href="https://data.black-holes.org/surrogates/index.html">https://data.black-holes.org/surrogates/index.html</a> for more
+information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>times: np.array, optional</strong></dt><dd><p>Time array on which to evaluate the waveform.</p>
+</dd>
+<dt><strong>modes: list, optional</strong></dt><dd><p>List of modes to try to generate.</p>
+</dd>
+<dt><strong>inc: float, optional</strong></dt><dd><p>Inclination of the source, if None, the spherical harmonic modes
+will be returned.</p>
+</dd>
+<dt><strong>phase: float, optional</strong></dt><dd><p>Phase at coalescence of the source, if None, the spherical harmonic
+modes will be returned.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>h_lm: dict</strong></dt><dd><p>Spin-weighted spherical harmonic decomposed waveform.</p>
+</dd>
+<dt><strong>times: np.array</strong></dt><dd><p>Times on which waveform is evaluated.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-gwmemory.waveforms.nr"></span><dl class="class">
+<dt id="gwmemory.waveforms.nr.SXSNumericalRelativity">
+<em class="property">class </em><code class="descclassname">gwmemory.waveforms.nr.</code><code class="descname">SXSNumericalRelativity</code><span class="sig-paren">(</span><em>name</em>, <em>modes=None</em>, <em>extraction='OutermostExtraction.dir'</em>, <em>total_mass=None</em>, <em>distance=None</em>, <em>times=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.nr.SXSNumericalRelativity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Memory generator for a numerical relativity waveform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>Name of file to extract waveform from.</p>
+</dd>
+<dt><strong>modes: dict</strong></dt><dd><p>Spherical harmonic modes which we have knowledge of, default is ell&lt;=4.</p>
+</dd>
+<dt><strong>h_lm: dict</strong></dt><dd><p>Spherical harmonic decomposed time-domain strain.</p>
+</dd>
+<dt><strong>times: array</strong></dt><dd><p>Array on which waveform is evaluated.</p>
+</dd>
+<dt><strong>MTot: float, optional</strong></dt><dd><p>Total binary mass in solar units.</p>
+</dd>
+<dt><strong>distance: float, optional</strong></dt><dd><p>Distance to the binary in MPC.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="gwmemory.waveforms.nr.SXSNumericalRelativity.time_domain_oscillatory">
+<code class="descname">time_domain_oscillatory</code><span class="sig-paren">(</span><em>times=None</em>, <em>modes=None</em>, <em>inc=None</em>, <em>phase=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.nr.SXSNumericalRelativity.time_domain_oscillatory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the mode decomposition of the numerical relativity waveform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>inc: float, optional</strong></dt><dd><p>Inclination of the source, if None, the spherical harmonic modes
+will be returned.</p>
+</dd>
+<dt><strong>phase: float, optional</strong></dt><dd><p>Phase at coalescence of the source, if None, the spherical harmonic
+modes will be returned.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>h_lm: dict</strong></dt><dd><p>Spin-weighted spherical harmonic decomposed waveform.</p>
+</dd>
+<dt><strong>times: np.array</strong></dt><dd><p>Times on which waveform is evaluated.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-gwmemory.waveforms.mwm"></span></div>
 
 
            </div>

@@ -1,4 +1,4 @@
-All of the likelihoods implemented.
+Quasi-normal mode functions.
 ==============================
 
 .. automodule:: gwmemory.qnms

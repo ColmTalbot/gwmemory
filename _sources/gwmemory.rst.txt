@@ -1,4 +1,4 @@
-All of the likelihoods implemented.
+GWMemory
 ==============================
 
 .. automodule:: gwmemory.gwmemory
