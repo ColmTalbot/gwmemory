@@ -1,14 +1,3 @@
-# This script is an edited version of the example found at
-# https://git.ligo.org/lscsoft/example-ci-project/blob/python/.gitlab-ci.yml
-# Each 0th-indendation level is a job that will be run within GitLab CI
-# The only exception are a short list of reserved keywords
-#
-# https://docs.gitlab.com/ee/ci/yaml/#gitlab-ci-yml
-
-# stages is a reserved keyword that defines job dependencies and
-# parallelization. each stage runs in parallel but must complete
-# before the next stage begins
-
 language: python
 
 python:
@@ -19,14 +8,14 @@ cache: pip
 
 install:
   - pip install -r requirements.txt
-#  - pip install -r pages_requirements.txt
+  - pip install -r pages_requirements.txt
   - pip install "coverage<4.4" "pytest-cov<2.5" codeclimate-test-reporter
   - pip install .
 
 script:
 
   - export PYTHONPATH='.'
-  - pytest --cov=gwpopulation
+  - pytest --cov=gwmemory
   - codeclimate-test-reporter --file .coverage
 
 before_deploy:
