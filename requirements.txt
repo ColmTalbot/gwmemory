@@ -4,3 +4,4 @@ pandas
 deepdish
 lalsuite
 NRSur7dq2
+gwsurrogate
