@@ -1,0 +1,420 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>All of the likelihoods implemented. &mdash; GWMemory 0.2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="All of the likelihoods implemented." href="harmonics.html" />
+    <link rel="prev" title="All of the likelihoods implemented." href="waveforms.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> GWMemory
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="waveforms.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="harmonics.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qnms.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">All of the likelihoods implemented.</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GWMemory</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>All of the likelihoods implemented.</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/angles.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="all-of-the-likelihoods-implemented">
+<h1>All of the likelihoods implemented.<a class="headerlink" href="#all-of-the-likelihoods-implemented" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-gwmemory.angles"></span><dl class="function">
+<dt id="gwmemory.angles.cross_tensor">
+<code class="descclassname">gwmemory.angles.</code><code class="descname">cross_tensor</code><span class="sig-paren">(</span><em>wx</em>, <em>wy</em>, <em>wz=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.cross_tensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the cross polarization tensor for some basis.
+c.f., eq. 2 of <a class="reference external" href="https://arxiv.org/pdf/1710.03794.pdf">https://arxiv.org/pdf/1710.03794.pdf</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.angles.gamma">
+<code class="descclassname">gwmemory.angles.</code><code class="descname">gamma</code><span class="sig-paren">(</span><em>lm1</em>, <em>lm2</em>, <em>incs=None</em>, <em>theta=None</em>, <em>phi=None</em>, <em>y_lmlm_factor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.gamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coefficients mapping the spherical harmonic components of the oscillatory
+strain to the memory.</p>
+<p>Computed according to equation 8 of Talbot et al. (2018), arXiv:1807.00990.
+Output modes with l=range(2, 20), m=m1-m2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lm1: str</strong></dt><dd><p>first input spherical harmonic mode</p>
+</dd>
+<dt><strong>lm2: str</strong></dt><dd><p>second input spherical haromonic mode</p>
+</dd>
+<dt><strong>incs: array, optional</strong></dt><dd><p>observer inclination values over which to compute the final integral</p>
+</dd>
+<dt><strong>theta: array, optional</strong></dt><dd><p>1d array of binary inclination values, over which to compute first
+integral</p>
+</dd>
+<dt><strong>phi: array, optional</strong></dt><dd><p>1d array of binary polarisation values, over which to compute the first
+integral</p>
+</dd>
+<dt><strong>y_lmlm_factor: array, optional</strong></dt><dd><p>Array over of spherical harmonic factor evaluated on meshgrid of theta,
+phi</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.angles.lambda_lmlm">
+<code class="descclassname">gwmemory.angles.</code><code class="descname">lambda_lmlm</code><span class="sig-paren">(</span><em>inc</em>, <em>phase</em>, <em>lm1</em>, <em>lm2</em>, <em>theta=None</em>, <em>phi=None</em>, <em>y_lmlm_factor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.lambda_lmlm" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Angular integral for a specific ll’mm’ as given by equation 7 of Talbot
+et al. (2018), arXiv:1807.00990.</p>
+<p>The transverse traceless part of the integral over all binary orientations
+is returned.</p>
+<p>The integral is given by:</p>
+</div></blockquote>
+<dl class="simple">
+<dt>rac{1}{2} int_{S^{2}} dOmega’ Y^{-2}_{ell_1 m_1}(Omega’)</dt><dd><p>ar{Y}^{-2}_{ell_2 m_2}(Omega’)   imes left[</p>
+</dd>
+</dl>
+<p>rac{n_jn_k}{1-n_{l}N_{l}} 
+ight]^{TT} (e^{+}_{jk} -</p>
+<blockquote>
+<div><p>i e^{       imes}_{jk})</p>
+</div></blockquote>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>inc: float</strong></dt><dd><blockquote>
+<div><p>binary inclination</p>
+</div></blockquote>
+<dl class="simple">
+<dt>phase: float</dt><dd><p>binary phase at coalescence</p>
+</dd>
+<dt>lm1: str</dt><dd><p>first lm value format is e.g., ‘22’</p>
+</dd>
+<dt>lm2: str</dt><dd><p>second lm value format is e.g., ‘22’</p>
+</dd>
+<dt>theta: array, optional</dt><dd><p>1d array of binary inclination values, over which to integrate</p>
+</dd>
+<dt>phi: array, optional</dt><dd><p>1d array of binary polarisation values, over which to integrate</p>
+</dd>
+<dt>y_lmlm_factor: array, optional</dt><dd><p>Array over of spherical harmonic factor evaluated on meshgrid of
+theta, phi</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.angles.lambda_matrix">
+<code class="descclassname">gwmemory.angles.</code><code class="descname">lambda_matrix</code><span class="sig-paren">(</span><em>inc</em>, <em>phase</em>, <em>lm1</em>, <em>lm2</em>, <em>theta=None</em>, <em>phi=None</em>, <em>y_lmlm_factor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.lambda_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Angular integral for a specific ll’mm’ as given by equation 7 of Talbot
+et al. (2018), arXiv:1807.00990.</p>
+<p>The transverse traceless part of the integral over all binary orientations
+is returned.</p>
+<p>The integral is given by:
+int_{S^{2}} dOmega’ Y^{-2}_{ell_1 m_1}(Omega’)
+ar{Y}^{-2}_{ell_2 m_2}(Omega’)   imes left[</p>
+</div></blockquote>
+<p>rac{n_jn_k}{1-n_{l}N_{l}} 
+ight]^{TT}</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>inc: float</strong></dt><dd><blockquote>
+<div><p>binary inclination</p>
+</div></blockquote>
+<dl class="simple">
+<dt>phase: float</dt><dd><p>binary phase at coalescence</p>
+</dd>
+<dt>lm1: str</dt><dd><p>first lm value format is e.g., ‘22’</p>
+</dd>
+<dt>lm2: str</dt><dd><p>second lm value format is e.g., ‘22’</p>
+</dd>
+<dt>theta: array, optional</dt><dd><p>1d array of binary inclination values, over which to integrate</p>
+</dd>
+<dt>phi: array, optional</dt><dd><p>1d array of binary polarisation values, over which to integrate</p>
+</dd>
+<dt>y_lmlm_factor: array, optional</dt><dd><p>Array over of spherical harmonic factor evaluated on meshgrid of
+theta, phi</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.angles.load_gamma">
+<code class="descclassname">gwmemory.angles.</code><code class="descname">load_gamma</code><span class="sig-paren">(</span><em>data_dir=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.load_gamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the pre-calculated gamma_lmlm into a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_dir: str, optional</strong></dt><dd><p>Directory to look for data file in,
+default will look for packaged data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gamma_lmlm: dict</strong></dt><dd><p>Dictionary of gamma_lmlm.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.angles.omega_ij_to_omega_pol">
+<code class="descclassname">gwmemory.angles.</code><code class="descname">omega_ij_to_omega_pol</code><span class="sig-paren">(</span><em>omega_ij</em>, <em>inc</em>, <em>phase</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.omega_ij_to_omega_pol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map from strain tensor to plus and cross modes.</p>
+<p>We assume that only plus and cross are present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>omega_ij: array</strong></dt><dd><p>3x3 matrix describing strain or a proxy for strain</p>
+</dd>
+<dt><strong>inc: float</strong></dt><dd><p>inclination of source</p>
+</dd>
+<dt><strong>phase: float</strong></dt><dd><p>phase at coalescence of source</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>hp: float</strong></dt><dd><p>Magnitude of plus mode.</p>
+</dd>
+<dt><strong>hx: float</strong></dt><dd><p>Magnitude of cross mode.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.angles.plus_tensor">
+<code class="descclassname">gwmemory.angles.</code><code class="descname">plus_tensor</code><span class="sig-paren">(</span><em>wx</em>, <em>wy</em>, <em>wz=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.plus_tensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the plus polarization tensor for some basis.
+c.f., eq. 2 of <a class="reference external" href="https://arxiv.org/pdf/1710.03794.pdf">https://arxiv.org/pdf/1710.03794.pdf</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.angles.wave_frame">
+<code class="descclassname">gwmemory.angles.</code><code class="descname">wave_frame</code><span class="sig-paren">(</span><em>theta</em>, <em>phi</em>, <em>psi=0</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.wave_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate wave-frame basis from three angles, see Nishizawa et al. (2009)</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="harmonics.html" class="btn btn-neutral float-right" title="All of the likelihoods implemented." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="waveforms.html" class="btn btn-neutral float-left" title="All of the likelihoods implemented." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Colm Talbot
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>All of the likelihoods implemented. &mdash; GWMemory 0.2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> GWMemory
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="waveforms.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="angles.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="harmonics.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qnms.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">All of the likelihoods implemented.</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GWMemory</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>All of the likelihoods implemented.</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/gwmemory.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="all-of-the-likelihoods-implemented">
+<h1>All of the likelihoods implemented.<a class="headerlink" href="#all-of-the-likelihoods-implemented" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-gwmemory.gwmemory"></span><dl class="function">
+<dt id="gwmemory.gwmemory.frequency_domain_memory">
+<code class="descclassname">gwmemory.gwmemory.</code><code class="descname">frequency_domain_memory</code><span class="sig-paren">(</span><em>model=None</em>, <em>q=None</em>, <em>total_mass=None</em>, <em>spin_1=None</em>, <em>spin_2=None</em>, <em>distance=None</em>, <em>inc=None</em>, <em>phase=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.gwmemory.frequency_domain_memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the frequency domain memory waveform according to __reference__.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>model: str</strong></dt><dd><p>Name of the model, this is used to identify waveform approximant,
+e.g., NRSur7dq2, IMRPhenomD, MWM, etc.</p>
+</dd>
+<dt><strong>q: float</strong></dt><dd><p>Mass ratio of the binary being considered.</p>
+</dd>
+<dt><strong>total_mass: float</strong></dt><dd><p>Total mass of the binary being considered in solar units.</p>
+</dd>
+<dt><strong>spin_1: array</strong></dt><dd><p>Dimensionless spin vector of the more massive black hole.</p>
+</dd>
+<dt><strong>spin_2: array</strong></dt><dd><p>Dimensionless spin vector of the less massive black hole.</p>
+</dd>
+<dt><strong>distance: float</strong></dt><dd><p>Distance to the binary in MPC.</p>
+</dd>
+<dt><strong>inc: float</strong></dt><dd><p>Inclination of the binary to the line of sight.
+If not provided, spherical harmonic modes will be returned.</p>
+</dd>
+<dt><strong>phase: float</strong></dt><dd><p>Binary phase at coalescence.
+If not provided, spherical harmonic modes will be returned.</p>
+</dd>
+<dt><strong>kwargs: dict</strong></dt><dd><p>Additional model-specific keyword arguments.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>frequency_domain_strain: dict</strong></dt><dd><p>Memory frequency series, either in spherical harmonic modes or
+plus/cross polarisations.</p>
+</dd>
+<dt><strong>frequencies: array-like</strong></dt><dd><p>Frequency series corresponding to the memory waveform.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.gwmemory.time_domain_memory">
+<code class="descclassname">gwmemory.gwmemory.</code><code class="descname">time_domain_memory</code><span class="sig-paren">(</span><em>model=None</em>, <em>h_lm=None</em>, <em>times=None</em>, <em>q=None</em>, <em>total_mass=None</em>, <em>spin_1=None</em>, <em>spin_2=None</em>, <em>distance=None</em>, <em>inc=None</em>, <em>phase=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.gwmemory.time_domain_memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the time domain memory waveform according to __reference__.</p>
+<p>Example usage:</p>
+<p>Using NR surrogate waveform __reference__ for an edge-on non-spinning,
+equal-mass, binary at a distance of 400 MPC.</p>
+<dl class="simple">
+<dt>h_mem, times = time_domain_memory(model=’NRSur7dq2’, q=1, total_mass=60,</dt><dd><p>distance=400, inc=np.pi/2, phase=0)</p>
+</dd>
+</dl>
+<p>Using an EOBNR waveform __reference__ for an edge-on non-spinning,
+equal-mass, binary at a distance of 400 MPC.</p>
+<dl class="simple">
+<dt>h_mem, times = time_domain_memory(model=’SEOBNRv4’, q=1, total_mass=60,</dt><dd><p>distance=400, inc=np.pi/2, phase=0)</p>
+</dd>
+</dl>
+<p>Using the minimal waveform model __reference__ for an edge-on non-spinning,
+equal-mass, binary at a distance of 400 MPC.</p>
+<dl class="simple">
+<dt>h_mem, times = time_domain_memory(model=’MWM’, q=1, total_mass=60,</dt><dd><p>distance=400, inc=np.pi/2, phase=0)</p>
+</dd>
+</dl>
+<p>Using a pre-computed spherical harmonic decomposed waveform for an edge-on
+non-spinning, equal-mass, binary at a distance of 400 MPC.</p>
+<dl class="simple">
+<dt>h_mem, times = time_domain_memory(h_lm=h_lm, times=times, distance=400,</dt><dd><p>inc=np.pi/2, phase=0)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>model: str</strong></dt><dd><p>Name of the model, this is used to identify waveform approximant,
+e.g., NRSur7dq2, IMRPhenomD, MWM, etc.</p>
+</dd>
+<dt><strong>h_lm: dict</strong></dt><dd><p>Spin weighted spherical harmonic decomposed time series.
+If this is specified these polarisations will be used.</p>
+</dd>
+<dt><strong>times: array</strong></dt><dd><p>time series corresponding to the h_lm.</p>
+</dd>
+<dt><strong>q: float</strong></dt><dd><p>Mass ratio of the binary being considered.</p>
+</dd>
+<dt><strong>total_mass: float</strong></dt><dd><p>Total mass of the binary being considered in solar units.</p>
+</dd>
+<dt><strong>spin_1: array</strong></dt><dd><p>Dimensionless spin vector of the more massive black hole.</p>
+</dd>
+<dt><strong>spin_2: array</strong></dt><dd><p>Dimensionless spin vector of the less massive black hole.</p>
+</dd>
+<dt><strong>distance: float</strong></dt><dd><p>Distance to the binary in MPC.</p>
+</dd>
+<dt><strong>inc: float</strong></dt><dd><p>Inclination of the binary to the line of sight.
+If not provided, spherical harmonic modes will be returned.</p>
+</dd>
+<dt><strong>phase: float</strong></dt><dd><p>Binary phase as coalescence.
+If not provided, spherical harmonic modes will be returned.</p>
+</dd>
+<dt><strong>kwargs: dict</strong></dt><dd><p>Additional model-specific keyword arguments.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>h_mem, dict</strong></dt><dd><p>Memory time series, either in spherical harmonic modes or plus/cross
+polarisations.</p>
+</dd>
+<dt><strong>times, array</strong></dt><dd><p>Time series corresponding to the memory waveform.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Colm Talbot
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

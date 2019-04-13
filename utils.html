@@ -1,0 +1,338 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>All of the likelihoods implemented. &mdash; GWMemory 0.2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="All of the likelihoods implemented." href="qnms.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> GWMemory
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="waveforms.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="angles.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="harmonics.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qnms.html">All of the likelihoods implemented.</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">All of the likelihoods implemented.</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GWMemory</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>All of the likelihoods implemented.</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="all-of-the-likelihoods-implemented">
+<h1>All of the likelihoods implemented.<a class="headerlink" href="#all-of-the-likelihoods-implemented" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-gwmemory.utils"></span><dl class="function">
+<dt id="gwmemory.utils.combine_modes">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">combine_modes</code><span class="sig-paren">(</span><em>h_lm</em>, <em>inc</em>, <em>phase</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.combine_modes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the plus and cross polarisations of the waveform from the
+spherical harmonic decomposition.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.dist_Mpc_to_geo">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">dist_Mpc_to_geo</code><span class="sig-paren">(</span><em>dist</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.dist_Mpc_to_geo" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert distance from MPC to geometric units (i.e., metres)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.freq_Hz_to_geo">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">freq_Hz_to_geo</code><span class="sig-paren">(</span><em>freq</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.freq_Hz_to_geo" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert freq from Hz to geometric units</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.freq_geo_to_Hz">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">freq_geo_to_Hz</code><span class="sig-paren">(</span><em>freq</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.freq_geo_to_Hz" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert freq from geometric units to Hz</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.load_sxs_waveform">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">load_sxs_waveform</code><span class="sig-paren">(</span><em>file_name</em>, <em>modes=None</em>, <em>extraction='OutermostExtraction.dir'</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.load_sxs_waveform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the spherical harmonic modes of an SXS numerical relativity waveform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_name: str</strong></dt><dd><p>Name of file to be loaded.</p>
+</dd>
+<dt><strong>modes: dict</strong></dt><dd><p>Dictionary of spherical harmonic modes to extract,
+default is all in ell&lt;=4.</p>
+</dd>
+<dt><strong>extraction: str</strong></dt><dd><p>String representing extraction method, default is
+‘OutermostExtraction.dir’</p>
+</dd>
+<dt><strong>Returns</strong></dt><dd></dd>
+<dt><strong>——-</strong></dt><dd></dd>
+<dt><strong>output: dict</strong></dt><dd><p>Dictionary of requested spherical harmonic modes.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.m12_to_mc">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">m12_to_mc</code><span class="sig-paren">(</span><em>m1</em>, <em>m2</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m12_to_mc" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert m1 and m2 to chirp mass</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.m12_to_symratio">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">m12_to_symratio</code><span class="sig-paren">(</span><em>m1</em>, <em>m2</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m12_to_symratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert m1 and m2 to symmetric mass ratio</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.m_geo_to_sol">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">m_geo_to_sol</code><span class="sig-paren">(</span><em>mm</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m_geo_to_sol" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert from geometric units to solar masses</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.m_sol_to_geo">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">m_sol_to_geo</code><span class="sig-paren">(</span><em>mm</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m_sol_to_geo" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert from solar masses to geometric units</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.mc_eta_to_m12">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">mc_eta_to_m12</code><span class="sig-paren">(</span><em>mc</em>, <em>eta</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.mc_eta_to_m12" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert chirp mass and symmetric mass ratio to component masses.</p>
+<p>Input: mc - chirp mass
+eta - symmetric mass ratio
+Return: m1, m2 - primary and secondary masses, m1&gt;m2</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.nfft">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">nfft</code><span class="sig-paren">(</span><em>ht</em>, <em>sampling_frequency</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.nfft" title="Permalink to this definition">¶</a></dt>
+<dd><p>performs an FFT while keeping track of the frequency bins
+assumes input time series is real (positive frequencies only)</p>
+<p>ht = time series
+sampling_frequency = sampling frequency</p>
+<p>returns
+hf = single-sided FFT of ft normalised to units of strain / sqrt(Hz)
+f = frequencies associated with hf</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.time_geo_to_s">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">time_geo_to_s</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.time_geo_to_s" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert time from seconds to geometric units</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gwmemory.utils.time_s_to_geo">
+<code class="descclassname">gwmemory.utils.</code><code class="descname">time_s_to_geo</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.time_s_to_geo" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert time from seconds to geometric units</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="qnms.html" class="btn btn-neutral float-left" title="All of the likelihoods implemented." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Colm Talbot
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
