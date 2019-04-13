@@ -1,0 +1,37 @@
+language: python
+
+python:
+  - "2.7"
+  - "3.6"
+
+cache: pip
+
+install:
+  - pip install -r requirements.txt
+  - pip install -r pages_requirements.txt
+  - pip install "coverage<4.4" "pytest-cov<2.5" codeclimate-test-reporter
+  - pip install .
+
+script:
+
+  - export PYTHONPATH='.'
+  - pytest --cov=gwmemory
+  - codeclimate-test-reporter --file .coverage
+
+before_deploy:
+  - cd docs
+  - mv Makefile.gh_pages Makefile
+  - make clean
+  - make html
+  - cd ../
+  - touch _gh-pages/latest/html/.nojekyll
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  local_dir: _gh-pages/latest/html
+  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep-history: true
+  on:
+    branch: master
+    python: "3.6"
