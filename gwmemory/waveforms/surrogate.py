@@ -117,7 +117,7 @@ class Surrogate(MemoryGenerator):
             self.t_to_geo = 1 / self.MTot / SOLAR_MASS / GG * CC ** 3
 
         self.h_lm = None
-        self.times = None
+        self.times = times
 
         if times is not None and max(times) < 10:
             times *= self.t_to_geo
@@ -175,7 +175,7 @@ class Surrogate(MemoryGenerator):
                 old_keys = [(ll, mm) for ll, mm in h_lm.keys()]
                 for ll, mm in old_keys:
                     if mm > 0:
-                        h_lm[(ll, -mm)] = - 1**ll * np.conj(h_lm[(ll, mm)])
+                        h_lm[(ll, -mm)] = (-1)**ll * np.conj(h_lm[(ll, mm)])
 
             available_modes = set(h_lm.keys())
 
