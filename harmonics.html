@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -160,13 +161,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -183,13 +184,13 @@
 <span id="spin-weighted-spherical-harmonics"></span><h1>Spin-weighted spherical harmonics.<a class="headerlink" href="#module-gwmemory.harmonics" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="gwmemory.harmonics.lmax_modes">
-<code class="descclassname">gwmemory.harmonics.</code><code class="descname">lmax_modes</code><span class="sig-paren">(</span><em>lmax</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.harmonics.lmax_modes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.harmonics.</code><code class="sig-name descname">lmax_modes</code><span class="sig-paren">(</span><em class="sig-param">lmax</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.harmonics.lmax_modes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute all (l, m) pairs with 2&lt;=l&lt;=lmax</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="gwmemory.harmonics.sYlm">
-<code class="descclassname">gwmemory.harmonics.</code><code class="descname">sYlm</code><span class="sig-paren">(</span><em>ss</em>, <em>ll</em>, <em>mm</em>, <em>theta</em>, <em>phi</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.harmonics.sYlm" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.harmonics.</code><code class="sig-name descname">sYlm</code><span class="sig-paren">(</span><em class="sig-param">ss</em>, <em class="sig-param">ll</em>, <em class="sig-param">mm</em>, <em class="sig-param">theta</em>, <em class="sig-param">phi</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.harmonics.sYlm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate spin-weighted harmonic</p>
 </dd></dl>
 

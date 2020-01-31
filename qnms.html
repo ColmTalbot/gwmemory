@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -160,13 +161,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -183,7 +184,7 @@
 <span id="quasi-normal-mode-functions"></span><h1>Quasi-normal mode functions.<a class="headerlink" href="#module-gwmemory.qnms" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="gwmemory.qnms.amplitude">
-<code class="descclassname">gwmemory.qnms.</code><code class="descname">amplitude</code><span class="sig-paren">(</span><em>mass_1</em>, <em>mass_2</em>, <em>ell=2</em>, <em>mm=2</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.amplitude" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.qnms.</code><code class="sig-name descname">amplitude</code><span class="sig-paren">(</span><em class="sig-param">mass_1</em>, <em class="sig-param">mass_2</em>, <em class="sig-param">ell=2</em>, <em class="sig-param">mm=2</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.amplitude" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the amplitude of the models relative to the 22 mode.
 see equations (5) – (8) from Gossan et al. (2012) (note there is a
 difference between the arXiv paper and the real paper)</p>
@@ -202,7 +203,7 @@ difference between the arXiv paper and the real paper)</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>float: Amplitude of the lm harmonic relative to the 22 mode.</strong></dt><dd></dd>
+<dt>float: Amplitude of the lm harmonic relative to the 22 mode.</dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -210,7 +211,7 @@ difference between the arXiv paper and the real paper)</p>
 
 <dl class="function">
 <dt id="gwmemory.qnms.final_mass_spin">
-<code class="descclassname">gwmemory.qnms.</code><code class="descname">final_mass_spin</code><span class="sig-paren">(</span><em>mass_1</em>, <em>mass_2</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.final_mass_spin" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.qnms.</code><code class="sig-name descname">final_mass_spin</code><span class="sig-paren">(</span><em class="sig-param">mass_1</em>, <em class="sig-param">mass_2</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.final_mass_spin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given initial total mass and mass ratio, calculate the final mass, M_f
 and dimensionless spin parameter, jj,
 using fits in Buonanno et al. (2007) – see the caption of their Table I.</p>
@@ -225,9 +226,9 @@ using fits in Buonanno et al. (2007) – see the caption of their Table I.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>final_mass: float</strong></dt><dd><p>Remnant mass</p>
+<dt>final_mass: float</dt><dd><p>Remnant mass</p>
 </dd>
-<dt><strong>jj: float</strong></dt><dd><p>Remnant dimensionless spin</p>
+<dt>jj: float</dt><dd><p>Remnant dimensionless spin</p>
 </dd>
 </dl>
 </dd>
@@ -236,7 +237,7 @@ using fits in Buonanno et al. (2007) – see the caption of their Table I.</p>
 
 <dl class="function">
 <dt id="gwmemory.qnms.freq_damping">
-<code class="descclassname">gwmemory.qnms.</code><code class="descname">freq_damping</code><span class="sig-paren">(</span><em>mass</em>, <em>spin</em>, <em>ell=2</em>, <em>mm=2</em>, <em>nn=0</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.freq_damping" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.qnms.</code><code class="sig-name descname">freq_damping</code><span class="sig-paren">(</span><em class="sig-param">mass</em>, <em class="sig-param">spin</em>, <em class="sig-param">ell=2</em>, <em class="sig-param">mm=2</em>, <em class="sig-param">nn=0</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.freq_damping" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the quasinormal mode freq and damping time for a black hole.
 This version uses OBSERVER’S UNITS.</p>
 <dl class="field-list simple">
@@ -256,9 +257,9 @@ This version uses OBSERVER’S UNITS.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>omega_lmn: float</strong></dt><dd><p>Angular frequency of mode in geometric units</p>
+<dt>omega_lmn: float</dt><dd><p>Angular frequency of mode in geometric units</p>
 </dd>
-<dt><strong>tau_lmn: float</strong></dt><dd><p>Dampling time of mode in geometric units</p>
+<dt>tau_lmn: float</dt><dd><p>Dampling time of mode in geometric units</p>
 </dd>
 </dl>
 </dd>
@@ -267,7 +268,7 @@ This version uses OBSERVER’S UNITS.</p>
 
 <dl class="function">
 <dt id="gwmemory.qnms.freq_damping_obs">
-<code class="descclassname">gwmemory.qnms.</code><code class="descname">freq_damping_obs</code><span class="sig-paren">(</span><em>mass</em>, <em>spin</em>, <em>ell=2</em>, <em>mm=2</em>, <em>nn=0</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.freq_damping_obs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.qnms.</code><code class="sig-name descname">freq_damping_obs</code><span class="sig-paren">(</span><em class="sig-param">mass</em>, <em class="sig-param">spin</em>, <em class="sig-param">ell=2</em>, <em class="sig-param">mm=2</em>, <em class="sig-param">nn=0</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.freq_damping_obs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the quasinormal mode freq and damping time for a black hole.
 This version uses OBSERVER’S UNITS.</p>
 <dl class="field-list simple">
@@ -287,9 +288,9 @@ This version uses OBSERVER’S UNITS.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>f_lmn: float</strong></dt><dd><p>Frequency of mode in Hz</p>
+<dt>f_lmn: float</dt><dd><p>Frequency of mode in Hz</p>
 </dd>
-<dt><strong>tau_lmn: float</strong></dt><dd><p>Dampling time of mode in seconds</p>
+<dt>tau_lmn: float</dt><dd><p>Dampling time of mode in seconds</p>
 </dd>
 </dl>
 </dd>
@@ -298,7 +299,7 @@ This version uses OBSERVER’S UNITS.</p>
 
 <dl class="function">
 <dt id="gwmemory.qnms.hp_hx">
-<code class="descclassname">gwmemory.qnms.</code><code class="descname">hp_hx</code><span class="sig-paren">(</span><em>time</em>, <em>m1</em>, <em>m2</em>, <em>ell</em>, <em>mm</em>, <em>iota</em>, <em>phi</em>, <em>phase</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.hp_hx" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.qnms.</code><code class="sig-name descname">hp_hx</code><span class="sig-paren">(</span><em class="sig-param">time</em>, <em class="sig-param">m1</em>, <em class="sig-param">m2</em>, <em class="sig-param">ell</em>, <em class="sig-param">mm</em>, <em class="sig-param">iota</em>, <em class="sig-param">phi</em>, <em class="sig-param">phase</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.hp_hx" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output hplus and hcross template:
 both calculated using eqns. (1) and (2) from Gossan et al.
 but with the normalisations ignored – i.e., A_{ell m}=1, M_f = 1
@@ -326,9 +327,9 @@ This is in geometric units.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>h_plus: array-like</strong></dt><dd><p>Plus polarisation</p>
+<dt>h_plus: array-like</dt><dd><p>Plus polarisation</p>
 </dd>
-<dt><strong>h_cross: array-like</strong></dt><dd><p>Cross polarisation</p>
+<dt>h_cross: array-like</dt><dd><p>Cross polarisation</p>
 </dd>
 </dl>
 </dd>
@@ -337,7 +338,7 @@ This is in geometric units.</p>
 
 <dl class="function">
 <dt id="gwmemory.qnms.hp_hx_template">
-<code class="descclassname">gwmemory.qnms.</code><code class="descname">hp_hx_template</code><span class="sig-paren">(</span><em>time</em>, <em>omega</em>, <em>tau</em>, <em>ell</em>, <em>mm</em>, <em>iota</em>, <em>phi</em>, <em>phase</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.hp_hx_template" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.qnms.</code><code class="sig-name descname">hp_hx_template</code><span class="sig-paren">(</span><em class="sig-param">time</em>, <em class="sig-param">omega</em>, <em class="sig-param">tau</em>, <em class="sig-param">ell</em>, <em class="sig-param">mm</em>, <em class="sig-param">iota</em>, <em class="sig-param">phi</em>, <em class="sig-param">phase</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.hp_hx_template" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output hplus and hcross template:
 both calculated using eqns. (1) and (2) from Gossan et al.
 but with the normalisations ignored – i.e., A_{ell m}=1, M_f = 1
@@ -365,9 +366,9 @@ This is in geometric units.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>h_plus: array-like</strong></dt><dd><p>Plus polarisation</p>
+<dt>h_plus: array-like</dt><dd><p>Plus polarisation</p>
 </dd>
-<dt><strong>h_cross: array-like</strong></dt><dd><p>Cross polarisation</p>
+<dt>h_cross: array-like</dt><dd><p>Cross polarisation</p>
 </dd>
 </dl>
 </dd>

@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -158,13 +159,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -181,7 +182,7 @@
 <span id="gwmemory"></span><h1>GWMemory<a class="headerlink" href="#module-gwmemory.gwmemory" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="gwmemory.gwmemory.frequency_domain_memory">
-<code class="descclassname">gwmemory.gwmemory.</code><code class="descname">frequency_domain_memory</code><span class="sig-paren">(</span><em>model=None</em>, <em>q=None</em>, <em>total_mass=None</em>, <em>spin_1=None</em>, <em>spin_2=None</em>, <em>distance=None</em>, <em>inc=None</em>, <em>phase=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.gwmemory.frequency_domain_memory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.gwmemory.</code><code class="sig-name descname">frequency_domain_memory</code><span class="sig-paren">(</span><em class="sig-param">model=None</em>, <em class="sig-param">q=None</em>, <em class="sig-param">total_mass=None</em>, <em class="sig-param">spin_1=None</em>, <em class="sig-param">spin_2=None</em>, <em class="sig-param">distance=None</em>, <em class="sig-param">inc=None</em>, <em class="sig-param">phase=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.gwmemory.frequency_domain_memory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the frequency domain memory waveform according to __reference__.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -211,10 +212,10 @@ If not provided, spherical harmonic modes will be returned.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>frequency_domain_strain: dict</strong></dt><dd><p>Memory frequency series, either in spherical harmonic modes or
+<dt>frequency_domain_strain: dict</dt><dd><p>Memory frequency series, either in spherical harmonic modes or
 plus/cross polarisations.</p>
 </dd>
-<dt><strong>frequencies: array-like</strong></dt><dd><p>Frequency series corresponding to the memory waveform.</p>
+<dt>frequencies: array-like</dt><dd><p>Frequency series corresponding to the memory waveform.</p>
 </dd>
 </dl>
 </dd>
@@ -223,7 +224,7 @@ plus/cross polarisations.</p>
 
 <dl class="function">
 <dt id="gwmemory.gwmemory.time_domain_memory">
-<code class="descclassname">gwmemory.gwmemory.</code><code class="descname">time_domain_memory</code><span class="sig-paren">(</span><em>model=None</em>, <em>h_lm=None</em>, <em>times=None</em>, <em>q=None</em>, <em>total_mass=None</em>, <em>spin_1=None</em>, <em>spin_2=None</em>, <em>distance=None</em>, <em>inc=None</em>, <em>phase=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.gwmemory.time_domain_memory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.gwmemory.</code><code class="sig-name descname">time_domain_memory</code><span class="sig-paren">(</span><em class="sig-param">model=None</em>, <em class="sig-param">h_lm=None</em>, <em class="sig-param">times=None</em>, <em class="sig-param">q=None</em>, <em class="sig-param">total_mass=None</em>, <em class="sig-param">spin_1=None</em>, <em class="sig-param">spin_2=None</em>, <em class="sig-param">distance=None</em>, <em class="sig-param">inc=None</em>, <em class="sig-param">phase=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.gwmemory.time_domain_memory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the time domain memory waveform according to __reference__.</p>
 <p>Example usage:</p>
 <p>Using NR surrogate waveform __reference__ for an edge-on non-spinning,
@@ -283,10 +284,10 @@ If not provided, spherical harmonic modes will be returned.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>h_mem, dict</strong></dt><dd><p>Memory time series, either in spherical harmonic modes or plus/cross
+<dt>h_mem, dict</dt><dd><p>Memory time series, either in spherical harmonic modes or plus/cross
 polarisations.</p>
 </dd>
-<dt><strong>times, array</strong></dt><dd><p>Time series corresponding to the memory waveform.</p>
+<dt>times, array</dt><dd><p>Time series corresponding to the memory waveform.</p>
 </dd>
 </dl>
 </dd>

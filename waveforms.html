@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -160,13 +161,13 @@
 /* CSS overrides for sphinx_rtd_theme */
 
 /* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
+.nbinput.nblast.container,
+.nboutput.nblast.container {
     margin-bottom: 19px;  /* padding has already 5px */
 }
 
 /* ... except between code cells! */
-.nblast + .nbinput {
+.nblast.container + .nbinput.container {
     margin-top: -19px;
 }
 
@@ -183,7 +184,7 @@
 <span id="implemented-waveform-models"></span><h1>Implemented waveform models<a class="headerlink" href="#module-gwmemory.waveforms.base" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-gwmemory.waveforms.approximant"></span><span class="target" id="module-gwmemory.waveforms.surrogate"></span><dl class="class">
 <dt id="gwmemory.waveforms.surrogate.Surrogate">
-<em class="property">class </em><code class="descclassname">gwmemory.waveforms.surrogate.</code><code class="descname">Surrogate</code><span class="sig-paren">(</span><em>q</em>, <em>name='nrsur7dq2'</em>, <em>total_mass=None</em>, <em>spin_1=None</em>, <em>spin_2=None</em>, <em>distance=None</em>, <em>l_max=4</em>, <em>modes=None</em>, <em>times=None</em>, <em>minimum_frequency=10</em>, <em>sampling_frequency=4096</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.surrogate.Surrogate" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">gwmemory.waveforms.surrogate.</code><code class="sig-name descname">Surrogate</code><span class="sig-paren">(</span><em class="sig-param">q</em>, <em class="sig-param">name='nrsur7dq2'</em>, <em class="sig-param">total_mass=None</em>, <em class="sig-param">spin_1=None</em>, <em class="sig-param">spin_2=None</em>, <em class="sig-param">distance=None</em>, <em class="sig-param">l_max=4</em>, <em class="sig-param">modes=None</em>, <em class="sig-param">times=None</em>, <em class="sig-param">minimum_frequency=10</em>, <em class="sig-param">sampling_frequency=4096</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.surrogate.Surrogate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Memory generator for a numerical relativity surrogate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -211,7 +212,7 @@
 </dl>
 <dl class="method">
 <dt id="gwmemory.waveforms.surrogate.Surrogate.time_domain_oscillatory">
-<code class="descname">time_domain_oscillatory</code><span class="sig-paren">(</span><em>times=None</em>, <em>modes=None</em>, <em>inc=None</em>, <em>phase=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.surrogate.Surrogate.time_domain_oscillatory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">time_domain_oscillatory</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">times=None</em>, <em class="sig-param">modes=None</em>, <em class="sig-param">inc=None</em>, <em class="sig-param">phase=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.surrogate.Surrogate.time_domain_oscillatory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the mode decomposition of the surrogate waveform.</p>
 <p>Calculates a BBH waveform using the surrogate models of Field et al.
 (2014), Blackman et al. (2017)
@@ -236,9 +237,9 @@ modes will be returned.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>h_lm: dict</strong></dt><dd><p>Spin-weighted spherical harmonic decomposed waveform.</p>
+<dt>h_lm: dict</dt><dd><p>Spin-weighted spherical harmonic decomposed waveform.</p>
 </dd>
-<dt><strong>times: np.array</strong></dt><dd><p>Times on which waveform is evaluated.</p>
+<dt>times: np.array</dt><dd><p>Times on which waveform is evaluated.</p>
 </dd>
 </dl>
 </dd>
@@ -249,7 +250,7 @@ modes will be returned.</p>
 
 <span class="target" id="module-gwmemory.waveforms.nr"></span><dl class="class">
 <dt id="gwmemory.waveforms.nr.SXSNumericalRelativity">
-<em class="property">class </em><code class="descclassname">gwmemory.waveforms.nr.</code><code class="descname">SXSNumericalRelativity</code><span class="sig-paren">(</span><em>name</em>, <em>modes=None</em>, <em>extraction='OutermostExtraction.dir'</em>, <em>total_mass=None</em>, <em>distance=None</em>, <em>times=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.nr.SXSNumericalRelativity" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">gwmemory.waveforms.nr.</code><code class="sig-name descname">SXSNumericalRelativity</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">modes=None</em>, <em class="sig-param">extraction='OutermostExtraction.dir'</em>, <em class="sig-param">total_mass=None</em>, <em class="sig-param">distance=None</em>, <em class="sig-param">times=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.nr.SXSNumericalRelativity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Memory generator for a numerical relativity waveform.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -271,7 +272,7 @@ modes will be returned.</p>
 </dl>
 <dl class="method">
 <dt id="gwmemory.waveforms.nr.SXSNumericalRelativity.time_domain_oscillatory">
-<code class="descname">time_domain_oscillatory</code><span class="sig-paren">(</span><em>times=None</em>, <em>modes=None</em>, <em>inc=None</em>, <em>phase=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.nr.SXSNumericalRelativity.time_domain_oscillatory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">time_domain_oscillatory</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">times=None</em>, <em class="sig-param">modes=None</em>, <em class="sig-param">inc=None</em>, <em class="sig-param">phase=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.nr.SXSNumericalRelativity.time_domain_oscillatory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the mode decomposition of the numerical relativity waveform.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -286,9 +287,9 @@ modes will be returned.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>h_lm: dict</strong></dt><dd><p>Spin-weighted spherical harmonic decomposed waveform.</p>
+<dt>h_lm: dict</dt><dd><p>Spin-weighted spherical harmonic decomposed waveform.</p>
 </dd>
-<dt><strong>times: np.array</strong></dt><dd><p>Times on which waveform is evaluated.</p>
+<dt>times: np.array</dt><dd><p>Times on which waveform is evaluated.</p>
 </dd>
 </dl>
 </dd>
