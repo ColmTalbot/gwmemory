@@ -8,9 +8,9 @@ from . import MemoryGenerator
 
 
 class Approximant(MemoryGenerator):
-
-    def __init__(self, name, q, total_mass=60, spin_1=None, spin_2=None,
-                 distance=400, times=None):
+    def __init__(
+        self, name, q, total_mass=60, spin_1=None, spin_2=None, distance=400, times=None
+    ):
         """
         Initialise Surrogate MemoryGenerator
 
@@ -40,11 +40,11 @@ class Approximant(MemoryGenerator):
         self.q = q
         self.MTot = total_mass
         if spin_1 is None:
-            self.S1 = np.array([0., 0., 0.])
+            self.S1 = np.array([0.0, 0.0, 0.0])
         else:
             self.S1 = np.array(spin_1)
         if spin_2 is None:
-            self.S2 = np.array([0., 0., 0.])
+            self.S2 = np.array([0.0, 0.0, 0.0])
         else:
             self.S2 = np.array(spin_2)
         self.distance = distance
@@ -55,22 +55,27 @@ class Approximant(MemoryGenerator):
         self.m2_SI = self.m2 * SOLAR_MASS
         self.distance_SI = self.distance * MPC
 
-        if abs(self.S1[0]) > 0 or abs(self.S1[1]) > 0 or abs(self.S2[0]) > 0\
-                or abs(self.S2[1]) > 0:
-            print('WARNING: Approximant decomposition works only for '
-                  'non-precessing waveforms.')
-            print('Setting spins to be aligned')
-            self.S1[0], self.S1[1] = 0., 0.
-            self.S2[0], self.S2[1] = 0., 0.
-            print('New spins are: S1 = {}, S2 = {}'.format(self.S1, self.S2))
+        if (
+            abs(self.S1[0]) > 0
+            or abs(self.S1[1]) > 0
+            or abs(self.S2[0]) > 0
+            or abs(self.S2[1]) > 0
+        ):
+            print(
+                "WARNING: Approximant decomposition works only for "
+                "non-precessing waveforms."
+            )
+            print("Setting spins to be aligned")
+            self.S1[0], self.S1[1] = 0.0, 0.0
+            self.S2[0], self.S2[1] = 0.0, 0.0
+            print("New spins are: S1 = {}, S2 = {}".format(self.S1, self.S2))
         else:
             self.S1 = list(self.S1)
             self.S2 = list(self.S2)
         self.available_modes = list({(2, 2), (2, -2)})
 
-        self.h_to_geo = self.distance_SI / (self.m1_SI+self.m2_SI) / GG *\
-            CC ** 2
-        self.t_to_geo = 1 / (self.m1_SI+self.m2_SI) / GG * CC ** 3
+        self.h_to_geo = self.distance_SI / (self.m1_SI + self.m2_SI) / GG * CC ** 2
+        self.t_to_geo = 1 / (self.m1_SI + self.m2_SI) / GG * CC ** 3
 
         self.h_lm = None
         self.times = None
@@ -79,8 +84,7 @@ class Approximant(MemoryGenerator):
 
         MemoryGenerator.__init__(self, name=name, h_lm=h_lm, times=times)
 
-    def time_domain_oscillatory(self, delta_t=None, modes=None, inc=None,
-                                phase=None):
+    def time_domain_oscillatory(self, delta_t=None, modes=None, inc=None, phase=None):
         """
         Get the mode decomposition of the waveform approximant.
 
@@ -116,10 +120,13 @@ class Approximant(MemoryGenerator):
                 modes = modes
 
             if not set(modes).issubset(self.available_modes):
-                print('Requested {} unavailable modes'.format(' '.join(
-                    set(modes).difference(self.available_modes))))
+                print(
+                    "Requested {} unavailable modes".format(
+                        " ".join(set(modes).difference(self.available_modes))
+                    )
+                )
                 modes = list(set(modes).union(self.available_modes))
-                print('Using modes {}'.format(' '.join(modes)))
+                print("Using modes {}".format(" ".join(modes)))
 
             fmin, fRef = 20, 20
             theta = 0.0
@@ -136,10 +143,26 @@ class Approximant(MemoryGenerator):
                 delta_t = delta_t
 
             hplus, hcross = lalsim.SimInspiralChooseTDWaveform(
-                self.m1_SI, self.m2_SI, self.S1[0], self.S1[1], self.S1[2],
-                self.S2[0], self.S2[1], self.S2[2], self.distance_SI, theta,
-                phi, longAscNodes, eccentricity, meanPerAno, delta_t, fmin,
-                fRef, WFdict, approx)
+                self.m1_SI,
+                self.m2_SI,
+                self.S1[0],
+                self.S1[1],
+                self.S1[2],
+                self.S2[0],
+                self.S2[1],
+                self.S2[2],
+                self.distance_SI,
+                theta,
+                phi,
+                longAscNodes,
+                eccentricity,
+                meanPerAno,
+                delta_t,
+                fmin,
+                fRef,
+                WFdict,
+                approx,
+            )
 
             h = hplus.data.data - 1j * hcross.data.data
 

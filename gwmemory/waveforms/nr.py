@@ -24,8 +24,15 @@ class SXSNumericalRelativity(MemoryGenerator):
         Distance to the binary in MPC.
     """
 
-    def __init__(self, name, modes=None, extraction='OutermostExtraction.dir',
-                 total_mass=None, distance=None, times=None):
+    def __init__(
+        self,
+        name,
+        modes=None,
+        extraction="OutermostExtraction.dir",
+        total_mass=None,
+        distance=None,
+        times=None,
+    ):
         """
         Initialise SXSNumericalRelativity MemoryGenerator
 
@@ -49,7 +56,8 @@ class SXSNumericalRelativity(MemoryGenerator):
         self.name = name
         self.modes = modes
         self.h_lm, self.times = load_sxs_waveform(
-            name, modes=modes, extraction=extraction)
+            name, modes=modes, extraction=extraction
+        )
 
         self.MTot = total_mass
         self.distance = distance
@@ -58,13 +66,12 @@ class SXSNumericalRelativity(MemoryGenerator):
             self.h_to_geo = 1
             self.t_to_geo = 1
         else:
-            self.h_to_geo = self.distance * MPC / self.MTot /\
-                SOLAR_MASS / GG * CC ** 2
+            self.h_to_geo = self.distance * MPC / self.MTot / SOLAR_MASS / GG * CC ** 2
             self.t_to_geo = 1 / self.MTot / SOLAR_MASS / GG * CC ** 3
 
             for mode in self.h_lm:
-                self.h_lm /= self.h_to_geo
-            self.times / self.t_to_geo
+                self.h_lm[mode] /= self.h_to_geo
+            self.times /= self.t_to_geo
             # Rezero time array to the merger time
             self.times -= self.times[np.argmax(abs(self.h_lm[(2, 2)]))]
 
@@ -73,8 +80,7 @@ class SXSNumericalRelativity(MemoryGenerator):
 
         MemoryGenerator.__init__(self, name=name, h_lm=self.h_lm, times=times)
 
-    def time_domain_oscillatory(self, times=None, modes=None, inc=None,
-                                phase=None):
+    def time_domain_oscillatory(self, times=None, modes=None, inc=None, phase=None):
         """
         Get the mode decomposition of the numerical relativity waveform.
 

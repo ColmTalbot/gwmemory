@@ -4,8 +4,18 @@ import inspect
 
 
 def time_domain_memory(
-        model=None, h_lm=None, times=None, q=None, total_mass=None, spin_1=None,
-        spin_2=None, distance=None, inc=None, phase=None, **kwargs):
+    model=None,
+    h_lm=None,
+    times=None,
+    q=None,
+    total_mass=None,
+    spin_1=None,
+    spin_2=None,
+    distance=None,
+    inc=None,
+    phase=None,
+    **kwargs,
+):
     """
     Calculate the time domain memory waveform according to __reference__.
 
@@ -78,41 +88,65 @@ def time_domain_memory(
     """
     if h_lm is not None and times is not None:
         wave = waveforms.MemoryGenerator(name=model, h_lm=h_lm, times=times)
-    elif 'NRSur' in model:
+    elif "NRSur" in model:
         all_keys = inspect.getargspec(waveforms.Surrogate.__init__)[0]
-        model_kwargs =\
-            {key: kwargs[key] for key in all_keys if key in kwargs}
+        model_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
         wave = waveforms.Surrogate(
-            q=q, name=model, total_mass=total_mass, spin_1=spin_1, spin_2=spin_2,
-            distance=distance, times=times, **model_kwargs)
-    elif 'EOBNR' in model or 'Phenom' in model:
+            q=q,
+            name=model,
+            total_mass=total_mass,
+            spin_1=spin_1,
+            spin_2=spin_2,
+            distance=distance,
+            times=times,
+            **model_kwargs,
+        )
+    elif "EOBNR" in model or "Phenom" in model:
         all_keys = inspect.getargspec(waveforms.Approximant.__init__)[0]
-        model_kwargs =\
-            {key: kwargs[key] for key in all_keys if key in kwargs}
+        model_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
         wave = waveforms.Approximant(
-            q=q, name=model, total_mass=total_mass, spin_1=spin_1, spin_2=spin_2,
-            distance=distance, times=times, **model_kwargs)
-    elif model == 'MWM':
+            q=q,
+            name=model,
+            total_mass=total_mass,
+            spin_1=spin_1,
+            spin_2=spin_2,
+            distance=distance,
+            times=times,
+            **model_kwargs,
+        )
+    elif model == "MWM":
         all_keys = inspect.getargspec(waveforms.MWM.__init__)[0]
         model_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
         wave = waveforms.MWM(
-            q=q, name=model, total_mass=total_mass, distance=distance, times=times,
-            **model_kwargs)
+            q=q,
+            name=model,
+            total_mass=total_mass,
+            distance=distance,
+            times=times,
+            **model_kwargs,
+        )
     else:
-        print('Model {} unknown'.format(model))
+        print(f"Model {model} unknown")
         return None
 
     all_keys = inspect.getargspec(wave.time_domain_memory)[0]
     function_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
-    h_mem, times = wave.time_domain_memory(
-        inc=inc, phase=phase, **function_kwargs)
+    h_mem, times = wave.time_domain_memory(inc=inc, phase=phase, **function_kwargs)
 
     return h_mem, times
 
 
 def frequency_domain_memory(
-        model=None, q=None, total_mass=None, spin_1=None, spin_2=None,
-        distance=None, inc=None, phase=None, **kwargs):
+    model=None,
+    q=None,
+    total_mass=None,
+    spin_1=None,
+    spin_2=None,
+    distance=None,
+    inc=None,
+    phase=None,
+    **kwargs,
+):
     """
     Calculate the frequency domain memory waveform according to __reference__.
 
@@ -149,14 +183,23 @@ def frequency_domain_memory(
         Frequency series corresponding to the memory waveform.
     """
     time_domain_strain, times = time_domain_memory(
-        model=model, q=q, total_mass=total_mass, spin_1=spin_1, spin_2=spin_2,
-        distance=distance, inc=inc, phase=phase, **kwargs)
+        model=model,
+        q=q,
+        total_mass=total_mass,
+        spin_1=spin_1,
+        spin_2=spin_2,
+        distance=distance,
+        inc=inc,
+        phase=phase,
+        **kwargs,
+    )
     sampling_frequency = 1 / (times[1] - times[0])
 
     frequencies = None
     frequency_domain_strain = dict()
     for key in time_domain_strain:
-        frequency_domain_strain[key], frequencies =\
-            utils.nfft(time_domain_strain[key], sampling_frequency)
+        frequency_domain_strain[key], frequencies = utils.nfft(
+            time_domain_strain[key], sampling_frequency
+        )
 
     return frequency_domain_strain, frequencies

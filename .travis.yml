@@ -1,7 +1,6 @@
 language: python
 
 python:
-  - "2.7"
   - "3.6"
 
 cache: pip
@@ -11,7 +10,6 @@ install:
   - pip install -r pages_requirements.txt
   - pip install "coverage<4.4" "pytest-cov<2.5" codeclimate-test-reporter
   - pip install .
-#  - python setup.py install
 
 script:
 
