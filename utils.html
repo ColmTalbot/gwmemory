@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,28 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Quasi-normal mode functions." href="qnms.html" /> 
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> GWMemory
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GWMemory
           
 
           
@@ -77,6 +78,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -96,6 +98,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -134,7 +137,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Utils.</li>
     
@@ -181,34 +184,34 @@
 </style>
 <div class="section" id="module-gwmemory.utils">
 <span id="utils"></span><h1>Utils.<a class="headerlink" href="#module-gwmemory.utils" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.combine_modes">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">combine_modes</code><span class="sig-paren">(</span><em class="sig-param">h_lm</em>, <em class="sig-param">inc</em>, <em class="sig-param">phase</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.combine_modes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">combine_modes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">h_lm</span></em>, <em class="sig-param"><span class="n">inc</span></em>, <em class="sig-param"><span class="n">phase</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.combine_modes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the plus and cross polarisations of the waveform from the
 spherical harmonic decomposition.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.dist_Mpc_to_geo">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">dist_Mpc_to_geo</code><span class="sig-paren">(</span><em class="sig-param">dist</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.dist_Mpc_to_geo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">dist_Mpc_to_geo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dist</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.dist_Mpc_to_geo" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert distance from MPC to geometric units (i.e., metres)</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.freq_Hz_to_geo">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">freq_Hz_to_geo</code><span class="sig-paren">(</span><em class="sig-param">freq</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.freq_Hz_to_geo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">freq_Hz_to_geo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">freq</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.freq_Hz_to_geo" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert freq from Hz to geometric units</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.freq_geo_to_Hz">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">freq_geo_to_Hz</code><span class="sig-paren">(</span><em class="sig-param">freq</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.freq_geo_to_Hz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">freq_geo_to_Hz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">freq</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.freq_geo_to_Hz" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert freq from geometric units to Hz</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.load_sxs_waveform">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">load_sxs_waveform</code><span class="sig-paren">(</span><em class="sig-param">file_name</em>, <em class="sig-param">modes=None</em>, <em class="sig-param">extraction='OutermostExtraction.dir'</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.load_sxs_waveform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">load_sxs_waveform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_name</span></em>, <em class="sig-param"><span class="n">modes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">extraction</span><span class="o">=</span><span class="default_value">'OutermostExtraction.dir'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.load_sxs_waveform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the spherical harmonic modes of an SXS numerical relativity waveform.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -230,42 +233,42 @@ default is all in ell&lt;=4.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.m12_to_mc">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">m12_to_mc</code><span class="sig-paren">(</span><em class="sig-param">m1</em>, <em class="sig-param">m2</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m12_to_mc" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">m12_to_mc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m1</span></em>, <em class="sig-param"><span class="n">m2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m12_to_mc" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert m1 and m2 to chirp mass</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.m12_to_symratio">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">m12_to_symratio</code><span class="sig-paren">(</span><em class="sig-param">m1</em>, <em class="sig-param">m2</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m12_to_symratio" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">m12_to_symratio</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">m1</span></em>, <em class="sig-param"><span class="n">m2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m12_to_symratio" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert m1 and m2 to symmetric mass ratio</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.m_geo_to_sol">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">m_geo_to_sol</code><span class="sig-paren">(</span><em class="sig-param">mm</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m_geo_to_sol" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">m_geo_to_sol</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m_geo_to_sol" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert from geometric units to solar masses</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.m_sol_to_geo">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">m_sol_to_geo</code><span class="sig-paren">(</span><em class="sig-param">mm</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m_sol_to_geo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">m_sol_to_geo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.m_sol_to_geo" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert from solar masses to geometric units</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.mc_eta_to_m12">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">mc_eta_to_m12</code><span class="sig-paren">(</span><em class="sig-param">mc</em>, <em class="sig-param">eta</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.mc_eta_to_m12" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">mc_eta_to_m12</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mc</span></em>, <em class="sig-param"><span class="n">eta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.mc_eta_to_m12" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert chirp mass and symmetric mass ratio to component masses.</p>
 <p>Input: mc - chirp mass
 eta - symmetric mass ratio
 Return: m1, m2 - primary and secondary masses, m1&gt;m2</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.nfft">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">nfft</code><span class="sig-paren">(</span><em class="sig-param">ht</em>, <em class="sig-param">sampling_frequency</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.nfft" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">nfft</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ht</span></em>, <em class="sig-param"><span class="n">sampling_frequency</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.nfft" title="Permalink to this definition">¶</a></dt>
 <dd><p>performs an FFT while keeping track of the frequency bins
 assumes input time series is real (positive frequencies only)</p>
 <p>ht = time series
@@ -275,15 +278,15 @@ hf = single-sided FFT of ft normalised to units of strain / sqrt(Hz)
 f = frequencies associated with hf</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.time_geo_to_s">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">time_geo_to_s</code><span class="sig-paren">(</span><em class="sig-param">time</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.time_geo_to_s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">time_geo_to_s</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.time_geo_to_s" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert time from seconds to geometric units</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.utils.time_s_to_geo">
-<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">time_s_to_geo</code><span class="sig-paren">(</span><em class="sig-param">time</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.time_s_to_geo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.utils.</code><code class="sig-name descname">time_s_to_geo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.utils.time_s_to_geo" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert time from seconds to geometric units</p>
 </dd></dl>
 
@@ -307,11 +310,19 @@ f = frequencies associated with hf</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, Colm Talbot
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -322,7 +333,6 @@ f = frequencies associated with hf</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

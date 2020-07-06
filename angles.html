@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,28 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Spin-weighted spherical harmonics." href="harmonics.html" />
@@ -51,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> GWMemory
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GWMemory
           
 
           
@@ -78,6 +79,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -97,6 +99,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -135,7 +138,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>All of the likelihoods implemented.</li>
     
@@ -182,16 +185,16 @@
 </style>
 <div class="section" id="all-of-the-likelihoods-implemented">
 <h1>All of the likelihoods implemented.<a class="headerlink" href="#all-of-the-likelihoods-implemented" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-gwmemory.angles"></span><dl class="function">
+<span class="target" id="module-gwmemory.angles"></span><dl class="py function">
 <dt id="gwmemory.angles.cross_tensor">
-<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">cross_tensor</code><span class="sig-paren">(</span><em class="sig-param">wx</em>, <em class="sig-param">wy</em>, <em class="sig-param">wz=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.cross_tensor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">cross_tensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wx</span></em>, <em class="sig-param"><span class="n">wy</span></em>, <em class="sig-param"><span class="n">wz</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.cross_tensor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the cross polarization tensor for some basis.
 c.f., eq. 2 of <a class="reference external" href="https://arxiv.org/pdf/1710.03794.pdf">https://arxiv.org/pdf/1710.03794.pdf</a></p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.angles.gamma">
-<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">gamma</code><span class="sig-paren">(</span><em class="sig-param">lm1</em>, <em class="sig-param">lm2</em>, <em class="sig-param">incs=None</em>, <em class="sig-param">theta=None</em>, <em class="sig-param">phi=None</em>, <em class="sig-param">y_lmlm_factor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.gamma" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">gamma</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lm1</span></em>, <em class="sig-param"><span class="n">lm2</span></em>, <em class="sig-param"><span class="n">incs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">theta</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phi</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">y_lmlm_factor</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.gamma" title="Permalink to this definition">¶</a></dt>
 <dd><p>Coefficients mapping the spherical harmonic components of the oscillatory
 strain to the memory.</p>
 <p>Computed according to equation 8 of Talbot et al. (2018), arXiv:1807.00990.
@@ -219,9 +222,9 @@ phi</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.angles.lambda_lmlm">
-<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">lambda_lmlm</code><span class="sig-paren">(</span><em class="sig-param">inc</em>, <em class="sig-param">phase</em>, <em class="sig-param">lm1</em>, <em class="sig-param">lm2</em>, <em class="sig-param">theta=None</em>, <em class="sig-param">phi=None</em>, <em class="sig-param">y_lmlm_factor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.lambda_lmlm" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">lambda_lmlm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inc</span></em>, <em class="sig-param"><span class="n">phase</span></em>, <em class="sig-param"><span class="n">lm1</span></em>, <em class="sig-param"><span class="n">lm2</span></em>, <em class="sig-param"><span class="n">theta</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phi</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">y_lmlm_factor</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.lambda_lmlm" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div><p>Angular integral for a specific ll’mm’ as given by equation 7 of Talbot
 et al. (2018), arXiv:1807.00990.</p>
@@ -265,9 +268,9 @@ theta, phi</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.angles.lambda_matrix">
-<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">lambda_matrix</code><span class="sig-paren">(</span><em class="sig-param">inc</em>, <em class="sig-param">phase</em>, <em class="sig-param">lm1</em>, <em class="sig-param">lm2</em>, <em class="sig-param">theta=None</em>, <em class="sig-param">phi=None</em>, <em class="sig-param">y_lmlm_factor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.lambda_matrix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">lambda_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inc</span></em>, <em class="sig-param"><span class="n">phase</span></em>, <em class="sig-param"><span class="n">lm1</span></em>, <em class="sig-param"><span class="n">lm2</span></em>, <em class="sig-param"><span class="n">theta</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phi</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">y_lmlm_factor</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.lambda_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div><p>Angular integral for a specific ll’mm’ as given by equation 7 of Talbot
 et al. (2018), arXiv:1807.00990.</p>
@@ -306,9 +309,9 @@ theta, phi</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.angles.load_gamma">
-<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">load_gamma</code><span class="sig-paren">(</span><em class="sig-param">data_dir=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.load_gamma" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">load_gamma</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_dir</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.load_gamma" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the pre-calculated gamma_lmlm into a dictionary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -327,9 +330,9 @@ default will look for packaged data.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.angles.omega_ij_to_omega_pol">
-<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">omega_ij_to_omega_pol</code><span class="sig-paren">(</span><em class="sig-param">omega_ij</em>, <em class="sig-param">inc</em>, <em class="sig-param">phase</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.omega_ij_to_omega_pol" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">omega_ij_to_omega_pol</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">omega_ij</span></em>, <em class="sig-param"><span class="n">inc</span></em>, <em class="sig-param"><span class="n">phase</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.omega_ij_to_omega_pol" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map from strain tensor to plus and cross modes.</p>
 <p>We assume that only plus and cross are present.</p>
 <dl class="field-list simple">
@@ -354,16 +357,16 @@ default will look for packaged data.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.angles.plus_tensor">
-<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">plus_tensor</code><span class="sig-paren">(</span><em class="sig-param">wx</em>, <em class="sig-param">wy</em>, <em class="sig-param">wz=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.plus_tensor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">plus_tensor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">wx</span></em>, <em class="sig-param"><span class="n">wy</span></em>, <em class="sig-param"><span class="n">wz</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.plus_tensor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the plus polarization tensor for some basis.
 c.f., eq. 2 of <a class="reference external" href="https://arxiv.org/pdf/1710.03794.pdf">https://arxiv.org/pdf/1710.03794.pdf</a></p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="gwmemory.angles.wave_frame">
-<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">wave_frame</code><span class="sig-paren">(</span><em class="sig-param">theta</em>, <em class="sig-param">phi</em>, <em class="sig-param">psi=0</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.wave_frame" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">gwmemory.angles.</code><code class="sig-name descname">wave_frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">theta</span></em>, <em class="sig-param"><span class="n">phi</span></em>, <em class="sig-param"><span class="n">psi</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.angles.wave_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate wave-frame basis from three angles, see Nishizawa et al. (2009)</p>
 </dd></dl>
 
@@ -389,11 +392,19 @@ c.f., eq. 2 of <a class="reference external" href="https://arxiv.org/pdf/1710.03
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, Colm Talbot
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -404,7 +415,6 @@ c.f., eq. 2 of <a class="reference external" href="https://arxiv.org/pdf/1710.03
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

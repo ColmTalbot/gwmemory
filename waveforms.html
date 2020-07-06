@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,28 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="All of the likelihoods implemented." href="angles.html" />
@@ -51,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> GWMemory
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GWMemory
           
 
           
@@ -78,6 +79,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -97,6 +99,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -135,7 +138,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Implemented waveform models</li>
     
@@ -182,9 +185,9 @@
 </style>
 <div class="section" id="module-gwmemory.waveforms.base">
 <span id="implemented-waveform-models"></span><h1>Implemented waveform models<a class="headerlink" href="#module-gwmemory.waveforms.base" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-gwmemory.waveforms.approximant"></span><span class="target" id="module-gwmemory.waveforms.surrogate"></span><dl class="class">
+<span class="target" id="module-gwmemory.waveforms.approximant"></span><span class="target" id="module-gwmemory.waveforms.surrogate"></span><dl class="py class">
 <dt id="gwmemory.waveforms.surrogate.Surrogate">
-<em class="property">class </em><code class="sig-prename descclassname">gwmemory.waveforms.surrogate.</code><code class="sig-name descname">Surrogate</code><span class="sig-paren">(</span><em class="sig-param">q</em>, <em class="sig-param">name='nrsur7dq2'</em>, <em class="sig-param">total_mass=None</em>, <em class="sig-param">spin_1=None</em>, <em class="sig-param">spin_2=None</em>, <em class="sig-param">distance=None</em>, <em class="sig-param">l_max=4</em>, <em class="sig-param">modes=None</em>, <em class="sig-param">times=None</em>, <em class="sig-param">minimum_frequency=10</em>, <em class="sig-param">sampling_frequency=4096</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.surrogate.Surrogate" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">gwmemory.waveforms.surrogate.</code><code class="sig-name descname">Surrogate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'nrsur7dq2'</span></em>, <em class="sig-param"><span class="n">total_mass</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">spin_1</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">spin_2</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">distance</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">l_max</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">modes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">times</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">minimum_frequency</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">sampling_frequency</span><span class="o">=</span><span class="default_value">4096</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.surrogate.Surrogate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Memory generator for a numerical relativity surrogate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -210,9 +213,9 @@
 </dl>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="gwmemory.waveforms.surrogate.Surrogate.time_domain_oscillatory">
-<code class="sig-name descname">time_domain_oscillatory</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">times=None</em>, <em class="sig-param">modes=None</em>, <em class="sig-param">inc=None</em>, <em class="sig-param">phase=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.surrogate.Surrogate.time_domain_oscillatory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">time_domain_oscillatory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">times</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">modes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phase</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.surrogate.Surrogate.time_domain_oscillatory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the mode decomposition of the surrogate waveform.</p>
 <p>Calculates a BBH waveform using the surrogate models of Field et al.
 (2014), Blackman et al. (2017)
@@ -248,9 +251,9 @@ modes will be returned.</p>
 
 </dd></dl>
 
-<span class="target" id="module-gwmemory.waveforms.nr"></span><dl class="class">
+<span class="target" id="module-gwmemory.waveforms.nr"></span><dl class="py class">
 <dt id="gwmemory.waveforms.nr.SXSNumericalRelativity">
-<em class="property">class </em><code class="sig-prename descclassname">gwmemory.waveforms.nr.</code><code class="sig-name descname">SXSNumericalRelativity</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">modes=None</em>, <em class="sig-param">extraction='OutermostExtraction.dir'</em>, <em class="sig-param">total_mass=None</em>, <em class="sig-param">distance=None</em>, <em class="sig-param">times=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.nr.SXSNumericalRelativity" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">gwmemory.waveforms.nr.</code><code class="sig-name descname">SXSNumericalRelativity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">modes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">extraction</span><span class="o">=</span><span class="default_value">'OutermostExtraction.dir'</span></em>, <em class="sig-param"><span class="n">total_mass</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">distance</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">times</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.nr.SXSNumericalRelativity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Memory generator for a numerical relativity waveform.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -270,9 +273,9 @@ modes will be returned.</p>
 </dl>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="gwmemory.waveforms.nr.SXSNumericalRelativity.time_domain_oscillatory">
-<code class="sig-name descname">time_domain_oscillatory</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">times=None</em>, <em class="sig-param">modes=None</em>, <em class="sig-param">inc=None</em>, <em class="sig-param">phase=None</em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.nr.SXSNumericalRelativity.time_domain_oscillatory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">time_domain_oscillatory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">times</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">modes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">inc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">phase</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.waveforms.nr.SXSNumericalRelativity.time_domain_oscillatory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the mode decomposition of the numerical relativity waveform.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -320,11 +323,19 @@ modes will be returned.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, Colm Talbot
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -335,7 +346,6 @@ modes will be returned.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
