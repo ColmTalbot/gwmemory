@@ -74,11 +74,13 @@ class MemoryGenerator(object):
             for delta_m in gamma_lmlm.keys():
                 if abs(int(delta_m)) > ell:
                     continue
-                dh_mem_dt_lm[(ell, int(delta_m))] = np.sum(
-                    [dhlm_dt_sq[((l1, m1), (l2, m2))] * gamma_lmlm[delta_m][
-                        '{}{}{}{}'.format(l1, m1, l2, m2)][ii]
-                     for (l1, m1), (l2, m2) in dhlm_dt_sq.keys()
-                     if m1 - m2 == int(delta_m)], axis=0)
+                dh_mem_dt_lm[(ell, int(delta_m))] = np.sum([
+                    dhlm_dt_sq[((l1, m1), (l2, m2))]
+                    * gamma_lmlm[delta_m][f'{l1}{m1}{l2}{m2}'][ii]
+                    for (l1, m1), (l2, m2) in dhlm_dt_sq.keys()
+                    if m1 - m2 == int(delta_m)
+                    and f'{l1}{m1}{l2}{m2}' in gamma_lmlm[delta_m]
+                ], axis=0)
 
         h_mem_lm = {lm: const * np.cumsum(dh_mem_dt_lm[lm]) * self.delta_t
                     for lm in dh_mem_dt_lm}
