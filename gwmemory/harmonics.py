@@ -57,13 +57,13 @@ def sYlm(ss, ll, mm, theta, phi):
     if abs(mm) < abs(ss):
         s = mm
         m = ss
-    if (m+s) % 2:
-        Pm = -Pm
+        if (m+s) % 2:
+            Pm = -Pm
     if m < 0:
         s = -s
         m = -m
-    if (m+s) % 2:
-        Pm = -Pm
+        if (m+s) % 2:
+            Pm = -Pm
     result = Pm * s_lambda_lm(s, l, m, np.cos(theta))
     return result * np.cos(mm*phi) + result * np.sin(mm*phi) * 1j
 
