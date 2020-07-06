@@ -70,8 +70,8 @@ class SXSNumericalRelativity(MemoryGenerator):
             self.t_to_geo = 1 / self.MTot / SOLAR_MASS / GG * CC ** 3
 
             for mode in self.h_lm:
-                self.h_lm /= self.h_to_geo
-            self.times / self.t_to_geo
+                self.h_lm[mode] /= self.h_to_geo
+            self.times /= self.t_to_geo
             # Rezero time array to the merger time
             self.times -= self.times[np.argmax(abs(self.h_lm[(2, 2)]))]
 
