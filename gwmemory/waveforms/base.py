@@ -6,7 +6,6 @@ from ..utils import CC, MPC, combine_modes
 
 
 class MemoryGenerator(object):
-
     def __init__(self, name, h_lm, times):
 
         self.name = name
@@ -55,7 +54,7 @@ class MemoryGenerator(object):
             for lmp in lms:
                 try:
                     index = (lm, lmp)
-                    dhlm_dt_sq[index] = dhlm_dt[lm]*np.conjugate(dhlm_dt[lmp])
+                    dhlm_dt_sq[index] = dhlm_dt[lm] * np.conjugate(dhlm_dt[lmp])
                 except KeyError:
                     None
 
@@ -68,22 +67,27 @@ class MemoryGenerator(object):
             const *= self.distance * MPC / CC
 
         dh_mem_dt_lm = dict()
-        for ii, ell in enumerate(gamma_lmlm['0'].l):
+        for ii, ell in enumerate(gamma_lmlm["0"].l):
             if ell > 4:
                 continue
             for delta_m in gamma_lmlm.keys():
                 if abs(int(delta_m)) > ell:
                     continue
-                dh_mem_dt_lm[(ell, int(delta_m))] = np.sum([
-                    dhlm_dt_sq[((l1, m1), (l2, m2))]
-                    * gamma_lmlm[delta_m][f'{l1}{m1}{l2}{m2}'][ii]
-                    for (l1, m1), (l2, m2) in dhlm_dt_sq.keys()
-                    if m1 - m2 == int(delta_m)
-                    and f'{l1}{m1}{l2}{m2}' in gamma_lmlm[delta_m]
-                ], axis=0)
+                dh_mem_dt_lm[(ell, int(delta_m))] = np.sum(
+                    [
+                        dhlm_dt_sq[((l1, m1), (l2, m2))]
+                        * gamma_lmlm[delta_m][f"{l1}{m1}{l2}{m2}"][ii]
+                        for (l1, m1), (l2, m2) in dhlm_dt_sq.keys()
+                        if m1 - m2 == int(delta_m)
+                        and f"{l1}{m1}{l2}{m2}" in gamma_lmlm[delta_m]
+                    ],
+                    axis=0,
+                )
 
-        h_mem_lm = {lm: const * np.cumsum(dh_mem_dt_lm[lm]) * self.delta_t
-                    for lm in dh_mem_dt_lm}
+        h_mem_lm = {
+            lm: const * np.cumsum(dh_mem_dt_lm[lm]) * self.delta_t
+            for lm in dh_mem_dt_lm
+        }
 
         if inc is None or phase is None:
             return h_mem_lm, self.times

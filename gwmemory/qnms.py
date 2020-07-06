@@ -39,7 +39,7 @@ def freq_damping_obs(mass, spin, ell=2, mm=2, nn=0):
     """
     mass = utils.m_sol_to_geo(mass)
     omega, tau = freq_damping(mass, spin, ell, mm, nn)
-    f_lmn = omega / (2*np.pi)
+    f_lmn = omega / (2 * np.pi)
     f_lmn = utils.freq_geo_to_Hz(f_lmn)
     tau = utils.time_geo_to_s(tau)
     return f_lmn, tau
@@ -71,7 +71,8 @@ def freq_damping(mass, spin, ell=2, mm=2, nn=0):
         Dampling time of mode in geometric units
     """
     data_file = os.path.join(
-        pkg_resources.resource_filename(__name__, 'data'), 'fitcoeffsWEB.dat')
+        pkg_resources.resource_filename(__name__, "data"), "fitcoeffsWEB.dat"
+    )
     data = np.loadtxt(data_file)
 
     ell_data = data[:, 0].astype(int)
@@ -89,16 +90,16 @@ def freq_damping(mass, spin, ell=2, mm=2, nn=0):
     q3 = data[cond, 8][0]
 
     # dimensionaless frequency
-    f_lmn = f1 + f2 * (1. - spin) ** f3
+    f_lmn = f1 + f2 * (1.0 - spin) ** f3
 
     # angular frequency
     omega_lmn = f_lmn / mass
 
     # quality factor
-    Q_lmn = q1 + q2 * (1. - spin) ** q3
+    Q_lmn = q1 + q2 * (1.0 - spin) ** q3
 
     # damping time
-    tau_lmn = 2. * Q_lmn / omega_lmn
+    tau_lmn = 2.0 * Q_lmn / omega_lmn
 
     return omega_lmn, tau_lmn
 
@@ -133,15 +134,15 @@ def amplitude(mass_1, mass_2, ell=2, mm=2):
 
     if mm == 1:
         if ell == 2:
-            return 0.52 * (1 - 4*nu)**(0.71) * amplitude_22
+            return 0.52 * (1 - 4 * nu) ** (0.71) * amplitude_22
     elif ell == 2 & mm == 2:
         return amplitude_22
     elif ell == 3 & mm == 3:
-        return 0.44 * (1 - 4*nu)**(0.45) * amplitude_22
+        return 0.44 * (1 - 4 * nu) ** (0.45) * amplitude_22
     elif ell == 4 & mm == 4:
-        return (5.4 * (nu - 0.22)**2 + 0.04) * amplitude_22
+        return (5.4 * (nu - 0.22) ** 2 + 0.04) * amplitude_22
     else:
-        print('Unknown mode ({}, {}) specified'.format(ell, mm))
+        print(f"Unknown mode ({ell}, {mm}) specified")
 
 
 def final_mass_spin(mass_1, mass_2):
@@ -172,16 +173,16 @@ def final_mass_spin(mass_1, mass_2):
     total_mass = mass_1 + mass_2
 
     # expansion coefficients for the mass
-    m_f1 = 1.
-    m_f2 = (np.sqrt(8./9.) - 1.) * eta
-    m_f3 = -0.498 * eta**2
+    m_f1 = 1.0
+    m_f2 = (np.sqrt(8.0 / 9.0) - 1.0) * eta
+    m_f3 = -0.498 * eta ** 2
 
     # final mass
     final_mass = total_mass * (m_f1 + m_f2 + m_f3)
 
     # expansion coefficients for spin parameter
-    a_f1 = np.sqrt(12.) * eta
-    a_f2 = -2.9 * eta**2
+    a_f1 = np.sqrt(12.0) * eta
+    a_f2 = -2.9 * eta ** 2
 
     # final spin parameter -- dimensions of mass
     a_f = final_mass * (a_f1 + a_f2)
@@ -225,10 +226,12 @@ def hp_hx(time, m1, m2, ell, mm, iota, phi, phase):
     h_cross: array-like
         Cross polarisation
     """
-    ylm_plus = sYlm(-2, ll=ell, mm=mm, theta=iota, phi=0) +\
-        (-1.)**ell * sYlm(-2, ll=ell, mm=-mm, theta=iota, phi=0)
-    ylm_cross = sYlm(-2, ll=ell, mm=mm, theta=iota, phi=0) -\
-        (-1.)**ell * sYlm(-2, ll=ell, mm=-mm, theta=iota, phi=0)
+    ylm_plus = sYlm(-2, ll=ell, mm=mm, theta=iota, phi=0) + (-1.0) ** ell * sYlm(
+        -2, ll=ell, mm=-mm, theta=iota, phi=0
+    )
+    ylm_cross = sYlm(-2, ll=ell, mm=mm, theta=iota, phi=0) - (-1.0) ** ell * sYlm(
+        -2, ll=ell, mm=-mm, theta=iota, phi=0
+    )
 
     amplitude_lm = amplitude(m1, m2, ell=ell, mm=mm)
 
@@ -236,11 +239,21 @@ def hp_hx(time, m1, m2, ell, mm, iota, phi, phase):
 
     omega_lm, tau_lm = freq_damping(final_mass, jj, ell=ell, mm=mm, nn=0)
 
-    h_plus = final_mass * amplitude_lm * np.exp(-time / tau_lm) * ylm_plus *\
-        np.cos(omega_lm * time - mm * phi + phase)
+    h_plus = (
+        final_mass
+        * amplitude_lm
+        * np.exp(-time / tau_lm)
+        * ylm_plus
+        * np.cos(omega_lm * time - mm * phi + phase)
+    )
 
-    h_cross = final_mass * amplitude_lm * np.exp(-time / tau_lm) * ylm_cross *\
-        np.sin(omega_lm * time - mm * phi + phase)
+    h_cross = (
+        final_mass
+        * amplitude_lm
+        * np.exp(-time / tau_lm)
+        * ylm_cross
+        * np.sin(omega_lm * time - mm * phi + phase)
+    )
 
     return np.real(h_plus), np.real(h_cross)
 
@@ -278,15 +291,15 @@ def hp_hx_template(time, omega, tau, ell, mm, iota, phi, phase):
     h_cross: array-like
         Cross polarisation
     """
-    ylm_plus = sYlm(-2, ll=ell, mm=mm, theta=iota, phi=0) +\
-        -1**ell * sYlm(-2, ll=ell, mm=-mm, theta=iota, phi=0)
-    ylm_cross = sYlm(-2, ll=ell, mm=mm, theta=iota, phi=0) -\
-        -1**ell * sYlm(-2, ll=ell, mm=-mm, theta=iota, phi=0)
+    ylm_plus = sYlm(-2, ll=ell, mm=mm, theta=iota, phi=0) + -(1 ** ell) * sYlm(
+        -2, ll=ell, mm=-mm, theta=iota, phi=0
+    )
+    ylm_cross = sYlm(-2, ll=ell, mm=mm, theta=iota, phi=0) - -(1 ** ell) * sYlm(
+        -2, ll=ell, mm=-mm, theta=iota, phi=0
+    )
 
-    h_plus = np.exp(-time / tau) * ylm_plus *\
-        np.cos(omega * time - mm * phi + phase)
+    h_plus = np.exp(-time / tau) * ylm_plus * np.cos(omega * time - mm * phi + phase)
 
-    h_cross = np.exp(-time / tau) * ylm_cross *\
-        np.sin(omega * time - mm * phi + phase)
+    h_cross = np.exp(-time / tau) * ylm_cross * np.sin(omega * time - mm * phi + phase)
 
     return np.real(h_plus), np.real(h_cross)

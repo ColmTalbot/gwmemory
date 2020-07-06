@@ -58,17 +58,21 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
         l1, m1 = int(lm1[0]), int(lm1[1:])
         l2, m2 = int(lm2[0]), int(lm2[1:])
 
-        y_lmlm_factor = harmonics.sYlm(s, l1, m1, th, ph) * (-1)**(l2+m2) *\
-            harmonics.sYlm(-s, l2, -m2, th, ph)
+        y_lmlm_factor = (
+            harmonics.sYlm(s, l1, m1, th, ph)
+            * (-1) ** (l2 + m2)
+            * harmonics.sYlm(-s, l2, -m2, th, ph)
+        )
 
-    lambda_lm1_lm2 = np.array([lambda_lmlm(
-        inc, phase, lm1, lm2, theta, phi, y_lmlm_factor) for inc in incs])
+    lambda_lm1_lm2 = np.array(
+        [lambda_lmlm(inc, phase, lm1, lm2, theta, phi, y_lmlm_factor) for inc in incs]
+    )
 
     sin_inc = np.sin(-incs)
 
     harm = {}
     for l, m in harmonics.lmax_modes(20):
-        harm['{}{}'.format(l, m)] = harmonics.sYlm(-2, l, m, incs, phase)
+        harm[f"{l}{m}"] = harmonics.sYlm(-2, l, m, incs, phase)
 
     ells = np.arange(2, 21, 1)
 
@@ -79,14 +83,19 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
             gammas.append(0)
         else:
             gammas.append(
-                2 * np.pi * np.trapz(lambda_lm1_lm2 * np.real(np.conjugate(
-                    harm['{}{}'.format(ell, delta_m)]) * sin_inc), incs))
+                2
+                * np.pi
+                * np.trapz(
+                    lambda_lm1_lm2
+                    * np.real(np.conjugate(harm[f"{ell}{delta_m}"]) * sin_inc),
+                    incs,
+                )
+            )
 
     return gammas
 
 
-def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None,
-                  y_lmlm_factor=None):
+def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
     """
     Angular integral for a specific ll'mm' as given by equation 7 of Talbot
     et al. (2018), arXiv:1807.00990.
@@ -135,45 +144,52 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None,
         l1, m1 = int(lm1[0]), int(lm1[1:])
         l2, m2 = int(lm2[0]), int(lm2[1:])
 
-        y_lmlm_factor = harmonics.sYlm(ss, l1, m1, th, ph) * (-1)**(l2+m2) *\
-            harmonics.sYlm(-ss, l2, -m2, th, ph)
+        y_lmlm_factor = (
+            harmonics.sYlm(ss, l1, m1, th, ph)
+            * (-1) ** (l2 + m2)
+            * harmonics.sYlm(-ss, l2, -m2, th, ph)
+        )
 
-    n = [np.outer(np.cos(phi), np.sin(theta)),
-         np.outer(np.sin(phi), np.sin(theta)),
-         np.outer(np.ones_like(phi), np.cos(theta))]
+    n = [
+        np.outer(np.cos(phi), np.sin(theta)),
+        np.outer(np.sin(phi), np.sin(theta)),
+        np.outer(np.ones_like(phi), np.cos(theta)),
+    ]
     N = [np.sin(inc) * np.cos(phase), np.sin(inc) * np.sin(phase), np.cos(inc)]
     n_dot_N = sum(n_i * N_i for n_i, N_i in zip(n, N))
     n_dot_N[n_dot_N == 1] = 0
-    denominator = 1/(1-n_dot_N)
+    denominator = 1 / (1 - n_dot_N)
 
-    sin_array = np.outer(phi**0, np.sin(theta))
+    sin_array = np.outer(phi ** 0, np.sin(theta))
 
     angle_integrals_r = np.zeros((3, 3))
     angle_integrals_i = np.zeros((3, 3))
     for j in range(3):
         for k in range(j + 1):
             # projection done here to avoid divergences
-            integrand = sin_array * denominator * y_lmlm_factor * (
-                n[j] * n[k] - (n[j] * N[k] + n[k] * N[j]) * n_dot_N +
-                N[j] * N[k] * n_dot_N**2)
-            angle_integrals_r[j, k] = np.trapz(
-                np.trapz(np.real(integrand), theta), phi)
-            angle_integrals_i[j, k] = np.trapz(
-                np.trapz(np.imag(integrand), theta), phi)
-            angle_integrals_r[k, j] = np.trapz(np.trapz(
-                np.real(integrand), theta), phi)
-            angle_integrals_i[k, j] = np.trapz(np.trapz(
-                np.imag(integrand), theta), phi)
+            integrand = (
+                sin_array
+                * denominator
+                * y_lmlm_factor
+                * (
+                    n[j] * n[k]
+                    - (n[j] * N[k] + n[k] * N[j]) * n_dot_N
+                    + N[j] * N[k] * n_dot_N ** 2
+                )
+            )
+            angle_integrals_r[j, k] = np.trapz(np.trapz(np.real(integrand), theta), phi)
+            angle_integrals_i[j, k] = np.trapz(np.trapz(np.imag(integrand), theta), phi)
+            angle_integrals_r[k, j] = np.trapz(np.trapz(np.real(integrand), theta), phi)
+            angle_integrals_i[k, j] = np.trapz(np.trapz(np.imag(integrand), theta), phi)
 
     proj = np.identity(3) - np.outer(N, N)
     lambda_mat = angle_integrals_r + 1j * angle_integrals_i
-    lambda_mat -= proj*np.trace(lambda_mat) / 2
+    lambda_mat -= proj * np.trace(lambda_mat) / 2
 
     return lambda_mat
 
 
-def lambda_lmlm(inc, phase, lm1, lm2, theta=None, phi=None,
-                y_lmlm_factor=None):
+def lambda_lmlm(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
     """
     Angular integral for a specific ll'mm' as given by equation 7 of Talbot
     et al. (2018), arXiv:1807.00990.
@@ -241,12 +257,12 @@ def omega_ij_to_omega_pol(omega_ij, inc, phase):
     hx: float
         Magnitude of cross mode.
     """
-    psi = 0.
+    psi = 0.0
 
     wx, wy, wz = wave_frame(inc, phase, psi)
 
-    omega_plus = np.einsum('ij,ij->', omega_ij, plus_tensor(wx, wy, wz))
-    omega_cross = np.einsum('ij,ij->', omega_ij, cross_tensor(wx, wy, wz))
+    omega_plus = np.einsum("ij,ij->", omega_ij, plus_tensor(wx, wy, wz))
+    omega_cross = np.einsum("ij,ij->", omega_ij, cross_tensor(wx, wy, wz))
 
     return omega_plus, omega_cross
 
@@ -303,10 +319,10 @@ def load_gamma(data_dir=None):
         Dictionary of gamma_lmlm.
     """
     if data_dir is None:
-        data_dir = pkg_resources.resource_filename(__name__, 'data')
-    data_files = glob.glob('{}/gamma*.dat'.format(data_dir))
+        data_dir = pkg_resources.resource_filename(__name__, "data")
+    data_files = glob.glob(f"{data_dir}/gamma*.dat")
     gamma_lmlm = {}
     for file_name in data_files:
-        delta_m = file_name.split('_')[-1][:-4]
-        gamma_lmlm[delta_m] = pd.read_csv(file_name, sep='\t')
+        delta_m = file_name.split("_")[-1][:-4]
+        gamma_lmlm[delta_m] = pd.read_csv(file_name, sep="\t")
     return gamma_lmlm
