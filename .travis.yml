@@ -6,6 +6,7 @@ python:
 cache: pip
 
 install:
+  - sudo apt-get install pandoc
   - sudo apt-get install dvipng texlive-latex-extra texlive-fonts-recommended
   - sudo apt-get install cm-super
   - pip install -r requirements.txt
