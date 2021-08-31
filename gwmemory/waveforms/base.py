@@ -12,6 +12,7 @@ class MemoryGenerator(object):
         self.h_lm = h_lm
         self.times = times
         self.modes = self.h_lm.keys()
+        self.distance = None
 
     @property
     def delta_t(self):

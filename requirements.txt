@@ -2,5 +2,4 @@ numpy
 scipy
 pandas
 deepdish
-lalsuite
 NRSur7dq2

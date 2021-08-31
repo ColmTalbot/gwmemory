@@ -1,6 +1,9 @@
 import numpy as np
 
-import lalsimulation as lalsim
+try:
+    import lalsimulation as lalsim
+except ModuleNotFoundError:
+    print("Cannot import module lalsim... lal models cannot be used")
 
 from ..harmonics import sYlm
 from ..utils import combine_modes, CC, GG, MPC, SOLAR_MASS
