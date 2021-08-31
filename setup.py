@@ -18,23 +18,24 @@ def write_version_file(version):
     """
     try:
         git_log = subprocess.check_output(
-            ['git', 'log', '-1', '--pretty=%h %ai']).decode('utf-8')
-        git_diff = (subprocess.check_output(['git', 'diff', '.']) +
-                    subprocess.check_output(
-                        ['git', 'diff', '--cached', '.'])).decode('utf-8')
-        if git_diff == '':
-            git_status = '(CLEAN) ' + git_log
+            ["git", "log", "-1", "--pretty=%h %ai"]
+        ).decode("utf-8")
+        git_diff = (
+            subprocess.check_output(["git", "diff", "."])
+            + subprocess.check_output(["git", "diff", "--cached", "."])
+        ).decode("utf-8")
+        if git_diff == "":
+            git_status = "(CLEAN) " + git_log
         else:
-            git_status = '(UNCLEAN) ' + git_log
+            git_status = "(UNCLEAN) " + git_log
     except Exception as e:
-        print("Unable to obtain git version information, exception: {}"
-              .format(e))
-        git_status = ''
+        print("Unable to obtain git version information, exception: {}".format(e))
+        git_status = ""
 
-    version_file = '.version'
+    version_file = ".version"
     if os.path.isfile(version_file) is False:
-        with open('gwmemory/' + version_file, 'w+') as f:
-            f.write('{}: {}'.format(version, git_status))
+        with open("gwmemory/" + version_file, "w+") as f:
+            f.write("{}: {}".format(version, git_status))
 
     return version_file
 
@@ -42,7 +43,7 @@ def write_version_file(version):
 def get_long_description():
     """ Finds the README and reads in the description """
     here = os.path.abspath(os.path.dirname(__file__))
-    with open(os.path.join(here, 'README.md')) as f:
+    with open(os.path.join(here, "README.md")) as f:
         long_description = f.read()
     return long_description
 
@@ -54,29 +55,30 @@ def readfile(filename):
     return filecontents
 
 
-VERSION = '0.2.0'
+VERSION = "0.2.0"
 version_file = write_version_file(VERSION)
 long_description = get_long_description()
 
 setup(
-    name='gwmemory',
-    description='Arbitrary gravitational-wave memory waveforms',
+    name="gwmemory",
+    description="Arbitrary gravitational-wave memory waveforms",
     long_description=long_description,
-    url='https://github.com/ColmTalbot/gwmemory',
-    author='Colm Talbot',
-    author_email='colm.talbot@monash.edu',
+    url="https://github.com/ColmTalbot/gwmemory",
+    author="Colm Talbot",
+    author_email="colm.talbot@monash.edu",
     license="MIT",
     version=VERSION,
-    packages=['gwmemory', 'gwmemory.waveforms'],
-    package_dir={'gwmemory': 'gwmemory'},
-    package_data={'gwmemory': [
-        'data/gamma_coefficients*.dat', 'data/*WEB.dat', '.version']},
-    install_requires=['future', 'numpy', 'scipy', 'pandas', 'deepdish'],
+    packages=["gwmemory", "gwmemory.waveforms"],
+    package_dir={"gwmemory": "gwmemory"},
+    package_data={
+        "gwmemory": ["data/gamma_coefficients*.dat", "data/*WEB.dat", ".version"]
+    },
+    install_requires=["future", "numpy", "scipy", "pandas", "deepdish"],
     classifiers=[
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent"
-    ]
+        "Operating System :: OS Independent",
+    ],
 )
