@@ -80,12 +80,19 @@ def nfft(ht, sampling_frequency):
     performs an FFT while keeping track of the frequency bins
     assumes input time series is real (positive frequencies only)
 
-    ht = time series
-    sampling_frequency = sampling frequency
+    Parameters
+    ----------
+    ht: array-like
+        Time series to FFT
+    sampling_frequency: float
+        Sampling frequency of input time series
 
-    returns
-    hf = single-sided FFT of ft normalised to units of strain / sqrt(Hz)
-    f = frequencies associated with hf
+    Returns
+    -------
+    hf: array-like
+        Single-sided FFT of ft normalised to units of strain / sqrt(Hz)
+    f: array-like
+        Frequencies associated with hf
     """
     # add one zero padding if time series does not have even number
     # of sampling times
@@ -119,6 +126,7 @@ def load_sxs_waveform(file_name, modes=None, extraction="OutermostExtraction.dir
     extraction: str
         String representing extraction method, default is
         'OutermostExtraction.dir'
+
     Returns
     -------
     output: dict
