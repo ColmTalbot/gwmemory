@@ -21,7 +21,7 @@ script:
   - pytest --cov=gwmemory
   - codeclimate-test-reporter --file .coverage
   - cd examples
-  - jupyter nbconvert --to html --execute examples.ipynb
+  - jupyter nbconvert --to html --execute GWMemory.ipynb
 
 before_deploy:
   - cd docs
