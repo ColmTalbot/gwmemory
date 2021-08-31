@@ -5,11 +5,13 @@ Welcome to the documentation for GWMemory!
     :members:
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
    :caption: Contents:
 
+   gwmemory
    waveforms
    angles
    harmonics
    qnms
    utils
+   example

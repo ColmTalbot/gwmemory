@@ -1,5 +1,5 @@
-Quasi-normal mode functions.
-==============================
+Quasi-normal mode functions
+===========================
 
 .. automodule:: gwmemory.qnms
     :members:
