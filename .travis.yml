@@ -9,6 +9,9 @@ install:
   - pip install -r requirements.txt
   - pip install -r pages_requirements.txt
   - pip install "coverage<4.4" "pytest-cov<2.5" codeclimate-test-reporter
+  - pip install nrsur7dq2
+  - pip install lalsuite
+  - pip install https://github.com/matplotlib/basemap/archive/master.zip
   - pip install .
 
 script:
@@ -16,22 +19,10 @@ script:
   - export PYTHONPATH='.'
   - pytest --cov=gwmemory
   - codeclimate-test-reporter --file .coverage
-  - pip install .
-  - pip install nrsur7dq2
-  - pip install lalsuite
-  - pip install https://github.com/matplotlib/basemap/archive/master.zip
-  - cd docs
-  - mv Makefile.gh_pages Makefile
-  - cp ../examples/GWMemory.ipynb ./example.ipynb
-  - make clean
-  - make html
-  - make clean
+  - cd examples
+  - jupyter nbconvert --to html --execute examples.ipynb
 
 before_deploy:
-  - pip install .
-  - pip install nrsur7dq2
-  - pip install lalsuite
-  - pip install https://github.com/matplotlib/basemap/archive/master.zip
   - cd docs
   - mv Makefile.gh_pages Makefile
   - cp ../examples/GWMemory.ipynb ./example.ipynb
