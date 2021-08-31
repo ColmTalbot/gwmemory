@@ -18,6 +18,10 @@ script:
   - codeclimate-test-reporter --file .coverage
 
 before_deploy:
+  - pip install .
+  - pip install nrsur7dq2
+  - pip install lalsuite
+  - pip install https://github.com/matplotlib/basemap/archive/master.zip
   - cd docs
   - mv Makefile.gh_pages Makefile
   - cp ../examples/GWMemory.ipynb ./example.ipynb
