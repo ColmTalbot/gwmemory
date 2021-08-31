@@ -1,5 +1,5 @@
-Spin-weighted spherical harmonics.
-==================================
+Spin-weighted spherical harmonics
+=================================
 
 .. automodule:: gwmemory.harmonics
     :members:
