@@ -58,22 +58,25 @@ VERSION = '0.2.0'
 version_file = write_version_file(VERSION)
 long_description = get_long_description()
 
-setup(name='gwmemory',
-      description='Arbitrary gravitational-wave memory waveforms',
-      long_description=long_description,
-      url='https://github.com/ColmTalbot/gwmemory',
-      author='Colm Talbot',
-      author_email='colm.talbot@monash.edu',
-      license="MIT",
-      version=VERSION,
-      packages=['gwmemory', 'gwmemory.waveforms'],
-      package_dir={'gwmemory': 'gwmemory'},
-      package_data={'gwmemory': [
-          'data/gamma_coefficients*.dat', 'data/*WEB.dat', '.version']},
-      install_requires=['future', 'numpy', 'scipy', 'pandas', 'deepdish'],
-      classifiers=[
-          "Programming Language :: Python :: 2.7",
-          "Programming Language :: Python :: 3.6",
-          "Programming Language :: Python :: 3.7",
-          "License :: OSI Approved :: MIT License",
-          "Operating System :: OS Independent"])
+setup(
+    name='gwmemory',
+    description='Arbitrary gravitational-wave memory waveforms',
+    long_description=long_description,
+    url='https://github.com/ColmTalbot/gwmemory',
+    author='Colm Talbot',
+    author_email='colm.talbot@monash.edu',
+    license="MIT",
+    version=VERSION,
+    packages=['gwmemory', 'gwmemory.waveforms'],
+    package_dir={'gwmemory': 'gwmemory'},
+    package_data={'gwmemory': [
+        'data/gamma_coefficients*.dat', 'data/*WEB.dat', '.version']},
+    install_requires=['future', 'numpy', 'scipy', 'pandas', 'deepdish'],
+    classifiers=[
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent"
+    ]
+)
