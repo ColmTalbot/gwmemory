@@ -116,9 +116,8 @@ class Approximant(MemoryGenerator):
         times: np.array
             Times on which waveform is evaluated.
         """
-        from lalsimulation import (
-            GetApproximantFromString, SimInspiralChooseTDWaveform
-        )
+        from lalsimulation import GetApproximantFromString, SimInspiralChooseTDWaveform
+
         if self.h_lm is None:
             if modes is None:
                 modes = self.available_modes
