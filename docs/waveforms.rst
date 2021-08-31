@@ -1,5 +1,5 @@
 Implemented waveform models
-==============================
+===========================
 
 .. automodule:: gwmemory.waveforms.base
     :members:

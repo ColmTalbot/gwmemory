@@ -25,6 +25,8 @@ Demonstrations of how to calculate memory waveforms can be found in the examples
 - Aligned spin waveforms in [`lalsimulation`](http://git.ligo.org/lscsoft/lalsuite), e.g., `IMRPhenomD` ( Khan _et al._ (2016), [Phys. Rev. D 93, 044007](https://journals.aps.org/prd/abstract/10.1103/PhysRevD.93.044007), `SEOBNRv4` (Bohe _et al._ (2017), [Phys. Rev. D 95, 044028](https://journals.aps.org/prd/abstract/10.1103/PhysRevD.95.044028)).
 - Minimal waveform model (Favata (2010), [CQG, 27, 8](http://iopscience.iop.org/article/10.1088/0264-9381/27/8/084036/meta))
 
+To use these waveform models, you may need to install extra packages, this should be described if the packages aren't available.
+
 Additionally users can supply any waveform decomposed onto the basis of spin-2 weighted spherical harmonics.
 
 There is basic support for loading numerical relativity waveforms, based on the format of the simulating extreme spacetimes [waveform catalog](https://www.black-holes.org/for-researchers/waveform-catalog).

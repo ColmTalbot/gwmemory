@@ -1,5 +1,5 @@
-All of the likelihoods implemented.
-==============================
+Geometric helper function
+=========================
 
 .. automodule:: gwmemory.angles
     :members:

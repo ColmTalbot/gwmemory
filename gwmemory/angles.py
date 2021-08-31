@@ -35,8 +35,8 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
         Array over of spherical harmonic factor evaluated on meshgrid of theta,
         phi
 
-    Return
-    ------
+    Returns
+    -------
     gammas: list
         List of coefficients for output modes, l=range(2, 20), m=m1-m2
     """
@@ -96,7 +96,7 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
 
 
 def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
-    """
+    r"""
     Angular integral for a specific ll'mm' as given by equation 7 of Talbot
     et al. (2018), arXiv:1807.00990.
 
@@ -126,8 +126,8 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
         Array over of spherical harmonic factor evaluated on meshgrid of
         theta, phi
 
-    Return
-    ------
+    Returns
+    -------
     lambda_mat: array
         three by three transverse traceless matrix of the appropriate integral
     """
@@ -190,7 +190,7 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
 
 
 def lambda_lmlm(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
-    """
+    r"""
     Angular integral for a specific ll'mm' as given by equation 7 of Talbot
     et al. (2018), arXiv:1807.00990.
 
@@ -221,8 +221,8 @@ def lambda_lmlm(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
         Array over of spherical harmonic factor evaluated on meshgrid of
         theta, phi
 
-    Return
-    ------
+    Returns
+    -------
     lambda_lmlm: float, complex
         lambda_plus - i lambda_cross
     """

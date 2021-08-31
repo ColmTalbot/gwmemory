@@ -1,7 +1,5 @@
 import numpy as np
 
-import lalsimulation as lalsim
-
 from ..harmonics import sYlm
 from ..utils import combine_modes, CC, GG, MPC, SOLAR_MASS
 from . import MemoryGenerator
@@ -33,6 +31,11 @@ class Approximant(MemoryGenerator):
             from lalsimulation.
             FIXME
         """
+        try:
+            import lalsimulation  # noqa
+        except ModuleNotFoundError:
+            print("lalsuite is required for the Approximant memory generator.")
+            raise
         self.name = name
         if q > 1:
             q = 1 / q
@@ -113,6 +116,8 @@ class Approximant(MemoryGenerator):
         times: np.array
             Times on which waveform is evaluated.
         """
+        from lalsimulation import GetApproximantFromString, SimInspiralChooseTDWaveform
+
         if self.h_lm is None:
             if modes is None:
                 modes = self.available_modes
@@ -134,7 +139,7 @@ class Approximant(MemoryGenerator):
             longAscNodes = 0.0
             eccentricity = 0.0
             meanPerAno = 0.0
-            approx = lalsim.GetApproximantFromString(self.name)
+            approx = GetApproximantFromString(self.name)
             WFdict = None
 
             if delta_t is None:
@@ -142,7 +147,7 @@ class Approximant(MemoryGenerator):
             else:
                 delta_t = delta_t
 
-            hplus, hcross = lalsim.SimInspiralChooseTDWaveform(
+            hplus, hcross = SimInspiralChooseTDWaveform(
                 self.m1_SI,
                 self.m2_SI,
                 self.S1[0],
