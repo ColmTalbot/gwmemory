@@ -13,3 +13,4 @@ Welcome to the documentation for GWMemory!
    harmonics
    qnms
    utils
+   example
