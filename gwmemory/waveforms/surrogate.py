@@ -136,11 +136,11 @@ class Surrogate(MemoryGenerator):
         self.times = times
 
         if times is not None and max(times) < 10:
-            times *= self.t_to_geo
+            times_ = times * self.t_to_geo
 
-        h_lm, times = self.time_domain_oscillatory(modes=modes, times=times)
+        h_lm, times_ = self.time_domain_oscillatory(modes=modes, times=times_)
 
-        MemoryGenerator.__init__(self, name=name, h_lm=h_lm, times=times)
+        MemoryGenerator.__init__(self, name=name, h_lm=h_lm, times=times_)
 
     def time_domain_oscillatory(self, times=None, modes=None, inc=None, phase=None):
         """
