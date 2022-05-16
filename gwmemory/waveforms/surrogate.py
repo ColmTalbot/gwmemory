@@ -71,12 +71,12 @@ class Surrogate(MemoryGenerator):
         """
         self.name = name
 
-        # sur(x, dt=dt, f_low=f_low, mode_list=[(2,2), (2,1), (3, 3)], M=M, dist_mpc=dist_mpc,
-        #            inclination=inclination, phi_ref=phi_ref, units='mks')
-        # h_lm = self.sur(self.q, self.S1, self.S2, MTot=self.MTot,
-        #                 distance=self.distance, t=times, LMax=self.LMax)
         if name.lower() == "nrsur7dq2":
-            from NRSur7dq2 import NRSurrogate7dq2
+            try:
+                from NRSur7dq2 import NRSurrogate7dq2
+            except ModuleNotFoundError:
+                print("nrsur7sq2 is required for the Surrogate memory generator.")
+                raise
 
             self.sur = NRSurrogate7dq2()
 
@@ -96,7 +96,11 @@ class Surrogate(MemoryGenerator):
                 self.S2 = np.array(spin_2)
 
         elif name.lower() == "nrhybsur3dq8":
-            import gwsurrogate
+            try:
+                import gwsurrogate
+            except ModuleNotFoundError:
+                print("gwsurrogate is required for the Surrogate memory generator.")
+                raise
 
             self.sur = gwsurrogate.LoadSurrogate("NRHybSur3dq8")
             if q < 1:

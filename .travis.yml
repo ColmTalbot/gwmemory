@@ -6,9 +6,16 @@ python:
 cache: pip
 
 install:
+  - sudo apt-get install pandoc
+  - sudo apt-get install dvipng texlive-latex-extra texlive-fonts-recommended
+  - sudo apt-get install cm-super
   - pip install -r requirements.txt
   - pip install -r pages_requirements.txt
   - pip install "coverage<4.4" "pytest-cov<2.5" codeclimate-test-reporter
+  - pip install ipykernel ipython jupyter
+  - pip install nrsur7dq2
+  - pip install lalsuite
+  - pip install https://github.com/matplotlib/basemap/archive/master.zip
   - pip install .
 
 script:
@@ -16,10 +23,13 @@ script:
   - export PYTHONPATH='.'
   - pytest --cov=gwmemory
   - codeclimate-test-reporter --file .coverage
+  - cd examples
+  - jupyter nbconvert --to html --execute GWMemory.ipynb
 
 before_deploy:
-  - cd docs
+  - cd ../docs
   - mv Makefile.gh_pages Makefile
+  - cp ../examples/GWMemory.ipynb ./example.ipynb
   - make clean
   - make html
   - cd ../
