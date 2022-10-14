@@ -8,6 +8,9 @@ from ..utils import CC, MPC, combine_modes
 class MemoryGenerator(object):
     def __init__(self, name, h_lm, times):
 
+        if np.max(np.abs(np.diff(np.diff(times)))) > 1e-12: # allow for some accumulation of round-off error
+            raise ValueError("GWMemory assumes a uniform time grid")
+
         self.name = name
         self.h_lm = h_lm
         self.times = times
