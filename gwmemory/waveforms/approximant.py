@@ -29,7 +29,6 @@ class Approximant(MemoryGenerator):
         times: array-like
             Time array to evaluate the waveforms on, default is time array
             from lalsimulation.
-            FIXME
         """
         try:
             import lalsimulation  # noqa
@@ -83,9 +82,10 @@ class Approximant(MemoryGenerator):
         self.h_lm = None
         self.times = None
 
-        h_lm, times = self.time_domain_oscillatory()
-
-        MemoryGenerator.__init__(self, name=name, h_lm=h_lm, times=times)
+        h_lm, _times = self.time_domain_oscillatory()
+        MemoryGenerator.__init__(self, name=name, h_lm=h_lm, times=_times)
+        if times is not None:
+            self.set_time_array(times)
 
     def time_domain_oscillatory(self, delta_t=None, modes=None, inc=None, phase=None):
         """
@@ -175,7 +175,11 @@ class Approximant(MemoryGenerator):
 
             times = np.linspace(0, delta_t * len(h), len(h))
             times -= times[np.argmax(abs(h_22))]
-
+            if self.times is not None and self.times != times:
+                h_22 = interp1d(
+                    times, h_22, kind="cubic", fill_value=(h_22[0], h_22[-1])
+                )(self.times)
+                times = self.times
             h_lm = {(2, 2): h_22, (2, -2): np.conjugate(h_22)}
 
         else:
