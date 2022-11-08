@@ -175,11 +175,6 @@ class Approximant(MemoryGenerator):
 
             times = np.linspace(0, delta_t * len(h), len(h))
             times -= times[np.argmax(abs(h_22))]
-            if self.times is not None and self.times != times:
-                h_22 = interp1d(
-                    times, h_22, kind="cubic", fill_value=(h_22[0], h_22[-1])
-                )(self.times)
-                times = self.times
             h_lm = {(2, 2): h_22, (2, -2): np.conjugate(h_22)}
 
         else:
