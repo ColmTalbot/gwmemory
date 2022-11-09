@@ -6,7 +6,10 @@ import glob
 
 import numpy as np
 import pandas as pd
-from sympy.physics.wigner import wigner_3j
+try:
+    from sympy.physics.wigner import wigner_3j
+except ImportError:
+    pass
 
 from . import harmonics
 
