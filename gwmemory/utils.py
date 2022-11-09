@@ -1,7 +1,6 @@
 import os
 
 import numpy as np
-import deepdish
 
 from .harmonics import sYlm
 
@@ -132,6 +131,7 @@ def load_sxs_waveform(file_name, modes=None, extraction="OutermostExtraction.dir
     output: dict
         Dictionary of requested spherical harmonic modes.
     """
+    import deepdish
     waveform = deepdish.io.load(file_name)
     output = dict()
     if modes is None:
