@@ -84,7 +84,7 @@ class MemoryGenerator(object):
                         and f"{l1}{m1}{l2}{m2}" in gamma_lmlm[delta_m]
                     ],
                     axis=0,
-                )
+                ) * np.ones(len(self.times), dtype=complex)
 
         h_mem_lm = {
             lm: const * cumulative_trapezoid(dh_mem_dt_lm[lm], self.times, initial=0)
