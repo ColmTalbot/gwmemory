@@ -28,9 +28,9 @@ jobs:
           conda install -c conda-forge numpy pandas scipy
           conda install -c conda-forge gwsurrogate python-lalsimulation
           python -m pip install nrsur7dq2
-          python -m pip install https://github.com/matplotlib/basemap/archive/master.zip
-          conda install ipykernel jupyter ipython
-          conda install ipython_genutils jinja2 nbsphinx numpydoc pandoc pygments sphinx sphinx_rtd_theme
+          conda install -c conda-forge basemap
+          conda install -c conda-forge ipykernel jupyter ipython
+          conda install -c conda-forge ipython_genutils jinja2 nbsphinx numpydoc pandoc pygments sphinx sphinx_rtd_theme
       - name: Install gwmemory
         run: |
           pip install .
