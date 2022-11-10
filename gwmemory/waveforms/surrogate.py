@@ -41,8 +41,8 @@ class Surrogate(MemoryGenerator):
         l_max=4,
         modes=None,
         times=None,
-        minimum_frequency=10,
-        sampling_frequency=4096,
+        minimum_frequency=0,
+        sampling_frequency=None,
     ):
         """
         Initialise Surrogate MemoryGenerator
@@ -112,13 +112,13 @@ class Surrogate(MemoryGenerator):
             self.q = q
             self.MTot = total_mass
             if spin_1 is None:
-                self.chi_1 = 0.0
+                self.S1 = np.array([0.0, 0.0, 0.0])
             else:
-                self.chi_1 = spin_1
+                self.S1 = spin_1
             if spin_2 is None:
-                self.chi_2 = 0.0
+                self.S2 = np.array([0.0, 0.0, 0.0])
             else:
-                self.chi_2 = spin_2
+                self.S2 = spin_2
             self.minimum_frequency = minimum_frequency
             self.sampling_frequency = sampling_frequency
         self.distance = distance
@@ -188,16 +188,24 @@ class Surrogate(MemoryGenerator):
                     LMax=self.LMax,
                 )
             else:
+                if self.MTot is None:
+                    units = "dimensionless"
+                else:
+                    units = "mks"
+                if self.sampling_frequency is not None:
+                    delta_t = 1 / self.sampling_frequency
+                else:
+                    delta_t = None
                 times, h_lm, _ = self.sur(
                     q=self.q,
-                    chiA0=self.chi_1,
-                    chiB0=self.chi_2,
+                    chiA0=self.S1,
+                    chiB0=self.S2,
                     M=self.MTot,
                     dist_mpc=self.distance,
-                    dt=1 / self.sampling_frequency,
+                    dt=delta_t,
                     f_low=self.minimum_frequency,
                     mode_list=self.modes,
-                    units="mks",
+                    units=units,
                 )
                 if (5, 5) in h_lm:
                     del h_lm[(5, 5)]
