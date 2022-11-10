@@ -89,7 +89,7 @@ def time_domain_memory(
     if h_lm is not None and times is not None:
         wave = waveforms.MemoryGenerator(name=model, h_lm=h_lm, times=times)
     elif "NRSur" in model or "NRHybSur" in model:
-        all_keys = inspect.getargspec(waveforms.Surrogate.__init__)[0]
+        all_keys = inspect.signature(waveforms.Surrogate).parameters.keys()
         model_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
         wave = waveforms.Surrogate(
             q=q,
@@ -102,7 +102,7 @@ def time_domain_memory(
             **model_kwargs,
         )
     elif "EOBNR" in model or "Phenom" in model:
-        all_keys = inspect.getargspec(waveforms.Approximant.__init__)[0]
+        all_keys = inspect.signature(waveforms.Approximant).parameters.keys()
         model_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
         wave = waveforms.Approximant(
             q=q,
@@ -115,7 +115,7 @@ def time_domain_memory(
             **model_kwargs,
         )
     elif model == "MWM":
-        all_keys = inspect.getargspec(waveforms.MWM.__init__)[0]
+        all_keys = inspect.signature(waveforms.MWM).parameters.keys()
         model_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
         wave = waveforms.MWM(
             q=q,
@@ -129,7 +129,7 @@ def time_domain_memory(
         print(f"Model {model} unknown")
         return None
 
-    all_keys = inspect.getargspec(wave.time_domain_memory)[0]
+    all_keys = inspect.signature(wave.time_domain_memory).parameters.keys()
     function_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
     h_mem, times = wave.time_domain_memory(inc=inc, phase=phase, **function_kwargs)
 

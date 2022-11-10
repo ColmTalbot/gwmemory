@@ -7,18 +7,14 @@
 # Modified Colm Talbot 2018
 #
 # ----------------------------------------------------------
+from functools import lru_cache
+from math import factorial
 
 import numpy as np
 
 
-def fac(n):
-    result = 1
-    for i in range(2, n + 1):
-        result *= i
-    return result
-
-
 # coefficient function
+@lru_cache
 def Cslm(s, l, m):
     return np.sqrt(l * l * (4.0 * l * l - 1.0) / ((l * l - m * m) * (l * l - s * s)))
 
@@ -30,7 +26,7 @@ def s_lambda_lm(s, l, m, x):
         Pm = Pm * pow(1.0 + x, (m - s) * 1.0 / 2)
     if m != -s:
         Pm = Pm * pow(1.0 - x, (m + s) * 1.0 / 2)
-    Pm = Pm * np.sqrt(fac(2 * m + 1) * 1.0 / (4.0 * np.pi * fac(m + s) * fac(m - s)))
+    Pm = Pm * np.sqrt(factorial(2 * m + 1) * 1.0 / (4.0 * np.pi * factorial(m + s) * factorial(m - s)))
     if l == m:
         return Pm
     Pm1 = (x + s * 1.0 / (m + 1)) * Cslm(s, m + 1, m) * Pm
@@ -70,6 +66,7 @@ def sYlm(ss, ll, mm, theta, phi):
     return result * np.cos(mm * phi) + result * np.sin(mm * phi) * 1j
 
 
+@lru_cache
 def lmax_modes(lmax):
     """Compute all (l, m) pairs with 2<=l<=lmax"""
     return [(l, m) for l in range(2, lmax + 1) for m in range(-l, l + 1)]

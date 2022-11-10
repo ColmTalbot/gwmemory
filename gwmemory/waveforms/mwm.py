@@ -1,15 +1,6 @@
 import numpy as np
 
-from ..utils import (
-    dist_Mpc_to_geo,
-    time_s_to_geo,
-    m_sol_to_geo,
-    m12_to_symratio,
-    CC,
-    GG,
-    MPC,
-    SOLAR_MASS,
-)
+from ..utils import CC, GG, MPC, SOLAR_MASS
 from ..qnms import final_mass_spin, freq_damping
 from . import MemoryGenerator
 
@@ -66,18 +57,19 @@ class MWM(MemoryGenerator):
         if times is None:
             times = self.times
 
-        time_geo = time_s_to_geo(times)  # units: metres
+        time_geo = times * CC
 
-        m1_geo = m_sol_to_geo(self.m1)  # units: metres
-        m2_geo = m_sol_to_geo(self.m2)  # units: metres
+        mass_solar_to_geometric = SOLAR_MASS * GG / CC ** 2
+        m1_geo = self.m1 * mass_solar_to_geometric
+        m2_geo = self.m2 * mass_solar_to_geometric
 
-        dist_geo = dist_Mpc_to_geo(self.distance)  # units: metres
+        dist_geo = self.distance * MPC
 
         # total mass
         MM = m1_geo + m2_geo
 
         # symmetric mass ratio
-        eta = m12_to_symratio(m1_geo, m2_geo)
+        eta = self.m1 * self.m2 / (self.m1 + self.m2) ** 2
 
         # this is the orbital separation at the matching radius --
         # see Favata (2009) before eqn (8).

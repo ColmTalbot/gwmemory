@@ -80,7 +80,7 @@ class SXSNumericalRelativity(MemoryGenerator):
         if times is not None:
             self.set_time_array(times)
 
-        MemoryGenerator.__init__(self, name=name, h_lm=self.h_lm, times=times)
+        MemoryGenerator.__init__(self, name=name, h_lm=self.h_lm, times=self.times)
 
     def time_domain_oscillatory(self, times=None, modes=None, inc=None, phase=None):
         """
@@ -109,6 +109,8 @@ class SXSNumericalRelativity(MemoryGenerator):
                     del output[mode]
         if times is not None:
             output = self.apply_time_array(times, output)
+        else:
+            times = self.times
         if inc is None or phase is None:
             return output, times
         else:
