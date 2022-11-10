@@ -104,7 +104,7 @@ class Surrogate(MemoryGenerator):
                 print("$ conda install -c conda-forge gwsurrogate")
                 raise
             try:
-                self.sur = gwsurrogate.LoadSurrogate("NRHybSur3dq8")
+                self.sur = gwsurrogate.LoadSurrogate(model)
             except ValueError:
                 raise ValueError(f"Surrogate model {name} not in {gwsurrogate.SURROGATE_CLASSES}")
             if q < 1:

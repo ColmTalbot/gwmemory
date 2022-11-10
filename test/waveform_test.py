@@ -4,6 +4,7 @@ from gwmemory import time_domain_memory
 
 TEST_MODELS = [
     "IMRPhenomD",
+    "IMRPhenomT",
     "SEOBNRv4",
     "NRSur7dq4",
     "NRHybSur3dq8",
@@ -21,7 +22,7 @@ def test_waveform_model_runs(model):
     spin_2 = [0, 0, 0]
     inc = 1
     phase = 1
-    time_domain_memory(
+    mem, _ = time_domain_memory(
         model=model,
         q=q,
         total_mass=total_mass,
@@ -31,3 +32,5 @@ def test_waveform_model_runs(model):
         inc=inc,
         phase=phase,
     )
+    assert mem["plus"][-1] > 1e-22
+
