@@ -1,0 +1,38 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "setuptools_scm[toml]>=3.4.3",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "gwmemory/_version.py"
+
+[project]
+name = "gwmemory"
+authors = [
+    {name = "Colm Talbot", email = "colm.talbot@ligo.org"},
+]
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dynamic = ["version"]
+
+dependencies = [
+    "numpy",
+    "scipy",
+    "pandas",
+]
+
+[project.optional-dependencies]
+dev = [
+    "sympy",
+    "numba",
+]
+
+[tool.setuptools.package-data]
+gwmemory = ["data/*.dat"]
