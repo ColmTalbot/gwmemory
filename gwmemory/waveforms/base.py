@@ -13,7 +13,14 @@ class MemoryGenerator(object):
         self.h_lm = h_lm
         self.times = times
         self.modes = self.h_lm.keys()
-        self.distance = None
+
+    @property
+    def distance(self):
+        return getattr(self, "_distance", "None")
+
+    @distance.setter
+    def distance(self, distance):
+        self._distance = distance
 
     @property
     def delta_t(self):
