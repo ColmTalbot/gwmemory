@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.interpolate import interp1d
+from scipy.integrate import cumulative_trapezoid
 
 from ..angles import load_gamma
 from ..utils import CC, MPC, combine_modes
@@ -7,9 +8,6 @@ from ..utils import CC, MPC, combine_modes
 
 class MemoryGenerator(object):
     def __init__(self, name, h_lm, times):
-
-        if np.max(np.abs(np.diff(np.diff(times)))) > 1e-12: # allow for some accumulation of round-off error
-            raise ValueError("GWMemory assumes a uniform time grid")
 
         self.name = name
         self.h_lm = h_lm
@@ -51,7 +49,7 @@ class MemoryGenerator(object):
 
         dhlm_dt = dict()
         for lm in lms:
-            dhlm_dt[lm] = np.gradient(self.h_lm[lm], self.delta_t)
+            dhlm_dt[lm] = np.gradient(self.h_lm[lm], self.times)
 
         dhlm_dt_sq = dict()
         for lm in lms:
@@ -86,10 +84,10 @@ class MemoryGenerator(object):
                         and f"{l1}{m1}{l2}{m2}" in gamma_lmlm[delta_m]
                     ],
                     axis=0,
-                )
+                ) * np.ones(len(self.times), dtype=complex)
 
         h_mem_lm = {
-            lm: const * np.cumsum(dh_mem_dt_lm[lm]) * self.delta_t
+            lm: const * cumulative_trapezoid(dh_mem_dt_lm[lm], self.times, initial=0)
             for lm in dh_mem_dt_lm
         }
 
@@ -97,6 +95,14 @@ class MemoryGenerator(object):
             return h_mem_lm, self.times
         else:
             return combine_modes(h_mem_lm, inc, phase), self.times
+
+    def apply_time_array(self, times, h_lm=None):
+        if h_lm is None:
+            h_lm = self.h_lm
+        output = dict()
+        for mode in h_lm:
+            output[mode] = interp1d(self.times, h_lm[mode])(times)
+        return output
 
     def set_time_array(self, times):
         """
@@ -107,7 +113,5 @@ class MemoryGenerator(object):
         times: array
             New time array for waveform to be evaluated on.
         """
-        for mode in self.modes:
-            interpolated_mode = interp1d(self.times, self.h_lm)
-            self.h_lm[mode] = interpolated_mode[times]
+        self.h_lm = self.apply_time_array(times)
         self.times = times

@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import numpy as np
 
 from ..utils import combine_modes, load_sxs_waveform, CC, GG, MPC, SOLAR_MASS
@@ -100,7 +102,14 @@ class SXSNumericalRelativity(MemoryGenerator):
         times: np.array
             Times on which waveform is evaluated.
         """
+        output = deepcopy(self.h_lm)
+        if modes is not None:
+            for mode in list(output.keys()):
+                if mode not in modes:
+                    del output[mode]
+        if times is not None:
+            output = self.apply_time_array(times, output)
         if inc is None or phase is None:
-            return self.h_lm, times
+            return output, times
         else:
-            return combine_modes(self.h_lm, inc, phase), times
+            return combine_modes(output, inc, phase), times
