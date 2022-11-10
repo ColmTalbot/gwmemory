@@ -104,7 +104,7 @@ class Surrogate(MemoryGenerator):
                 print("$ conda install -c conda-forge gwsurrogate")
                 raise
             try:
-                self.sur = gwsurrogate.LoadSurrogate("NRHybSur3dq8")
+                self.sur = gwsurrogate.LoadSurrogate(name)
             except ValueError:
                 raise ValueError(f"Surrogate model {name} not in {gwsurrogate.SURROGATE_CLASSES}")
             if q < 1:
@@ -199,7 +199,8 @@ class Surrogate(MemoryGenerator):
                     mode_list=self.modes,
                     units="mks",
                 )
-                del h_lm[(5, 5)]
+                if (5, 5) in h_lm:
+                    del h_lm[(5, 5)]
                 old_keys = [(ll, mm) for ll, mm in h_lm.keys()]
                 for ll, mm in old_keys:
                     if mm > 0 and (ll, -mm) not in h_lm:
