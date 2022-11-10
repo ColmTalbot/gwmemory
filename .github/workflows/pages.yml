@@ -1,0 +1,64 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  schedule:
+    - cron: "0 0 * * 0"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: s-weigand/setup-conda@v1
+
+      - name: Install dependencies
+        run: |
+          conda install pip setuptools
+          conda install flake8 pytest-cov
+          conda install -c conda-forge numpy pandas scipy
+          conda install -c conda-forge gwsurrogate python-lalsimulation
+          python -m pip install nrsur7dq2
+          python -m pip install https://github.com/matplotlib/basemap/archive/master.zip
+          conda install ipykernel jupyter ipython
+          conda install ipython_genutils jinja2 nbsphinx numpydoc pandoc pygments sphinx sphinx_rtd_theme
+      - name: Install gwmemory
+        run: |
+          pip install .
+      - name: List installed
+        run: |
+          conda list
+        
+      - name: Run notebook
+        run: |
+          cd examples
+          jupyter nbconvert --to html --execute GWMemory.ipynb
+          cd ..
+
+      - name: Build documentation
+        run: |
+          cd docs
+          mv Makefile.gh_pages Makefile
+          cp ../examples/GWMemory.ipynb ./example.ipynb
+          make clean
+          make html
+          cd ../
+          touch _gh-pages/latest/html/.nojekyll
+          rm -r docs
+          mv _gh-pages/latest/html docs
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
