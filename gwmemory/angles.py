@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-from functools import lru_cache
-
-import pkg_resources
 import glob
+from functools import lru_cache
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
+
 try:
     from sympy.physics.wigner import wigner_3j
 except ImportError:
@@ -115,29 +115,15 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
     if incs is None:
         incs = np.linspace(0, np.pi, 500)
     phase = 0
-    if theta is None:
-        theta = np.linspace(0, np.pi, 250)
-    if phi is None:
-        phi = np.linspace(0, 2 * np.pi, 500)
 
     if y_lmlm_factor is None:
-        s = -2
-        th, ph = np.meshgrid(theta, phi)
-
-        l1, m1 = int(lm1[0]), int(lm1[1:])
-        l2, m2 = int(lm2[0]), int(lm2[1:])
-
-        y_lmlm_factor = (
-            harmonics.sYlm(s, l1, m1, th, ph)
-            * (-1) ** (m2)
-            * harmonics.sYlm(-s, l2, -m2, th, ph)
-        )
+        y_lmlm_factor, theta, phi = ylmlm_factor(theta=theta, phi=phi, lm1=lm1, lm2=lm2)
 
     lambda_lm1_lm2 = np.array(
         [lambda_lmlm(inc, phase, lm1, lm2, theta, phi, y_lmlm_factor) for inc in incs]
     )
 
-    sin_inc = np.sin(-incs)
+    sin_inc = -np.sin(incs)
 
     harm = {}
     for l, m in harmonics.lmax_modes(20):
@@ -151,17 +137,39 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
         if ell < abs(delta_m):
             gammas.append(0)
         else:
-            gammas.append(
+            gammas.append(np.real(
                 2
                 * np.pi
                 * np.trapz(
                     lambda_lm1_lm2
-                    * np.real(np.conjugate(harm[f"{ell}{delta_m}"]) * sin_inc),
+                    * np.conjugate(harm[f"{ell}{-delta_m}"])
+                    * sin_inc,
                     incs,
                 )
-            )
+            ))
 
     return gammas
+
+
+def ylmlm_factor(theta, phi, lm1, lm2):
+    if theta is None:
+        theta = np.linspace(0, np.pi, 250)
+    if phi is None:
+        phi = np.linspace(0, 2 * np.pi, 500)
+
+    ss = -2
+
+    th, ph = np.meshgrid(theta, phi)
+
+    l1, m1 = int(lm1[0]), int(lm1[1:])
+    l2, m2 = int(lm2[0]), int(lm2[1:])
+
+    y_lmlm_factor = (
+        harmonics.sYlm(ss, l1, m1, th, ph)
+        * np.conjugate(harmonics.sYlm(ss, l2, m2, th, ph))
+        * (-1) ** (l1 + l2)
+    )
+    return y_lmlm_factor, theta, phi
 
 
 def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
@@ -200,31 +208,15 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
     lambda_mat: array
         three by three transverse traceless matrix of the appropriate integral
     """
-    if theta is None:
-        theta = np.linspace(0, np.pi, 250)
-    if phi is None:
-        phi = np.linspace(0, 2 * np.pi, 500)
-
     if y_lmlm_factor is None:
-        ss = -2
+        y_lmlm_factor, theta, phi = ylmlm_factor(theta=theta, phi=phi, lm1=lm1, lm2=lm2)
 
-        th, ph = np.meshgrid(theta, phi)
-
-        l1, m1 = int(lm1[0]), int(lm1[1:])
-        l2, m2 = int(lm2[0]), int(lm2[1:])
-
-        y_lmlm_factor = (
-            harmonics.sYlm(ss, l1, m1, th, ph)
-            * (-1) ** (l2 + m2)
-            * harmonics.sYlm(-ss, l2, -m2, th, ph)
-        )
-
-    n = [
+    n = np.array([
         np.outer(np.cos(phi), np.sin(theta)),
         np.outer(np.sin(phi), np.sin(theta)),
         np.outer(np.ones_like(phi), np.cos(theta)),
-    ]
-    line_of_sight = [np.sin(inc) * np.cos(phase), np.sin(inc) * np.sin(phase), np.cos(inc)]
+    ])
+    line_of_sight = np.array([np.sin(inc) * np.cos(phase), np.sin(inc) * np.sin(phase), np.cos(inc)])
     n_dot_line_of_sight = sum(n_i * N_i for n_i, N_i in zip(n, line_of_sight))
     n_dot_line_of_sight[n_dot_line_of_sight == 1] = 0
     denominator = 1 / (1 - n_dot_line_of_sight)
@@ -328,15 +320,15 @@ def omega_ij_to_omega_pol(omega_ij, inc, phase):
     """
     psi = 0.0
 
-    wx, wy, wz = wave_frame(inc, phase, psi)
+    wx, wy = wave_frame(inc, phase, psi)
 
-    omega_plus = np.einsum("ij,ij->", omega_ij, plus_tensor(wx, wy, wz))
-    omega_cross = np.einsum("ij,ij->", omega_ij, cross_tensor(wx, wy, wz))
+    omega_plus = np.einsum("ij,ij->", omega_ij, plus_tensor(wx, wy))
+    omega_cross = np.einsum("ij,ij->", omega_ij, cross_tensor(wx, wy))
 
     return omega_plus, omega_cross
 
 
-def plus_tensor(wx, wy, wz=None):
+def plus_tensor(wx, wy):
     """
     Calculate the plus polarization tensor for some basis.
     c.f., eq. 2 of https://arxiv.org/pdf/1710.03794.pdf
@@ -345,7 +337,7 @@ def plus_tensor(wx, wy, wz=None):
     return e_plus
 
 
-def cross_tensor(wx, wy, wz=None):
+def cross_tensor(wx, wy):
     """
     Calculate the cross polarization tensor for some basis.
     c.f., eq. 2 of https://arxiv.org/pdf/1710.03794.pdf
@@ -367,9 +359,8 @@ def wave_frame(theta, phi, psi=0):
 
     wx = -u * sps - v * cps
     wy = -u * cps + v * sps
-    wz = np.cross(wx, wy)
 
-    return wx, wy, wz
+    return wx, wy
 
 
 def load_gamma(data_dir=None):
@@ -388,7 +379,7 @@ def load_gamma(data_dir=None):
         Dictionary of gamma_lmlm.
     """
     if data_dir is None:
-        data_dir = pkg_resources.resource_filename(__name__, "data")
+        data_dir = str(Path(__file__).parent / "data")
     data_files = glob.glob(f"{data_dir}/gamma*.dat")
     gamma_lmlm = {}
     for file_name in data_files:
