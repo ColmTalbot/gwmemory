@@ -6,11 +6,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-try:
-    from sympy.physics.wigner import wigner_3j
-except ImportError:
-    pass
-
 from . import harmonics
 
 
@@ -60,6 +55,7 @@ def analytic_gamma(lm1, lm2, ell):
     float: the gamma coefficient
 
     """
+    from sympy.physics.wigner import wigner_3j
     ell1, m1 = lm1
     ell2, m2 = lm2
     s1, s2, s3 = -2, 2, 0
