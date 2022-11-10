@@ -73,7 +73,8 @@ setup(
     package_data={
         "gwmemory": ["data/gamma_coefficients*.dat", "data/*WEB.dat", ".version"]
     },
-    install_requires=["future", "numpy", "scipy", "pandas", "deepdish"],
+    python_requires=">=3.7",
+    install_requires=["future", "numpy", "scipy", "pandas"],
     classifiers=[
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",

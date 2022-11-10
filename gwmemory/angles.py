@@ -1,12 +1,77 @@
-#!/bin/python
-from __future__ import division, print_function
+#!/usr/bin/python3
+from functools import cache
+
 import pkg_resources
 import glob
 
 import numpy as np
 import pandas as pd
+try:
+    from sympy.physics.wigner import wigner_3j
+except ImportError:
+    pass
 
 from . import harmonics
+
+
+@cache
+def memory_correction(ell, ss=0):
+    """
+    Correction to the Gamma function for the operator in Eq. (12) of
+    arXiv:2011.01309
+
+    Parameters
+    ----------
+    ell: int
+        degree of the spherical harmonic
+    ss: int
+        spin-weight of the waveform being adjusted, ss=0 for out purpose
+
+    Returns
+    -------
+    int: the correction
+
+    """
+    if ell < 2:
+        return 0
+    return (
+        ((ell - (ss - 1)) * (ell + ss) * (ell - (ss - 2)) * (ell + (ss - 1)))**0.5
+        * 4 / ((ell + 2) * (ell + 1) * ell * (ell - 1))
+    )
+
+
+def analytic_gamma(lm1, lm2, ell):
+    """
+    Analytic function to compute gamma_lmlm_l Eq. (8) of arXiv:1807.0090
+
+    The primary component is taken from https://github.com/moble/spherical/blob/c3fe00ab6d79732fe1cbc6d56574ea94702d89ae/spherical/multiplication.py.
+
+    Parameters
+    ----------
+    lm1: tuple
+        tuple of first spherical harmonic mode
+    lm2: tuple
+        tuple of second spherical harmonic mode
+    ell: int
+        The degree of the output spherical harmonic
+
+    Returns
+    -------
+    float: the gamma coefficient
+
+    """
+    ell1, m1 = lm1
+    ell2, m2 = lm2
+    s1, s2, s3 = -2, 2, 0
+    m2 = -m2
+    m3 = m1 + m2
+    return (
+        (-1)**(ell1 + ell2 + ell + m3 + m2)
+        * (2 * ell1 + 1)**0.5 * (2 * ell2 + 1)**0.5 * (2 * ell + 1)**0.5
+        * float(wigner_3j(ell1, ell2, ell, s1, s2, -s3) * wigner_3j(ell1, ell2, ell, m1, m2, -m3))
+        * np.pi**0.5 / 2
+        * memory_correction(ell)
+    )
 
 
 def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
@@ -39,6 +104,10 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
     -------
     gammas: list
         List of coefficients for output modes, l=range(2, 20), m=m1-m2
+
+    Notes
+    -----
+    I recommend using :code:`analytic_gamma` instead, it is much more precise.
     """
     l1, m1 = int(lm1[0]), int(lm1[1:])
     l2, m2 = int(lm2[0]), int(lm2[1:])
@@ -60,7 +129,7 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
 
         y_lmlm_factor = (
             harmonics.sYlm(s, l1, m1, th, ph)
-            * (-1) ** (l2 + m2)
+            * (-1) ** (m2)
             * harmonics.sYlm(-s, l2, -m2, th, ph)
         )
 
@@ -155,10 +224,10 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
         np.outer(np.sin(phi), np.sin(theta)),
         np.outer(np.ones_like(phi), np.cos(theta)),
     ]
-    N = [np.sin(inc) * np.cos(phase), np.sin(inc) * np.sin(phase), np.cos(inc)]
-    n_dot_N = sum(n_i * N_i for n_i, N_i in zip(n, N))
-    n_dot_N[n_dot_N == 1] = 0
-    denominator = 1 / (1 - n_dot_N)
+    line_of_sight = [np.sin(inc) * np.cos(phase), np.sin(inc) * np.sin(phase), np.cos(inc)]
+    n_dot_line_of_sight = sum(n_i * N_i for n_i, N_i in zip(n, line_of_sight))
+    n_dot_line_of_sight[n_dot_line_of_sight == 1] = 0
+    denominator = 1 / (1 - n_dot_line_of_sight)
 
     sin_array = np.outer(phi ** 0, np.sin(theta))
 
@@ -173,8 +242,8 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
                 * y_lmlm_factor
                 * (
                     n[j] * n[k]
-                    - (n[j] * N[k] + n[k] * N[j]) * n_dot_N
-                    + N[j] * N[k] * n_dot_N ** 2
+                    - (n[j] * line_of_sight[k] + n[k] * line_of_sight[j]) * n_dot_line_of_sight
+                    + line_of_sight[j] * line_of_sight[k] * n_dot_line_of_sight ** 2
                 )
             )
             angle_integrals_r[j, k] = np.trapz(np.trapz(np.real(integrand), theta), phi)
@@ -182,7 +251,7 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
             angle_integrals_r[k, j] = np.trapz(np.trapz(np.real(integrand), theta), phi)
             angle_integrals_i[k, j] = np.trapz(np.trapz(np.imag(integrand), theta), phi)
 
-    proj = np.identity(3) - np.outer(N, N)
+    proj = np.identity(3) - np.outer(line_of_sight, line_of_sight)
     lambda_mat = angle_integrals_r + 1j * angle_integrals_i
     lambda_mat -= proj * np.trace(lambda_mat) / 2
 
