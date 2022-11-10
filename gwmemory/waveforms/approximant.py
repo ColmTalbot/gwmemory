@@ -44,11 +44,11 @@ class Approximant(MemoryGenerator):
         if spin_1 is None:
             self.S1 = np.array([0.0, 0.0, 0.0])
         else:
-            self.S1 = np.array(spin_1)
+            self.S1 = np.array(spin_1).astype(float)
         if spin_2 is None:
             self.S2 = np.array([0.0, 0.0, 0.0])
         else:
-            self.S2 = np.array(spin_2)
+            self.S2 = np.array(spin_2).astype(float)
         self.distance = distance
 
         self.m1 = self.MTot / (1 + self.q)
