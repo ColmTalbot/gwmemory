@@ -1,0 +1,73 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Unit testing
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - release/**
+  pull_request:
+    branches:
+      - main
+      - master
+      - release/**
+  schedule:
+    - cron: "0 0 * * 0"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Add conda to system path
+      run: |
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        echo $CONDA/bin >> $GITHUB_PATH
+        conda config --add channels conda-forge
+    - name: Install dependencies
+      run: |
+        conda install flake8 pytest-cov
+        conda install -c conda-forge numpy pandas scipy
+        conda install -c conda-forge gwsurrogate python-lalsimulation
+        conda install pip setuptools
+    - name: Install gwmemory
+      run: |
+        pip install .
+    - name: List installed
+      run: |
+        python -m pip list
+#    - name: Run pre-commit checks
+#      run: |
+#        pre-commit run --all-files --verbose --show-diff-on-failure
+#        jupyter nbconvert --clear-output --inplace examples/*.ipynb
+#        codespell examples/*.ipynb -L "hist"
+#        git reset --hard
+    - name: Test with pytest
+      run: |
+        pytest --cov gwmemory -ra --color yes --cov-report=xml --junitxml=pytest.xml
+    - name: Publish coverage to Codecov
+      uses: codecov/codecov-action@v1.2.1
+      with:
+        files: coverage.xml
+        flags: python${{ matrix.python-version }}
+    - name: Coverage report
+      run: python -m coverage report --show-missing
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: pytest-${{ matrix.python-version }}
+        path: pytest.xml
