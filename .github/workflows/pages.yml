@@ -26,7 +26,7 @@ jobs:
           sudo apt-get install texlive-latex-extra texlive-fonts-recommended dvipng cm-super
           conda install pip setuptools
           conda install flake8 pytest-cov
-          conda install -c conda-forge numpy pandas scipy
+          conda install -c conda-forge numpy pandas scipy matplotlib
           conda install -c conda-forge gwsurrogate python-lalsimulation
           python -m pip install nrsur7dq2
           conda install -c conda-forge basemap
