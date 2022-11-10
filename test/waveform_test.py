@@ -31,6 +31,7 @@ def test_waveform_model_runs(model):
         spin_2=spin_2,
         inc=inc,
         phase=phase,
+        minimum_frequency=20,
     )
     assert mem["plus"][-1] > 1e-22
 
