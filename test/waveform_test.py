@@ -76,4 +76,4 @@ def test_nr_waveform():
     mem2, times_2 = loaded.time_domain_memory()
     assert np.allclose(mem1[(2, 0)], mem2[(2, 0)])
     assert np.allclose(times_1, times_2)
-    os.remove("test_waveform.h5").
+    os.remove("test_waveform.h5")
