@@ -3,7 +3,6 @@
 # This code package includes code for calculating the properties of quasinormal
 # black hole modes
 
-from __future__ import division
 import os
 import pkg_resources
 import numpy as np

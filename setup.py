@@ -65,7 +65,7 @@ setup(
     long_description=long_description,
     url="https://github.com/ColmTalbot/gwmemory",
     author="Colm Talbot",
-    author_email="colm.talbot@monash.edu",
+    author_email="colm.talbot@ligo.org",
     license="MIT",
     version=VERSION,
     packages=["gwmemory", "gwmemory.waveforms"],
@@ -74,7 +74,7 @@ setup(
         "gwmemory": ["data/gamma_coefficients*.dat", "data/*WEB.dat", ".version"]
     },
     python_requires=">=3.7",
-    install_requires=["future", "numpy", "scipy", "pandas"],
+    install_requires=["numpy", "scipy", "pandas"],
     classifiers=[
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
