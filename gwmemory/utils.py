@@ -1,75 +1,18 @@
 import numpy as np
 
-from .harmonics import sYlm
+from .harmonics import sYlm, lmax_modes
 
 
 # Constants for conversions
-CC = 299792458.0  # speed of light in m/s
-GG = 6.67384e-11  # Newton in m^3 / (KG s^2)
-SOLAR_MASS = 1.98855 * 10 ** (30)  # solar mass in  KG
+# taken from astropy==5.0.1
+CC = 299792458.0
+GG = 6.6743e-11
+SOLAR_MASS = 1.988409870698051e+30
 KG = 1 / SOLAR_MASS
 METRE = CC ** 2 / (GG * SOLAR_MASS)
 SECOND = CC * METRE
 
-MPC = 3.08568e22  # MPC in metres
-
-
-def m12_to_mc(m1, m2):
-    """convert m1 and m2 to chirp mass"""
-    return (m1 * m2) ** (3.0 / 5.0) / (m1 + m2) ** (1.0 / 5.0)
-
-
-def m12_to_symratio(m1, m2):
-    """convert m1 and m2 to symmetric mass ratio"""
-    return m1 * m2 / (m1 + m2) ** 2
-
-
-def mc_eta_to_m12(mc, eta):
-    """
-    Convert chirp mass and symmetric mass ratio to component masses.
-
-    Input: mc - chirp mass
-    eta - symmetric mass ratio
-    Return: m1, m2 - primary and secondary masses, m1>m2
-    """
-    m1 = mc / eta ** 0.6 * (1 + (1 - 4 * eta) ** 0.5) / 2
-    m2 = mc / eta ** 0.6 * (1 - (1 - 4 * eta) ** 0.5) / 2
-    return m1, m2
-
-
-def m_sol_to_geo(mm):
-    """convert from solar masses to geometric units"""
-    return mm / KG * GG / CC ** 2
-
-
-def m_geo_to_sol(mm):
-    """convert from geometric units to solar masses"""
-    return mm * KG / GG * CC ** 2
-
-
-def time_s_to_geo(time):
-    """convert time from seconds to geometric units"""
-    return time * CC
-
-
-def time_geo_to_s(time):
-    """convert time from seconds to geometric units"""
-    return time / CC
-
-
-def freq_Hz_to_geo(freq):
-    """convert freq from Hz to geometric units"""
-    return freq / CC
-
-
-def freq_geo_to_Hz(freq):
-    """convert freq from geometric units to Hz"""
-    return freq * CC
-
-
-def dist_Mpc_to_geo(dist):
-    """convert distance from MPC to geometric units (i.e., metres)"""
-    return dist * MPC
+MPC = 3.085677581491367e+22
 
 
 def nfft(ht, sampling_frequency):
@@ -129,19 +72,17 @@ def load_sxs_waveform(file_name, modes=None, extraction="OutermostExtraction.dir
     output: dict
         Dictionary of requested spherical harmonic modes.
     """
-    import deepdish
-    waveform = deepdish.io.load(file_name)
+    import h5py
+
     output = dict()
-    if modes is None:
-        for ell in range(2, 5):
-            for mm in range(-ell, ell + 1):
-                mode_array = waveform[extraction][f"Y_l{ell}_m{mm}.dat"][:, 1:]
-                output[(ell, mm)] = mode_array[:, 1] + 1j * mode_array[:, 2]
-    else:
-        for mode in modes:
-            mode_array = waveform[extraction][f"Y_l{mode[0]}_m{mode[1]}.dat"]
-            output[mode] = mode_array[:, 1] + 1j * mode_array[:, 2]
-    times = mode_array[:, 0]
+    with h5py.File(file_name, "r") as ff:
+        waveform = ff[extraction]
+        if modes is None:
+            modes = lmax_modes(4)
+        for (ell, mm) in modes:
+            mode_array = waveform[f"Y_l{ell}_m{mm}.dat"][()]
+            output[(ell, mm)] = mode_array[:, 1] + 1j * mode_array[:, 2]
+        times = mode_array[:, 0]
     return output, times
 
 

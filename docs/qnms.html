@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quasi-normal mode functions &mdash; GWMemory 0.1.dev1+g85f7a0a documentation</title>
+  <title>Quasi-normal mode functions &mdash; GWMemory 0.1.dev1+g79e3647 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -103,33 +103,6 @@
 <div class="section" id="module-gwmemory.qnms">
 <span id="quasi-normal-mode-functions"></span><h1>Quasi-normal mode functions<a class="headerlink" href="#module-gwmemory.qnms" title="Permalink to this heading"></a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="gwmemory.qnms.amplitude">
-<span class="sig-prename descclassname"><span class="pre">gwmemory.qnms.</span></span><span class="sig-name descname"><span class="pre">amplitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.amplitude" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate the amplitude of the models relative to the 22 mode.
-see equations (5) – (8) from Gossan et al. (2012) (note there is a
-difference between the arXiv paper and the real paper)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>mass_1: float</strong></dt><dd><p>Mass of more massive BH</p>
-</dd>
-<dt><strong>mass_2: float</strong></dt><dd><p>Mass of less massive BH</p>
-</dd>
-<dt><strong>ell: int</strong></dt><dd><p>Spherical harmonic l</p>
-</dd>
-<dt><strong>mm: int</strong></dt><dd><p>Spherical harmonic m</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>float: Amplitude of the lm harmonic relative to the 22 mode.</dt><dd></dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="gwmemory.qnms.final_mass_spin">
 <span class="sig-prename descclassname"><span class="pre">gwmemory.qnms.</span></span><span class="sig-name descname"><span class="pre">final_mass_spin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.final_mass_spin" title="Permalink to this definition"></a></dt>
 <dd><p>Given initial total mass and mass ratio, calculate the final mass, M_f
@@ -180,115 +153,6 @@ This version uses OBSERVER’S UNITS.</p>
 <dt>omega_lmn: float</dt><dd><p>Angular frequency of mode in geometric units</p>
 </dd>
 <dt>tau_lmn: float</dt><dd><p>Dampling time of mode in geometric units</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="gwmemory.qnms.freq_damping_obs">
-<span class="sig-prename descclassname"><span class="pre">gwmemory.qnms.</span></span><span class="sig-name descname"><span class="pre">freq_damping_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.freq_damping_obs" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate the quasinormal mode freq and damping time for a black hole.
-This version uses OBSERVER’S UNITS.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>mass: float</strong></dt><dd><p>BH mass in solar masses</p>
-</dd>
-<dt><strong>spin: float</strong></dt><dd><p>BH dimensionless spin</p>
-</dd>
-<dt><strong>ell: int, optional</strong></dt><dd><p>Spherical harmonic l, default=2</p>
-</dd>
-<dt><strong>mm: int, optional</strong></dt><dd><p>Spherical harmonic m, default=2</p>
-</dd>
-<dt><strong>nn: int, optional</strong></dt><dd><p>QNM harmonic, default=0 is the fundamental</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>f_lmn: float</dt><dd><p>Frequency of mode in Hz</p>
-</dd>
-<dt>tau_lmn: float</dt><dd><p>Dampling time of mode in seconds</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="gwmemory.qnms.hp_hx">
-<span class="sig-prename descclassname"><span class="pre">gwmemory.qnms.</span></span><span class="sig-name descname"><span class="pre">hp_hx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iota</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.hp_hx" title="Permalink to this definition"></a></dt>
-<dd><p>Output hplus and hcross template:
-both calculated using eqns. (1) and (2) from Gossan et al.
-but with the normalisations ignored – i.e., A_{ell m}=1, M_f = 1
-This is in geometric units.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>time: array-like</strong></dt><dd><p>Array of times to evaluate template on, in geometric units.</p>
-</dd>
-<dt><strong>omega: float</strong></dt><dd><p>Angular frequency</p>
-</dd>
-<dt><strong>tau: float</strong></dt><dd><p>Damping time</p>
-</dd>
-<dt><strong>ell: int</strong></dt><dd><p>Spherical harmonic l</p>
-</dd>
-<dt><strong>mm: int</strong></dt><dd><p>Spherical harmonic m</p>
-</dd>
-<dt><strong>iota: float</strong></dt><dd><p>Angle between spin axis and line-of-sight to observer</p>
-</dd>
-<dt><strong>phi: float</strong></dt><dd><p>Azimuth angle of BH with respect to observer</p>
-</dd>
-<dt><strong>phase: float</strong></dt><dd><p>The third Euler angle</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>h_plus: array-like</dt><dd><p>Plus polarisation</p>
-</dd>
-<dt>h_cross: array-like</dt><dd><p>Cross polarisation</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="gwmemory.qnms.hp_hx_template">
-<span class="sig-prename descclassname"><span class="pre">gwmemory.qnms.</span></span><span class="sig-name descname"><span class="pre">hp_hx_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iota</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.hp_hx_template" title="Permalink to this definition"></a></dt>
-<dd><p>Output hplus and hcross template:
-both calculated using eqns. (1) and (2) from Gossan et al.
-but with the normalisations ignored – i.e., A_{ell m}=1, M_f = 1
-This is in geometric units.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>time: array-like</strong></dt><dd><p>Array of times to evaluate template on, in geometric units.</p>
-</dd>
-<dt><strong>omega: float</strong></dt><dd><p>Angular frequency</p>
-</dd>
-<dt><strong>tau: float</strong></dt><dd><p>Damping time</p>
-</dd>
-<dt><strong>ell: int</strong></dt><dd><p>Spherical harmonic l</p>
-</dd>
-<dt><strong>mm: int</strong></dt><dd><p>Spherical harmonic m</p>
-</dd>
-<dt><strong>iota: float</strong></dt><dd><p>Angle between spin axis and line-of-sight to observer</p>
-</dd>
-<dt><strong>phi: float</strong></dt><dd><p>Azimuth angle of BH with respect to observer</p>
-</dd>
-<dt><strong>phase: float</strong></dt><dd><p>The third Euler angle</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>h_plus: array-like</dt><dd><p>Plus polarisation</p>
-</dd>
-<dt>h_cross: array-like</dt><dd><p>Cross polarisation</p>
 </dd>
 </dl>
 </dd>
