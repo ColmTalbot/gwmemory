@@ -76,6 +76,7 @@ class Surrogate(MemoryGenerator):
                 from NRSur7dq2 import NRSurrogate7dq2
             except ModuleNotFoundError:
                 print("nrsur7sq2 is required for the Surrogate memory generator.")
+                print("$ python -m pip install nrsur7dq2")
                 raise
 
             self.sur = NRSurrogate7dq2()
@@ -95,18 +96,19 @@ class Surrogate(MemoryGenerator):
             else:
                 self.S2 = np.array(spin_2)
 
-        elif name.lower() == "nrhybsur3dq8":
+        else:
             try:
                 import gwsurrogate
             except ModuleNotFoundError:
                 print("gwsurrogate is required for the Surrogate memory generator.")
+                print("$ conda install -c conda-forge gwsurrogate")
                 raise
-
-            self.sur = gwsurrogate.LoadSurrogate("NRHybSur3dq8")
+            try:
+                self.sur = gwsurrogate.LoadSurrogate("NRHybSur3dq8")
+            except ValueError:
+                raise ValueError(f"Surrogate model {name} not in {gwsurrogate.SURROGATE_CLASSES}")
             if q < 1:
                 q = 1 / q
-            if q > 8:
-                print("WARNING: Hybrdid surrogate waveform not tested for q>8.")
             self.q = q
             self.MTot = total_mass
             if spin_1 is None:
@@ -119,8 +121,6 @@ class Surrogate(MemoryGenerator):
                 self.chi_2 = spin_2
             self.minimum_frequency = minimum_frequency
             self.sampling_frequency = sampling_frequency
-        else:
-            raise ValueError("Surrogate model {} not implemented.".format(name))
         self.distance = distance
         self.LMax = l_max
         self.modes = modes
@@ -187,9 +187,11 @@ class Surrogate(MemoryGenerator):
                     t=times,
                     LMax=self.LMax,
                 )
-            elif self.name.lower() == "nrhybsur3dq8":
-                times, h_lm = self.sur(
-                    x=[self.q, self.chi_1, self.chi_2],
+            else:
+                times, h_lm, _ = self.sur(
+                    q=self.q,
+                    chiA0=self.chi_1,
+                    chiB0=self.chi_2,
                     M=self.MTot,
                     dist_mpc=self.distance,
                     dt=1 / self.sampling_frequency,
@@ -200,7 +202,7 @@ class Surrogate(MemoryGenerator):
                 del h_lm[(5, 5)]
                 old_keys = [(ll, mm) for ll, mm in h_lm.keys()]
                 for ll, mm in old_keys:
-                    if mm > 0:
+                    if mm > 0 and (ll, -mm) not in h_lm:
                         h_lm[(ll, -mm)] = (-1) ** ll * np.conj(h_lm[(ll, mm)])
 
             available_modes = set(h_lm.keys())
