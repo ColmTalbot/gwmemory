@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from functools import cache
+from functools import lru_cache
 
 import pkg_resources
 import glob
@@ -14,7 +14,7 @@ except ImportError:
 from . import harmonics
 
 
-@cache
+@lru_cache
 def memory_correction(ell, ss=0):
     """
     Correction to the Gamma function for the operator in Eq. (12) of
