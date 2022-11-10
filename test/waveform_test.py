@@ -36,6 +36,20 @@ def test_waveform_model_runs(model):
     assert mem["plus"][-1] > 1e-22
 
 
+@pytest.mark.parametrize("model", TEST_MODELS)
+def test_waveform_multiple_runs(model):
+    """
+    Checks an issue reported in
+    https://github.com/ColmTalbot/gwmemory/pull/6
+    """
+    times = np.linspace(-0.04, -0.03, 10001)
+    mem_1, times_1 = time_domain_memory(model, **PARAMS, times=times)
+    mem_2, times_2 = time_domain_memory(model, **PARAMS, times=times)
+    assert np.allclose(times_1, times_2)
+    for mode in mem_1:
+        assert np.allclose(mem_1[mode], mem_2[mode])
+
+
 @pytest.mark.parametrize(("model", "name"), ([Surrogate, "NRSur7dq4"], [Approximant, "IMRPhenomT"]))
 def test_minimal_arguments(model, name):
     """
