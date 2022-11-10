@@ -1,5 +1,3 @@
-import os
-
 import numpy as np
 
 from .harmonics import sYlm
@@ -155,12 +153,3 @@ def combine_modes(h_lm, inc, phase):
     total = sum([h_lm[(l, m)] * sYlm(-2, l, m, inc, phase) for l, m in h_lm])
     h_plus_cross = dict(plus=total.real, cross=-total.imag)
     return h_plus_cross
-
-
-def get_version_information():
-    version_file = os.path.join(os.path.dirname(__file__), ".version")
-    try:
-        with open(version_file, "r") as f:
-            return f.readline().rstrip()
-    except EnvironmentError:
-        print("No version information file '.version' found")
