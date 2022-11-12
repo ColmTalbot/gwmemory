@@ -16,7 +16,7 @@ class MemoryGenerator(object):
 
     @property
     def distance(self):
-        return getattr(self, "_distance", "None")
+        return getattr(self, "_distance", None)
 
     @distance.setter
     def distance(self, distance):
@@ -38,11 +38,10 @@ class MemoryGenerator(object):
             will be returned.
         phase: float, optional
             Reference phase of the source, if None, the spherical harmonic
-            modes will be returned. For CBCs this is the phase at coalesence.
-        gamma_lmlm: dict
+            modes will be returned. For CBCs this is the phase at coalescence.
+        gamma_lmlm: dict, deprecated
             Dictionary of arrays defining the angular dependence of the
-            different memory modes, default=None if None the function will
-            attempt to load them.
+            different memory modes, these are now computed/cached on the fly.
 
         Return
         ------
@@ -65,7 +64,7 @@ class MemoryGenerator(object):
                     index = (lm, lmp)
                     dhlm_dt_sq[index] = dhlm_dt[lm] * np.conjugate(dhlm_dt[lmp])
                 except KeyError:
-                    None
+                    pass
 
         if gamma_lmlm is None:
             gamma_lmlm = load_gamma()
