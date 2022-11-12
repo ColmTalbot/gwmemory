@@ -82,9 +82,10 @@ class MWM(MemoryGenerator):
 
         # calculate the QNM frequencies and damping times
         # from the fits in Table VIII of Berti et al. (2006)
-        omega220, tau220 = freq_damping(Mf_geo, jj, ell=2, mm=2, nn=0)
-        omega221, tau221 = freq_damping(Mf_geo, jj, ell=2, mm=2, nn=1)
-        omega222, tau222 = freq_damping(Mf_geo, jj, ell=2, mm=2, nn=2)
+        omega220, tau220 = freq_damping(Mf_geo, jj, nn=0)
+        omega221, tau221 = freq_damping(Mf_geo, jj, nn=1)
+        omega222, tau222 = freq_damping(Mf_geo, jj, nn=2)
+        print(omega222, tau221)
 
         sigma220 = 1j * omega220 + 1 / tau220
         sigma221 = 1j * omega221 + 1 / tau221

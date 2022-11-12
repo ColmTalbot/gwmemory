@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quasi-normal mode functions &mdash; GWMemory 0.1.dev1+gf1e98da documentation</title>
+  <title>Quasi-normal mode functions &mdash; GWMemory 0.1.dev1+g732e7a3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -130,9 +130,11 @@ using fits in Buonanno et al. (2007) – see the caption of their Table I.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gwmemory.qnms.freq_damping">
-<span class="sig-prename descclassname"><span class="pre">gwmemory.qnms.</span></span><span class="sig-name descname"><span class="pre">freq_damping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.freq_damping" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">gwmemory.qnms.</span></span><span class="sig-name descname"><span class="pre">freq_damping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwmemory.qnms.freq_damping" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the quasinormal mode freq and damping time for a black hole.
 This version uses OBSERVER’S UNITS.</p>
+<p>The magic numbers come from
+<a class="reference external" href="https://pages.jh.edu/eberti2/ringdown/fitcoeffsWEB.dat">https://pages.jh.edu/eberti2/ringdown/fitcoeffsWEB.dat</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -152,7 +154,7 @@ This version uses OBSERVER’S UNITS.</p>
 <dd class="field-even"><dl class="simple">
 <dt>omega_lmn: float</dt><dd><p>Angular frequency of mode in geometric units</p>
 </dd>
-<dt>tau_lmn: float</dt><dd><p>Dampling time of mode in geometric units</p>
+<dt>tau_lmn: float</dt><dd><p>Damping time of mode in geometric units</p>
 </dd>
 </dl>
 </dd>
