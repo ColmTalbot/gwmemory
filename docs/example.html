@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Demonstration &mdash; GWMemory 1.0.1.dev6+g8945c13 documentation</title>
+  <title>Demonstration &mdash; GWMemory 1.0.1.dev9+gd27f649 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -22,6 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Compare memory calculation codes" href="comparison.html" />
     <link rel="prev" title="General utilities" href="utils.html" /> 
 </head>
 
@@ -63,6 +64,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#Frequency-Domain-Memory">Frequency Domain Memory</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="comparison.html">Compare memory calculation codes</a></li>
 </ul>
 
         </div>
@@ -370,24 +372,19 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Demonstration">
 <h1>Demonstration<a class="headerlink" href="#Demonstration" title="Permalink to this heading"></a></h1>
 <p>This notebook demostrates possible usages of the code and displays some interesting phenomenology of the memory.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gwmemory</span>
 
-<span class="kn">import</span> <span class="nn">gwmemory</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-%pylab is deprecated, use %matplotlib inline and import the required libraries.
-Populating the interactive namespace from numpy and matplotlib
-</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -504,48 +501,49 @@ Populating the interactive namespace from numpy and matplotlib
             <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
                 <span class="n">surr</span><span class="o">.</span><span class="n">modes</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([(</span><span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="p">),(</span><span class="n">l</span><span class="p">,</span><span class="o">-</span><span class="n">m</span><span class="p">)]))</span>
                 <span class="n">surr</span><span class="o">.</span><span class="n">h_lm</span><span class="p">,</span> <span class="n">surr</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="n">surr</span><span class="o">.</span><span class="n">time_domain_oscillatory</span><span class="p">(</span><span class="n">modes</span><span class="o">=</span><span class="n">surr</span><span class="o">.</span><span class="n">modes</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">)</span>
-                <span class="n">hmem</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="p">)],</span> <span class="n">times</span> <span class="o">=</span> <span class="n">surr</span><span class="o">.</span><span class="n">time_domain_memory</span><span class="p">(</span><span class="n">inc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">hmem</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">l</span><span class="si">}{</span><span class="n">m</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">],</span> <span class="n">times</span> <span class="o">=</span> <span class="n">surr</span><span class="o">.</span><span class="n">time_domain_memory</span><span class="p">(</span><span class="n">inc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="n">max_h_mem_plus</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">max_h_mem_cross</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
-                <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
-                <span class="n">max_h_mem_plus</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hmem</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="p">)][</span><span class="s1">&#39;plus&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-                <span class="n">max_h_mem_cross</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hmem</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="p">)][</span><span class="s1">&#39;cross&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">l</span><span class="si">}{</span><span class="n">m</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">max_h_mem_plus</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hmem</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">l</span><span class="si">}{</span><span class="n">m</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">][</span><span class="s1">&#39;plus&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">max_h_mem_cross</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hmem</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">l</span><span class="si">}{</span><span class="n">m</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">][</span><span class="s1">&#39;cross&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="n">mems_plus</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">{}{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">max_h_mem_plus</span><span class="p">)</span>
-        <span class="n">mems_cross</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">{}{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">max_h_mem_cross</span><span class="p">)</span>
+        <span class="n">mems_plus</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">q</span><span class="si">}{</span><span class="n">S1</span><span class="si">}{</span><span class="n">S2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">max_h_mem_plus</span><span class="p">)</span>
+        <span class="n">mems_cross</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">q</span><span class="si">}{</span><span class="n">S1</span><span class="si">}{</span><span class="n">S2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">max_h_mem_cross</span><span class="p">)</span>
 
 <span class="n">colours</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">]</span>
 
-<span class="n">spin_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">S1</span><span class="p">,</span><span class="n">S2</span><span class="p">)</span> <span class="k">for</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">S1s</span><span class="p">,</span> <span class="n">S2s</span><span class="p">)]</span>
+<span class="n">spin_keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">S1</span><span class="si">}{</span><span class="n">S2</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">S1s</span><span class="p">,</span> <span class="n">S2s</span><span class="p">)]</span>
 
-<span class="n">fig</span><span class="o">=</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">qs</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">jj</span><span class="p">,</span> <span class="p">(</span><span class="n">S1</span><span class="p">,</span> <span class="n">S2</span><span class="p">)</span> <span class="ow">in</span>  <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">S1s</span><span class="p">,</span> <span class="n">S2s</span><span class="p">)):</span>
 
-        <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">q</span><span class="si">}{</span><span class="n">S1</span><span class="si">}{</span><span class="n">S2</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="n">max_h_mems_plus</span> <span class="o">=</span> <span class="n">mems_plus</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="n">max_h_mems_cross</span> <span class="o">=</span> <span class="n">mems_cross</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
             <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">max_h_mems_plus</span><span class="p">)),</span> <span class="n">max_h_mems_plus</span> <span class="o">*</span> <span class="mf">1e22</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colours</span><span class="p">[</span><span class="n">ii</span> <span class="o">+</span> <span class="n">jj</span> <span class="o">*</span> <span class="mi">2</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$q=</span><span class="si">{}</span><span class="s1">$, $S_1=</span><span class="si">{}</span><span class="s1">$, $S_2=</span><span class="si">{}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span><span class="p">)</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$q=</span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s1">$, $S_1=</span><span class="si">{</span><span class="n">S1</span><span class="si">}</span><span class="s1">$, $S_2=</span><span class="si">{</span><span class="n">S2</span><span class="si">}</span><span class="s1">$&#39;</span>
         <span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">max_h_mems_cross</span><span class="p">)),</span> <span class="n">max_h_mems_cross</span> <span class="o">*</span> <span class="mf">1e22</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colours</span><span class="p">[</span><span class="n">ii</span> <span class="o">+</span> <span class="n">jj</span> <span class="o">*</span> <span class="mi">2</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
 
-<span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">max_h_mems_plus</span><span class="p">)))</span>
-<span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;(</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ell</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">)</span> <span class="k">for</span> <span class="n">ell</span><span class="p">,</span> <span class="n">delta_m</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">max_h_mems_plus</span><span class="p">)))</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">ell</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">delta_m</span><span class="si">}</span><span class="s1">)&#39;</span> <span class="k">for</span> <span class="n">ell</span><span class="p">,</span> <span class="n">delta_m</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
-<span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">max_h_mems_plus</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">max_h_mems_plus</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Oscillatory $(\ell, |m|)_{\mathrm</span><span class="si">{last}</span><span class="s1">}$&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$\delta h(t=\infty) \, \left[10^{-22}</span><span class="se">\\</span><span class="s1">right]$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -597,7 +595,7 @@ Populating the interactive namespace from numpy and matplotlib
                 <span class="k">if</span> <span class="n">ell</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">delta_m</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
                         <span class="n">ell</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">delta_m</span> <span class="o">+</span> <span class="n">ell</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">h_mem</span><span class="p">[(</span><span class="n">ell</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">)][</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span>
-                        <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$q=</span><span class="si">{}</span><span class="s1">$, $S_1=</span><span class="si">{}</span><span class="s1">$, $S_2=</span><span class="si">{}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span><span class="p">)</span>
+                        <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$q=</span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s1">$, $S_1=</span><span class="si">{</span><span class="n">S1</span><span class="si">}</span><span class="s1">$, $S_2=</span><span class="si">{</span><span class="n">S2</span><span class="si">}</span><span class="s1">$&#39;</span>
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
@@ -610,9 +608,9 @@ Populating the interactive namespace from numpy and matplotlib
                     <span class="n">color</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
                 <span class="p">)</span>
 
-<span class="n">xlim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">)</span>
-<span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;(</span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ell</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">)</span> <span class="k">for</span> <span class="n">ell</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="k">for</span> <span class="n">delta_m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">ell</span><span class="p">,</span> <span class="n">ell</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">)</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">ell</span><span class="p">,</span> <span class="n">delta_m</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">ell</span><span class="p">,</span> <span class="n">delta_m</span> <span class="ow">in</span> <span class="n">gwmemory</span><span class="o">.</span><span class="n">harmonics</span><span class="o">.</span><span class="n">lmax_modes</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Memory $(\ell, m)$&#39;</span><span class="p">)</span>
@@ -644,7 +642,7 @@ Populating the interactive namespace from numpy and matplotlib
 <p>Next we plot the orientation dependance of the + and x polarized memory as a function of source inclination (zenith) and orbital phase (azimuth).</p>
 <p><em>NOTE: this plot requires</em> <code class="docutils literal notranslate"><span class="pre">`Basemap</span></code> &lt;<a class="reference external" href="https://github.com/matplotlib/basemap">https://github.com/matplotlib/basemap</a>&gt;`__ <em>for the projection.</em></p>
 <p>Install with</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install https://github.com/matplotlib/basemap/archive/master.zip
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>conda install -c conda-forge basemap
 </pre></div>
 </div>
 <div class="nbinput docutils container">
@@ -683,7 +681,7 @@ Populating the interactive namespace from numpy and matplotlib
 
         <span class="n">orientation_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">y_lm</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">*</span> <span class="n">h_mem_lm</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">y_lm</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="n">ax</span> <span class="o">=</span> <span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ii</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">jj</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ii</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">jj</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;moll&#39;</span><span class="p">,</span><span class="n">lon_0</span><span class="o">=-</span><span class="mi">180</span><span class="p">,</span><span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">)</span>
         <span class="n">m</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">pols_deg</span><span class="p">,</span> <span class="n">incs_deg</span><span class="p">,</span> <span class="n">orientation_map</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span>
                    <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">,</span> <span class="n">latlon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5e-22</span><span class="p">,</span> <span class="mf">2.5e-22</span><span class="p">,</span> <span class="mi">201</span><span class="p">))</span>
@@ -723,7 +721,7 @@ Populating the interactive namespace from numpy and matplotlib
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 
 <span class="n">qs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]</span>
 <span class="n">S1s</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]]</span>
@@ -761,19 +759,25 @@ Populating the interactive namespace from numpy and matplotlib
 
         <span class="n">colour</span> <span class="o">=</span> <span class="n">colours</span><span class="p">[</span><span class="n">ii</span> <span class="o">+</span> <span class="n">jj</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]</span>
 
-        <span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">delta_h</span><span class="p">),</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$q=</span><span class="si">{}</span><span class="s1">$, $S_1=</span><span class="si">{}</span><span class="s1">$, $S_2=</span><span class="si">{}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span><span class="p">),</span>
-                 <span class="n">color</span><span class="o">=</span><span class="n">colour</span><span class="p">)</span>
-        <span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Memory order, $i$&#39;</span><span class="p">)</span>
-        <span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$\max(|h^i|)$&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span>
+            <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">delta_h</span><span class="p">),</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$q=</span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s1">$, $S_1=</span><span class="si">{</span><span class="n">S1</span><span class="si">}</span><span class="s1">$, $S_2=</span><span class="si">{</span><span class="n">S2</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Memory order, $i$&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$\max(|h^i|)$&#39;</span><span class="p">)</span>
 
-<span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">)</span>
 
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
 
-<span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">show</span><span class="p">()</span>
-<span class="n">close</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -797,7 +801,7 @@ Populating the interactive namespace from numpy and matplotlib
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 
 <span class="n">q</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="n">S1</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
@@ -815,20 +819,20 @@ Populating the interactive namespace from numpy and matplotlib
 <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s1">&#39;NRSur7dq2&#39;</span><span class="p">,</span> <span class="s1">&#39;IMRPhenomD&#39;</span><span class="p">,</span> <span class="s1">&#39;SEOBNRv4&#39;</span><span class="p">,</span> <span class="s1">&#39;MWM&#39;</span><span class="p">]):</span>
     <span class="n">h_mem</span><span class="p">,</span> <span class="n">times</span> <span class="o">=</span> <span class="n">gwmemory</span><span class="o">.</span><span class="n">time_domain_memory</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
 
-    <span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">h_mem</span><span class="p">[</span><span class="s1">&#39;plus&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">h_mem</span><span class="p">[</span><span class="s1">&#39;plus&#39;</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">times</span><span class="o">+</span><span class="mf">0.25</span><span class="p">))],</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">h_mem</span><span class="p">[</span><span class="s1">&#39;plus&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">h_mem</span><span class="p">[</span><span class="s1">&#39;plus&#39;</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">times</span><span class="o">+</span><span class="mf">0.25</span><span class="p">))],</span>
          <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colours</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
-    <span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">h_mem</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">h_mem</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">times</span><span class="o">+</span><span class="mf">0.25</span><span class="p">))],</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">h_mem</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">h_mem</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">times</span><span class="o">+</span><span class="mf">0.25</span><span class="p">))],</span>
          <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colours</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
 
-<span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$t (s)$&#39;</span><span class="p">)</span>
-<span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$\delta h$&#39;</span><span class="p">)</span>
-<span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$t (s)$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$\delta h$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 
-<span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
 
-<span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">show</span><span class="p">()</span>
-<span class="n">close</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -879,7 +883,7 @@ Populating the interactive namespace from numpy and matplotlib
 <span class="n">oscillatory</span><span class="p">,</span> <span class="n">times</span> <span class="o">=</span> <span class="n">surr</span><span class="o">.</span><span class="n">time_domain_oscillatory</span><span class="p">(</span><span class="n">inc</span><span class="o">=</span><span class="n">inc</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="n">pol</span><span class="p">)</span>
 <span class="n">memory</span><span class="p">,</span> <span class="n">times</span> <span class="o">=</span> <span class="n">surr</span><span class="o">.</span><span class="n">time_domain_memory</span><span class="p">(</span><span class="n">inc</span><span class="o">=</span><span class="n">inc</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="n">pol</span><span class="p">)</span>
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">oscillatory</span><span class="p">[</span><span class="s1">&#39;plus&#39;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">oscillatory</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
@@ -887,6 +891,8 @@ Populating the interactive namespace from numpy and matplotlib
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">memory</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">oscillatory</span><span class="p">[</span><span class="s1">&#39;plus&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">memory</span><span class="p">[</span><span class="s1">&#39;plus&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">oscillatory</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">memory</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$t [s]$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Strain&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
@@ -897,6 +903,8 @@ Populating the interactive namespace from numpy and matplotlib
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">memory</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">oscillatory</span><span class="p">[</span><span class="s1">&#39;plus&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">memory</span><span class="p">[</span><span class="s1">&#39;plus&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">oscillatory</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">memory</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;$t [s]$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Strain&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
 
@@ -921,7 +929,7 @@ Populating the interactive namespace from numpy and matplotlib
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 
 <span class="n">q</span> <span class="o">=</span> <span class="mf">1.</span>
 <span class="n">S1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
@@ -940,7 +948,7 @@ Populating the interactive namespace from numpy and matplotlib
 <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">frequencies</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">h_mem</span><span class="p">[</span><span class="s1">&#39;cross&#39;</span><span class="p">]),</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$f$ (Hz)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$\delta h$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Strain [Hz$^{-1/2}$]&#39;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2048</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">1e-27</span><span class="p">,</span> <span class="mf">1e-23</span><span class="p">)</span>
@@ -961,14 +969,6 @@ Populating the interactive namespace from numpy and matplotlib
 <img alt="_images/example_19_0.png" src="_images/example_19_0.png" />
 </div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 
@@ -977,6 +977,7 @@ Populating the interactive namespace from numpy and matplotlib
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="utils.html" class="btn btn-neutral float-left" title="General utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="comparison.html" class="btn btn-neutral float-right" title="Compare memory calculation codes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

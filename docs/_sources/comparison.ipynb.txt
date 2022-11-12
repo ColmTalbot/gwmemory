@@ -1,0 +1,110 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Compare memory calculation codes\n",
+    "\n",
+    "Since the initial release of `GWMemory` other packages to compute the waveform have been released.\n",
+    "For example, the `sxs` package has a method to compute memory.\n",
+    "\n",
+    "In this notebook we compare the performance of the two packages for a test example.\n",
+    "\n",
+    "*NOTE*: the sxs code includes additional memory terms beyond the dominant energy term considered here."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "import gwsurrogate as gws\n",
+    "from gwmemory import time_domain_memory as tdm\n",
+    "from gwtools import sxs_memory\n",
+    "\n",
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Create the time domain model. We do this with the `gwsurrogate package`.\n",
+    "\n",
+    "For this case, we will use a binary with mass ratio 8 and large aligned spins."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model = gws.LoadSurrogate(\"NRHybSur3dq8\")\n",
+    "chi0 = [0, 0, 0.8]\n",
+    "t = np.arange(-1000, 100, 0.01)\n",
+    "t, h, dyn = model(8, chi0, chi0, times=t, f_low=0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Compute the memory with the two packages.\n",
+    "\n",
+    "For comparison, we record the time taken for each code."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%time h_mem, times = tdm(h_lm=h, times=t)\n",
+    "%time h_mem_sxs, times_sxs = sxs_memory(h, t)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now we plot the various memory modes along with the overlaps."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "modes = set(h_mem.keys()).intersection(h_mem_sxs.keys())\n",
+    "fig, axes = plt.subplots(nrows=7, ncols=3, sharex=True, figsize=(16, 12))\n",
+    "for ii, mode in enumerate(modes):\n",
+    "    gwmem = h_mem[mode]\n",
+    "    sxsmem = h_mem_sxs[mode]\n",
+    "    overlap = np.vdot(gwmem, sxsmem) / np.vdot(gwmem, gwmem) ** 0.5 / np.vdot(sxsmem, sxsmem) ** 0.5\n",
+    "\n",
+    "    ax = axes[ii // 3, ii % 3]\n",
+    "    ax.plot(times, h_mem[mode], label=\"GWMemory\")\n",
+    "    ax.plot(times_sxs, h_mem_sxs[mode], linestyle=\":\", label=\"SXS\")\n",
+    "    ax.annotate(f\"Mode: ({mode[0]}, {mode[1]})\", (0.03, 0.25), xycoords=\"axes fraction\")\n",
+    "    ax.annotate(f\"Overlap: {overlap.real:.5f}\", (0.03, 0.1), xycoords=\"axes fraction\")\n",
+    "axes[0, 0].legend(loc=\"upper left\")\n",
+    "axes[-1, 0].set_xlabel(\"$t [M]$\")\n",
+    "axes[-1, 1].set_xlabel(\"$t [M]$\")\n",
+    "axes[-1, 2].set_xlabel(\"$t [M]$\")\n",
+    "plt.tight_layout()\n",
+    "plt.show()\n",
+    "plt.close()"
+   ]
+  }
+ ],
+ "metadata": {},
+ "nbformat": 4,
+ "nbformat_minor": 0
+}
