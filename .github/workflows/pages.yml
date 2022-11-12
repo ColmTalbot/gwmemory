@@ -19,17 +19,19 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v2
-      - uses: s-weigand/setup-conda@v1
+      - name: Fetch all history for all tags and branches
+        run: git fetch --prune --unshallow
+      - uses: s-weigand/setup-conda@v2
 
       - name: Install dependencies
         run: |
           sudo apt-get install texlive-latex-extra texlive-fonts-recommended dvipng cm-super
           conda install pip setuptools
           conda install flake8 pytest-cov
-          conda install -c conda-forge numpy pandas scipy matplotlib
+          conda install -c conda-forge numpy pandas scipy sympy
           conda install -c conda-forge gwsurrogate python-lalsimulation
           python -m pip install nrsur7dq2
-          conda install -c conda-forge basemap
+          conda install -c conda-forge matplotlib basemap
           conda install -c conda-forge ipykernel jupyter ipython
           conda install -c conda-forge ipython_genutils jinja2 nbsphinx numpydoc pandoc pygments sphinx sphinx_rtd_theme
       - name: Install gwmemory
