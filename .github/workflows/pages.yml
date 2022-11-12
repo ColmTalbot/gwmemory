@@ -31,7 +31,6 @@ jobs:
           conda install -c conda-forge numpy scipy sympy
           conda update -c conda-forge numpy scipy
           conda install -c conda-forge gwsurrogate python-lalsimulation
-          conda update --all
           python -m pip install nrsur7dq2
           conda install -c conda-forge matplotlib basemap
           conda install -c conda-forge ipykernel jupyter ipython
