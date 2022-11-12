@@ -62,7 +62,7 @@ def analytic_gamma(lm1, lm2, ell):
     m2 = -m2
     m3 = m1 + m2
     return (
-        (-1)**(ell1 + ell2 + ell + m3 + m2)
+        (-1.0) ** (ell1 + ell2 + ell + m3 + m2)
         * (2 * ell1 + 1)**0.5 * (2 * ell2 + 1)**0.5 * (2 * ell + 1)**0.5
         * float(wigner_3j(ell1, ell2, ell, s1, s2, -s3) * wigner_3j(ell1, ell2, ell, m1, m2, -m3))
         * np.pi**0.5 / 2
@@ -374,6 +374,11 @@ def load_gamma(data_dir=None):
     gamma_lmlm: dict
         Dictionary of gamma_lmlm.
     """
+    from warnings import warn
+    warn(
+        f"The load_gamma function is deprecated and will be removed in v0.4.0."
+        "Use gwmemory.angles.analytic_gamma to compute the terms on the fly."
+    )
     if data_dir is None:
         data_dir = str(Path(__file__).parent / "data")
     data_files = glob.glob(f"{data_dir}/gamma*.dat")
