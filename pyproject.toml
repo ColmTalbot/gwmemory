@@ -26,7 +26,6 @@ dynamic = ["version"]
 dependencies = [
     "numpy",
     "scipy",
-    "pandas",
     "sympy",
 ]
 
