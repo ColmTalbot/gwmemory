@@ -3,14 +3,16 @@
 # This code package includes code for calculating the properties of quasinormal
 # black hole modes
 
-from pathlib import Path
 import numpy as np
 
 
-def freq_damping(mass, spin, ell=2, mm=2, nn=0):
+def freq_damping(mass, spin, nn=0):
     """
     Calculate the quasinormal mode freq and damping time for a black hole.
     This version uses OBSERVER'S UNITS.
+
+    The magic numbers come from
+    https://pages.jh.edu/eberti2/ringdown/fitcoeffsWEB.dat
 
     Parameters
     ----------
@@ -30,24 +32,16 @@ def freq_damping(mass, spin, ell=2, mm=2, nn=0):
     omega_lmn: float
         Angular frequency of mode in geometric units
     tau_lmn: float
-        Dampling time of mode in geometric units
+        Damping time of mode in geometric units
     """
-    data_file = str(Path(__file__).parent / "data" / "fitcoeffsWEB.dat")
-    data = np.loadtxt(data_file)
 
-    ell_data = data[:, 0].astype(int)
-    mm_data = data[:, 1].astype(int)
-    nn_data = data[:, 2].astype(int)
+    f1 = [1.5251, 1.3673, 1.3223][nn]
+    f2 = [-1.1568, -1.0260, -1.0257][nn]
+    f3 = [0.1292, 0.1628, 0.1860][nn]
 
-    cond = (ell_data == ell) & (mm_data == mm) & (nn_data == nn)
-
-    f1 = data[cond, 3][0]
-    f2 = data[cond, 4][0]
-    f3 = data[cond, 5][0]
-
-    q1 = data[cond, 6][0]
-    q2 = data[cond, 7][0]
-    q3 = data[cond, 8][0]
+    q1 = [0.7, 0.1, -0.1][nn]
+    q2 = [1.4187, 0.5436, 0.4206][nn]
+    q3 = [-0.4990, 0.4731, -0.4256][nn]
 
     # dimensionaless frequency
     f_lmn = f1 + f2 * (1.0 - spin) ** f3
