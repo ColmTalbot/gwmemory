@@ -1,9 +1,12 @@
 import h5py
 import os
 
+import gwsurrogate as gws
 import numpy as np
 import pytest
+from gwtools import sxs_memory
 
+import gwmemory
 from gwmemory import time_domain_memory, frequency_domain_memory
 from gwmemory.waveforms import Approximant, Surrogate, SXSNumericalRelativity
 
@@ -91,3 +94,20 @@ def test_nr_waveform():
     assert np.allclose(mem1[(2, 0)], mem2[(2, 0)])
     assert np.allclose(times_1, times_2)
     os.remove("test_waveform.h5")
+
+
+def test_memory_matches_sxs():
+    model = gws.LoadSurrogate("NRHybSur3dq8")
+    chi0 = [0, 0, 0.8]
+    t = np.arange(-1000, 100, 0.01)
+    t, h, dyn = model(8, chi0, chi0, times=t, f_low=0)
+    h_mem, times = gwmemory.time_domain_memory(h_lm=h, times=t)
+    h_mem_sxs, times_sxs = sxs_memory(h, t)
+    modes = set(h_mem.keys()).intersection(h_mem_sxs.keys())
+
+    for ii, mode in enumerate(modes):
+        gwmem = h_mem[mode]
+        sxsmem = h_mem_sxs[mode]
+        overlap = np.vdot(gwmem, sxsmem) / np.vdot(gwmem, gwmem) ** 0.5 / np.vdot(sxsmem, sxsmem) ** 0.5
+        assert overlap.real > 1 - 1e-8
+        assert abs(overlap.imag) < 1e-5

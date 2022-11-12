@@ -1,18 +1,22 @@
+import warnings
+
 import numpy as np
 from scipy.interpolate import interp1d
 from scipy.integrate import cumulative_trapezoid
 
-from ..angles import load_gamma
+from ..angles import analytic_gamma
+from ..harmonics import lmax_modes
 from ..utils import CC, MPC, combine_modes
 
 
 class MemoryGenerator(object):
-    def __init__(self, name, h_lm, times):
+    def __init__(self, name, h_lm, times, lmax=4):
 
         self.name = name
         self.h_lm = h_lm
         self.times = times
         self.modes = self.h_lm.keys()
+        self.lmax = lmax
 
     @property
     def distance(self):
@@ -66,8 +70,10 @@ class MemoryGenerator(object):
                 except KeyError:
                     pass
 
-        if gamma_lmlm is None:
-            gamma_lmlm = load_gamma()
+        if gamma_lmlm is not None:
+            warnings.warn(
+                f"The gamma_lmlm argument is deprecated and will be removed."
+            )
 
         # constant terms in SI units
         const = 1 / 4 / np.pi
@@ -75,23 +81,15 @@ class MemoryGenerator(object):
             const *= self.distance * MPC / CC
 
         dh_mem_dt_lm = dict()
-        for ii, ell in enumerate(gamma_lmlm["0"].l):
-            if ell > 4:
-                continue
-            for delta_m in gamma_lmlm.keys():
-                if abs(int(delta_m)) > ell:
-                    continue
-                dh_mem_dt_lm[(ell, int(delta_m))] = np.sum(
-                    [
-                        dhlm_dt_sq[((l1, m1), (l2, m2))]
-                        * gamma_lmlm[delta_m][f"{l1}{m1}{l2}{m2}"][ii]
-                        for (l1, m1), (l2, m2) in dhlm_dt_sq.keys()
-                        if m1 - m2 == int(delta_m)
-                        and f"{l1}{m1}{l2}{m2}" in gamma_lmlm[delta_m]
-                    ],
-                    axis=0,
-                ) * np.ones(len(self.times), dtype=complex)
 
+        modes = lmax_modes(self.lmax)
+        for ell, delta_m in modes:
+            dh_mem_dt_lm[(ell, int(delta_m))] = np.sum([
+                dhlm_dt_sq[(lm1, lm2)] * analytic_gamma(lm1, lm2, ell)
+                for lm1, lm2 in dhlm_dt_sq.keys()
+                if delta_m == lm1[1] - lm2[1]
+            ], axis=0,
+            ) * np.ones(len(self.times), dtype=complex)
         h_mem_lm = {
             lm: const * cumulative_trapezoid(dh_mem_dt_lm[lm], self.times, initial=0)
             for lm in dh_mem_dt_lm

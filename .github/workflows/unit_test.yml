@@ -40,7 +40,7 @@ jobs:
         conda install flake8 pytest-cov
         conda install -c conda-forge numpy pandas scipy
         conda install -c conda-forge gwsurrogate python-lalsimulation
-        conda install -c conda-forge sympy
+        conda install -c conda-forge sympy sxs
         python -m pip install nrsur7dq2
     - name: Install gwmemory
       run: |
