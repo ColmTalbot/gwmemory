@@ -29,11 +29,13 @@ jobs:
           conda install pip setuptools
           conda install flake8 pytest-cov
           conda install -c conda-forge numpy pandas scipy sympy
+          conda update --all
           conda install -c conda-forge gwsurrogate python-lalsimulation
           python -m pip install nrsur7dq2
           conda install -c conda-forge matplotlib basemap
           conda install -c conda-forge ipykernel jupyter ipython
           conda install -c conda-forge ipython_genutils jinja2 nbsphinx numpydoc pandoc pygments sphinx sphinx_rtd_theme
+          conda update --all
       - name: Install gwmemory
         run: |
           pip install .
