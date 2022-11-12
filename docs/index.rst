@@ -15,3 +15,4 @@ Welcome to the documentation for GWMemory!
    qnms
    utils
    example
+   comparison
