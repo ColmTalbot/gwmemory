@@ -29,10 +29,10 @@ jobs:
           conda install pip setuptools
           conda install flake8 pytest-cov
           conda install -c conda-forge numpy scipy sympy
-          conda update -c conda-forge numpy scipy
-          conda install -c conda-forge gwsurrogate python-lalsimulation
-          python -m pip install nrsur7dq2
+          conda update -c conda-forge numpy scipy sympy
+          conda install -c conda-forge gwsurrogate python-lalsimulation sxs
           conda install -c conda-forge matplotlib basemap
+          python -m pip install nrsur7dq2
           conda install -c conda-forge ipykernel jupyter ipython
           conda install -c conda-forge ipython_genutils jinja2 nbsphinx numpydoc pandoc pygments sphinx sphinx_rtd_theme
       - name: Install gwmemory
@@ -53,6 +53,7 @@ jobs:
           cd docs
           mv Makefile.gh_pages Makefile
           cp ../examples/GWMemory.ipynb ./example.ipynb
+          cp ../examples/Comparison.ipynb ./comparison.ipynb
           make clean
           make html
           cd ../
