@@ -1,10 +1,8 @@
 #!/usr/bin/python3
-import glob
 from functools import lru_cache
-from pathlib import Path
 
 import numpy as np
-import pandas as pd
+from sympy.physics.wigner import wigner_3j
 
 from . import harmonics
 
@@ -35,6 +33,7 @@ def memory_correction(ell, ss=0):
     )
 
 
+@lru_cache()
 def analytic_gamma(lm1, lm2, ell):
     """
     Analytic function to compute gamma_lmlm_l Eq. (8) of arXiv:1807.0090
@@ -55,7 +54,6 @@ def analytic_gamma(lm1, lm2, ell):
     float: the gamma coefficient
 
     """
-    from sympy.physics.wigner import wigner_3j
     ell1, m1 = lm1
     ell2, m2 = lm2
     s1, s2, s3 = -2, 2, 0
@@ -357,33 +355,3 @@ def wave_frame(theta, phi, psi=0):
     wy = -u * cps + v * sps
 
     return wx, wy
-
-
-def load_gamma(data_dir=None):
-    """
-    Load the pre-calculated gamma_lmlm into a dictionary.
-
-    Parameters
-    ----------
-    data_dir: str, optional
-         Directory to look for data file in,
-         default will look for packaged data.
-
-    Returns
-    -------
-    gamma_lmlm: dict
-        Dictionary of gamma_lmlm.
-    """
-    from warnings import warn
-    warn(
-        f"The load_gamma function is deprecated and will be removed in v0.4.0."
-        "Use gwmemory.angles.analytic_gamma to compute the terms on the fly."
-    )
-    if data_dir is None:
-        data_dir = str(Path(__file__).parent / "data")
-    data_files = glob.glob(f"{data_dir}/gamma*.dat")
-    gamma_lmlm = {}
-    for file_name in data_files:
-        delta_m = file_name.split("_")[-1][:-4]
-        gamma_lmlm[delta_m] = pd.read_csv(file_name, sep="\t")
-    return gamma_lmlm
