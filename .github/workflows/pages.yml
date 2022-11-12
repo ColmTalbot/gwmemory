@@ -45,7 +45,7 @@ jobs:
       - name: Run notebook
         run: |
           cd examples
-          jupyter nbconvert --to html --execute GWMemory.ipynb
+          jupyter nbconvert --to html --execute *.ipynb
           cd ..
 
       - name: Build documentation
