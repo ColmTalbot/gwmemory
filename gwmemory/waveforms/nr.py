@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import numpy as np
 
-from ..utils import combine_modes, load_sxs_waveform, CC, GG, MPC, SOLAR_MASS
+from ..utils import combine_modes, load_sxs_waveform
 from . import MemoryGenerator
 
 
@@ -55,32 +55,20 @@ class SXSNumericalRelativity(MemoryGenerator):
             Time array to evaluate the waveforms on, default is time array
             in h5 file.
         """
-        self.name = name
-        self.modes = modes
-        self.h_lm, self.times = load_sxs_waveform(
+        h_lm, times = load_sxs_waveform(
             name, modes=modes, extraction=extraction
         )
+        super(SXSNumericalRelativity, self).__init__(name=name, h_lm=h_lm, times=times, l_max=4)
 
         self.MTot = total_mass
         self.distance = distance
 
-        if total_mass is None or distance is None:
-            self.h_to_geo = 1
-            self.t_to_geo = 1
-        else:
-            self.h_to_geo = self.distance * MPC / self.MTot / SOLAR_MASS / GG * CC ** 2
-            self.t_to_geo = 1 / self.MTot / SOLAR_MASS / GG * CC ** 3
-
-            for mode in self.h_lm:
-                self.h_lm[mode] /= self.h_to_geo
-            self.times /= self.t_to_geo
-            # Rezero time array to the merger time
-            self.times -= self.times[np.argmax(abs(self.h_lm[(2, 2)]))]
+        for mode in self.h_lm:
+            self.h_lm[mode] /= self.h_to_geo
+        self.times /= self.t_to_geo
 
         if times is not None:
             self.set_time_array(times)
-
-        MemoryGenerator.__init__(self, name=name, h_lm=self.h_lm, times=self.times)
 
     def time_domain_oscillatory(self, times=None, modes=None, inc=None, phase=None):
         """

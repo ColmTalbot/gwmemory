@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Demonstration &mdash; GWMemory 1.0.1.dev10+g42838fa documentation</title>
+  <title>Demonstration &mdash; GWMemory 1.0.1.dev16+g795420e documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -497,12 +497,11 @@ div.rendered_html tbody tr:hover {
 
         <span class="n">hmem</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="n">surr</span><span class="o">.</span><span class="n">modes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">modes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)):</span>
-                <span class="n">surr</span><span class="o">.</span><span class="n">modes</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([(</span><span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="p">),(</span><span class="n">l</span><span class="p">,</span><span class="o">-</span><span class="n">m</span><span class="p">)]))</span>
-                <span class="n">surr</span><span class="o">.</span><span class="n">h_lm</span><span class="p">,</span> <span class="n">surr</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="n">surr</span><span class="o">.</span><span class="n">time_domain_oscillatory</span><span class="p">(</span><span class="n">modes</span><span class="o">=</span><span class="n">surr</span><span class="o">.</span><span class="n">modes</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">)</span>
-                <span class="n">hmem</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">l</span><span class="si">}{</span><span class="n">m</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">],</span> <span class="n">times</span> <span class="o">=</span> <span class="n">surr</span><span class="o">.</span><span class="n">time_domain_memory</span><span class="p">(</span><span class="n">inc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">modes</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([(</span><span class="n">l</span><span class="p">,</span><span class="n">m</span><span class="p">),(</span><span class="n">l</span><span class="p">,</span><span class="o">-</span><span class="n">m</span><span class="p">)]))</span>
+                <span class="n">hmem</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">l</span><span class="si">}{</span><span class="n">m</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">],</span> <span class="n">times</span> <span class="o">=</span> <span class="n">surr</span><span class="o">.</span><span class="n">time_domain_memory</span><span class="p">(</span><span class="n">inc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="n">modes</span><span class="p">)</span>
 
         <span class="n">max_h_mem_plus</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">max_h_mem_cross</span> <span class="o">=</span> <span class="p">[]</span>
@@ -850,7 +849,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/usr/share/miniconda/lib/python3.9/site-packages/gwmemory/waveforms/mwm.py:208: RuntimeWarning: invalid value encountered in power
+/usr/share/miniconda/lib/python3.9/site-packages/gwmemory/waveforms/mwm.py:203: RuntimeWarning: invalid value encountered in power
   rr = rm * (1 - TT / trr) ** (1 / 4)
 </pre></div></div>
 </div>

@@ -1,6 +1,8 @@
+from copy import deepcopy
+
 import numpy as np
 
-from ..utils import combine_modes, CC, GG, MPC, SOLAR_MASS
+from ..utils import combine_modes
 from . import MemoryGenerator
 
 
@@ -69,7 +71,7 @@ class Surrogate(MemoryGenerator):
             Time array to evaluate the waveforms on, default is
             np.linspace(-900, 100, 10001).
         """
-        self.name = name
+        super(Surrogate, self).__init__(name=name, h_lm=None, times=None, l_max=l_max)
 
         if name.lower() == "nrsur7dq2":
             try:
@@ -122,25 +124,17 @@ class Surrogate(MemoryGenerator):
             self.minimum_frequency = minimum_frequency
             self.sampling_frequency = sampling_frequency
         self.distance = distance
-        self.LMax = l_max
-        self.modes = modes
-
-        if total_mass is None:
-            self.h_to_geo = 1
-            self.t_to_geo = 1
-        else:
-            self.h_to_geo = self.distance * MPC / self.MTot / SOLAR_MASS / GG * CC ** 2
-            self.t_to_geo = 1 / self.MTot / SOLAR_MASS / GG * CC ** 3
-
-        self.h_lm = None
-        self.times = times
+        self.l_max = l_max
 
         if times is not None and max(times) < 10:
-            times = times * self.t_to_geo
+            _times = times * self.t_to_geo
+        else:
+            _times = times
 
-        h_lm, times = self.time_domain_oscillatory(modes=modes, times=times)
+        self.h_lm, self.times = self.time_domain_oscillatory(modes=modes, times=_times)
 
-        MemoryGenerator.__init__(self, name=name, h_lm=h_lm, times=times)
+        if times is not None:
+            self.set_time_array(times)
 
     def time_domain_oscillatory(self, times=None, modes=None, inc=None, phase=None):
         """
@@ -185,7 +179,7 @@ class Surrogate(MemoryGenerator):
                     MTot=self.MTot,
                     distance=self.distance,
                     t=times,
-                    LMax=self.LMax,
+                    LMax=self.l_max,
                 )
             else:
                 if self.MTot is None:
@@ -204,11 +198,10 @@ class Surrogate(MemoryGenerator):
                     dist_mpc=self.distance,
                     dt=delta_t,
                     f_low=self.minimum_frequency,
-                    mode_list=self.modes,
+                    mode_list=modes,
+                    ellMax=self.l_max,
                     units=units,
                 )
-                if (5, 5) in h_lm:
-                    del h_lm[(5, 5)]
                 old_keys = [(ll, mm) for ll, mm in h_lm.keys()]
                 for ll, mm in old_keys:
                     if mm > 0 and (ll, -mm) not in h_lm:
@@ -231,7 +224,7 @@ class Surrogate(MemoryGenerator):
             h_lm = {(ell, m): h_lm[ell, m] for ell, m in modes}
 
         else:
-            h_lm = self.h_lm
+            h_lm = deepcopy(self.h_lm)
             times = self.times
 
         if inc is None or phase is None:
