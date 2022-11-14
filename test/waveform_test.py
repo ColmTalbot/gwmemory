@@ -13,11 +13,15 @@ from gwmemory.waveforms import Approximant, Surrogate, SXSNumericalRelativity
 TEST_MODELS = [
     "IMRPhenomD",
     "IMRPhenomT",
-    "SEOBNRv4",
+    "IMRPhenomTHM",
+    "IMRPhenomTPHM",
+    "IMRPhenomXHM",
+    "IMRPhenomXPHM",
+    "MWM",
+    "NRSur7dq2",
     "NRSur7dq4",
     "NRHybSur3dq8",
-    "NRSur7dq2",
-    "MWM",
+    "SEOBNRv4",
 ]
 
 PARAMS = dict(
