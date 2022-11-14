@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Compare memory calculation codes &mdash; GWMemory 1.0.1.dev16+g795420e documentation</title>
+  <title>Compare memory calculation codes &mdash; GWMemory 1.0.1.dev21+g2a4b808 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -443,11 +443,11 @@ Loaded NRHybSur3dq8 model
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 GWMemory time:
-CPU times: user 517 ms, sys: 120 ms, total: 637 ms
-Wall time: 637 ms
+CPU times: user 488 ms, sys: 144 ms, total: 632 ms
+Wall time: 631 ms
 SXS time:
-CPU times: user 10.1 s, sys: 672 ms, total: 10.8 s
-Wall time: 10.8 s
+CPU times: user 10.4 s, sys: 788 ms, total: 11.2 s
+Wall time: 11.2 s
 </pre></div></div>
 </div>
 <p>Now we plot the various memory modes along with the mismatches between the waveforms obtained with both methods.</p>
@@ -460,13 +460,19 @@ Wall time: 10.8 s
 <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">modes</span><span class="p">):</span>
     <span class="n">gwmem</span> <span class="o">=</span> <span class="n">h_mem</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
     <span class="n">sxsmem</span> <span class="o">=</span> <span class="n">h_mem_sxs</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
-    <span class="n">overlap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">gwmem</span><span class="p">,</span> <span class="n">sxsmem</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">gwmem</span><span class="p">,</span> <span class="n">gwmem</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">sxsmem</span><span class="p">,</span> <span class="n">sxsmem</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="n">overlap</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">gwmem</span><span class="p">,</span> <span class="n">sxsmem</span><span class="p">)</span>
+        <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">gwmem</span><span class="p">,</span> <span class="n">gwmem</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+        <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">sxsmem</span><span class="p">,</span> <span class="n">sxsmem</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="p">)</span>
 
     <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">ii</span> <span class="o">//</span> <span class="mi">3</span><span class="p">,</span> <span class="n">ii</span> <span class="o">%</span> <span class="mi">3</span><span class="p">]</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">gwmem</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;GWMemory&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times_sxs</span><span class="p">,</span> <span class="n">sxsmem</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;SXS&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mode: (</span><span class="si">{</span><span class="n">mode</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">mode</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s2">&quot;axes fraction&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mismatch: </span><span class="si">{</span><span class="mi">1</span> <span class="o">-</span> <span class="n">overlap</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s2">&quot;axes fraction&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Mismatch: </span><span class="si">{</span><span class="mi">1</span> <span class="o">-</span> <span class="n">overlap</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s2">&quot;axes fraction&quot;</span>
+    <span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;$t [M]$&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;$t [M]$&quot;</span><span class="p">)</span>

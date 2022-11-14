@@ -1,5 +1,5 @@
 from . import angles, gwmemory, harmonics, qnms, utils, waveforms
-from .gwmemory import time_domain_memory, frequency_domain_memory
+from .gwmemory import frequency_domain_memory, time_domain_memory
 
 try:
     from ._version import version as __version__

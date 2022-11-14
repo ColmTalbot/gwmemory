@@ -1,4 +1,4 @@
-from .base import MemoryGenerator
+from .base import MemoryGenerator  # isort: skip
 from . import approximant, mwm, nr, surrogate
 from .approximant import Approximant
 from .mwm import MWM
