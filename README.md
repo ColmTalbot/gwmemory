@@ -1,12 +1,23 @@
+[![PyPI version](https://badge.fury.io/py/gwmemory.svg)](https://badge.fury.io/py/gwmemory)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/gwmemory.svg)](https://anaconda.org/conda-forge/gwmemory)
+[![codecov](https://codecov.io/github/ColmTalbot/gwmemory/branch/master/graph/badge.svg?token=QAASCHZ7QI)](https://codecov.io/github/ColmTalbot/gwmemory)
+
 # `GWMemory`
 
 `GWMemory` calculates the nonlinear (Christodoulou) gravitational-wave memory waveform from arbitrary time-domain gravitational-waveforms.
 
 ## Installation
 
-You can install from this repository in the usual way:
+`GWMemory` is available via `conda-forge` and `pypi`
 
-```bash
+```console
+$ conda install -c conda-forge gwmemory
+$ python -m pip install gwmemory
+```
+
+You can also install from this repository in the usual way:
+
+```console
 $ git clone https://github.com/ColmTalbot/gwmemory.git
 $ cd gwmemory
 $ python -m pip install .
