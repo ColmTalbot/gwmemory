@@ -6,17 +6,34 @@ from scipy.integrate import cumulative_trapezoid
 
 from ..angles import analytic_gamma
 from ..harmonics import lmax_modes
-from ..utils import CC, MPC, combine_modes
+from ..utils import CC, GG, MPC, SOLAR_MASS, combine_modes
 
 
 class MemoryGenerator(object):
-    def __init__(self, name, h_lm, times, lmax=4):
+    def __init__(self, name, h_lm, times, l_max=4):
 
         self.name = name
         self.h_lm = h_lm
         self.times = times
-        self.modes = self.h_lm.keys()
-        self.lmax = lmax
+        self.l_max = l_max
+
+    @property
+    def h_to_geo(self):
+        if self.MTot is None or self.distance is None:
+            return 1
+        else:
+            return self.distance * MPC / self.MTot / SOLAR_MASS / GG * CC ** 2
+
+    @property
+    def t_to_geo(self):
+        if self.MTot is None or self.distance is None:
+            return 1
+        else:
+            return 1 / self.MTot / SOLAR_MASS / GG * CC ** 3
+
+    @property
+    def modes(self):
+        return list(self.h_lm.keys())
 
     @property
     def distance(self):
@@ -82,14 +99,13 @@ class MemoryGenerator(object):
 
         dh_mem_dt_lm = dict()
 
-        modes = lmax_modes(self.lmax)
+        modes = lmax_modes(self.l_max)
         for ell, delta_m in modes:
             dh_mem_dt_lm[(ell, int(delta_m))] = np.sum([
                 dhlm_dt_sq[(lm1, lm2)] * analytic_gamma(lm1, lm2, ell)
                 for lm1, lm2 in dhlm_dt_sq.keys()
                 if delta_m == lm1[1] - lm2[1]
-            ], axis=0,
-            ) * np.ones(len(self.times), dtype=complex)
+            ], axis=0) * np.ones(len(self.times), dtype=complex)
         h_mem_lm = {
             lm: const * cumulative_trapezoid(dh_mem_dt_lm[lm], self.times, initial=0)
             for lm in dh_mem_dt_lm
@@ -105,7 +121,12 @@ class MemoryGenerator(object):
             h_lm = self.h_lm
         output = dict()
         for mode in h_lm:
-            output[mode] = interp1d(self.times, h_lm[mode])(times)
+            output[mode] = interp1d(
+                self.times,
+                h_lm[mode],
+                fill_value=0,
+                bounds_error=False,
+            )(times)
         return output
 
     def set_time_array(self, times):

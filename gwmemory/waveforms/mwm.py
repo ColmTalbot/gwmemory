@@ -7,7 +7,7 @@ from . import MemoryGenerator
 
 class MWM(MemoryGenerator):
     def __init__(self, q, total_mass=60, distance=400, name="MWM", times=None):
-        MemoryGenerator.__init__(self, name=name, h_lm=dict(), times=times)
+        super(MWM, self).__init__(name=name, h_lm=dict(), times=times)
         self.name = name
         if q > 1:
             q = 1 / q
@@ -16,11 +16,6 @@ class MWM(MemoryGenerator):
         self.distance = distance
         self.m1 = self.MTot / (1 + self.q)
         self.m2 = self.m1 * self.q
-
-        self.h_to_geo = (
-            self.distance * MPC / (self.m1 + self.m2) / SOLAR_MASS / GG * CC ** 2
-        )
-        self.t_to_geo = 1 / (self.m1 + self.m2) / SOLAR_MASS / GG * CC ** 3
 
         if times is None:
             times = np.linspace(-900, 100, 10001) / self.t_to_geo

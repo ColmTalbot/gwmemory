@@ -1,13 +1,30 @@
 import numpy as np
 
 from ..harmonics import sYlm
-from ..utils import combine_modes, CC, GG, MPC, SOLAR_MASS
+from ..utils import combine_modes, MPC, SOLAR_MASS
 from . import MemoryGenerator
 
 
 class Approximant(MemoryGenerator):
+
+    no_hm = ["IMRPhenomD", "IMRPhenomT", "SEOBNRv4", "IMRPhenomXAS", "TaylorF2"]
+    td = ["NRSur7dq4", "SEOBNRv4PHM", "IMRPhenomTPHM", "IMRPhenomTHM"]
+    fd = ["IMRPhenomXPHM", "IMRPhenomPv3HM", "IMRPhenomXHM", "IMRPhenomXP"]
+
     def __init__(
-        self, name, q, total_mass=60, spin_1=None, spin_2=None, distance=400, times=None
+        self,
+        name,
+        q,
+        total_mass=60,
+        spin_1=None,
+        spin_2=None,
+        distance=400,
+        times=None,
+        minimum_frequency=20.0,
+        reference_frequency=20.0,
+        duration=4.0,
+        sampling_frequency=2048.0,
+        l_max=4,
     ):
         """
         Initialise Surrogate MemoryGenerator
@@ -33,9 +50,11 @@ class Approximant(MemoryGenerator):
         try:
             import lalsimulation  # noqa
         except ModuleNotFoundError:
-            print("lalsuite is required for the Approximant memory generator.")
+            print("lalsimulation is required for the Approximant memory generator.")
             raise
-        self.name = name
+
+        super(Approximant, self).__init__(name=name, h_lm=None, times=None, l_max=l_max)
+
         if q > 1:
             q = 1 / q
 
@@ -50,6 +69,11 @@ class Approximant(MemoryGenerator):
         else:
             self.S2 = np.array(spin_2).astype(float)
         self.distance = distance
+        self.minimum_frequency = minimum_frequency
+        self.reference_frequency = reference_frequency
+        self.sampling_frequency = sampling_frequency
+        self.duration = duration
+        self.l_max = l_max
 
         self.m1 = self.MTot / (1 + self.q)
         self.m2 = self.m1 * self.q
@@ -57,35 +81,47 @@ class Approximant(MemoryGenerator):
         self.m2_SI = self.m2 * SOLAR_MASS
         self.distance_SI = self.distance * MPC
 
-        if (
+        if self._kind == "no_hm" and (
             abs(self.S1[0]) > 0
             or abs(self.S1[1]) > 0
             or abs(self.S2[0]) > 0
             or abs(self.S2[1]) > 0
         ):
-            print(
+            raise ValueError(
                 "WARNING: Approximant decomposition works only for "
                 "non-precessing waveforms."
             )
-            print("Setting spins to be aligned")
-            self.S1[0], self.S1[1] = 0.0, 0.0
-            self.S2[0], self.S2[1] = 0.0, 0.0
-            print("New spins are: S1 = {}, S2 = {}".format(self.S1, self.S2))
-        else:
-            self.S1 = list(self.S1)
-            self.S2 = list(self.S2)
-        self.available_modes = list({(2, 2), (2, -2)})
-
-        self.h_to_geo = self.distance_SI / (self.m1_SI + self.m2_SI) / GG * CC ** 2
-        self.t_to_geo = 1 / (self.m1_SI + self.m2_SI) / GG * CC ** 3
 
         self.h_lm = None
         self.times = None
 
-        h_lm, _times = self.time_domain_oscillatory()
-        MemoryGenerator.__init__(self, name=name, h_lm=h_lm, times=_times)
+        if times is not None:
+            delta_t = times[1] - times[0]
+        else:
+            delta_t = None
+
+        self.h_lm, self.times = self.time_domain_oscillatory(delta_t=delta_t)
         if times is not None:
             self.set_time_array(times)
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        if name in self.no_hm:
+            self._kind = "no_hm"
+        elif name in self.td:
+            self._kind = "td"
+        elif name in self.fd:
+            self._kind = "fd"
+        else:
+            raise ValueError(
+                f"Approximant {name} is not supported. Should be one of "
+                ", ".join(self.no_hm + self.td + self.fd)
+            )
+        self._name = name
 
     def time_domain_oscillatory(self, delta_t=None, modes=None, inc=None, phase=None):
         """
@@ -116,66 +152,100 @@ class Approximant(MemoryGenerator):
         times: np.array
             Times on which waveform is evaluated.
         """
-        from lalsimulation import GetApproximantFromString, SimInspiralChooseTDWaveform
+        from lal import CreateDict
+        from lalsimulation import (
+            GetApproximantFromString,
+            SimInspiralTD,
+            SimInspiralChooseTDModes,
+            SimInspiralChooseFDModes,
+            SimInspiralCreateModeArray,
+            SimInspiralModeArrayActivateMode,
+            SimInspiralWaveformParamsInsertModeArray,
+        )
 
         if self.h_lm is None:
-            if modes is None:
-                modes = self.available_modes
-            else:
-                modes = modes
 
-            if not set(modes).issubset(self.available_modes):
-                print(
-                    "Requested {} unavailable modes".format(
-                        " ".join(set(modes).difference(self.available_modes))
-                    )
-                )
-                modes = list(set(modes).union(self.available_modes))
-                print("Using modes {}".format(" ".join(modes)))
-
-            fmin, fRef = 20, 20
-            theta = 0.0
-            phi = 0.0
-            longAscNodes = 0.0
-            eccentricity = 0.0
-            meanPerAno = 0.0
-            approx = GetApproximantFromString(self.name)
-            WFdict = None
-
-            if delta_t is None:
-                delta_t = 0.1 * (self.m1_SI + self.m2_SI) * GG / CC ** 3
-            else:
-                delta_t = delta_t
-
-            hplus, hcross = SimInspiralChooseTDWaveform(
-                self.m1_SI,
-                self.m2_SI,
-                self.S1[0],
-                self.S1[1],
-                self.S1[2],
-                self.S2[0],
-                self.S2[1],
-                self.S2[2],
-                self.distance_SI,
-                theta,
-                phi,
-                longAscNodes,
-                eccentricity,
-                meanPerAno,
-                delta_t,
-                fmin,
-                fRef,
-                WFdict,
-                approx,
+            params = dict(
+                f_min=self.minimum_frequency,
+                f_ref=self.reference_frequency,
+                phiRef=0.0,
+                approximant=GetApproximantFromString(self.name),
+                LALpars=None,
+                m1=self.m1_SI,
+                m2=self.m2_SI,
+                S1x=self.S1[0],
+                S1y=self.S1[1],
+                S1z=self.S1[2],
+                S2x=self.S2[0],
+                S2y=self.S2[1],
+                S2z=self.S2[2],
+                distance=self.distance_SI,
+                inclination=0.0,
             )
 
-            h = hplus.data.data - 1j * hcross.data.data
+            if delta_t is None:
+                params["deltaT"] = 0.1 / self.t_to_geo
+            else:
+                params["deltaT"] = delta_t
 
-            h_22 = h / sYlm(-2, 2, 2, theta, phi)
+            if self._kind in ["td", "fd"]:
+                if modes is not None:
+                    WFdict = CreateDict()
+                    mode_array = SimInspiralCreateModeArray()
+                    for mode in modes:
+                        SimInspiralModeArrayActivateMode(mode_array, *mode)
+                    SimInspiralWaveformParamsInsertModeArray(WFdict, modes)
+                else:
+                    WFdict = None
+                params["LALpars"] = WFdict
+            elif modes is not None:
+                print(f"Modes specified for a non-HM approximant {self.name}.")
 
-            times = np.linspace(0, delta_t * len(h), len(h))
-            times -= times[np.argmax(abs(h_22))]
-            h_lm = {(2, 2): h_22, (2, -2): np.conjugate(h_22)}
+            if self._kind == "fd":
+                del params["deltaT"]
+                duration = self.duration
+                params["deltaF"] = 1 / duration
+                params["f_max"] = self.sampling_frequency / 2
+                waveform_modes = SimInspiralChooseFDModes(**params)
+                times = np.arange(0, duration, 1 / self.sampling_frequency)
+
+                h_lm = dict()
+                while waveform_modes is not None:
+                    mode = (waveform_modes.l, waveform_modes.m)
+                    data = waveform_modes.mode.data.data[:-1]
+                    h_lm[mode] = np.roll(
+                        np.fft.ifft(np.roll(data, int(duration * params["f_max"]))),
+                        int((duration - 1) * self.sampling_frequency)) * self.sampling_frequency
+                    if mode == (2, 2):
+                        times -= times[np.argmax(abs(h_lm[mode]))]
+                    waveform_modes = waveform_modes.next
+            elif self._kind == "td":
+                del params["inclination"]
+                params["r"] = params.pop("distance")
+                params["lmax"] = self.l_max
+                waveform_modes = SimInspiralChooseTDModes(**params)
+                times = np.arange(len(waveform_modes.mode.data.data)) * params["deltaT"]
+
+                h_lm = dict()
+                while waveform_modes is not None:
+                    mode = (waveform_modes.l, waveform_modes.m)
+                    h_lm[mode] = waveform_modes.mode.data.data
+                    if mode == (2, 2):
+                        times -= times[np.argmax(abs(h_lm[mode]))]
+                    waveform_modes = waveform_modes.next
+            elif self._kind == "no_hm":
+                params["longAscNodes"] = 0.0
+                params["eccentricity"] = 0.0
+                params["meanPerAno"] = 0.0
+                params["LALparams"] = params.pop("LALpars")
+                hplus, hcross = SimInspiralTD(**params)
+                h = hplus.data.data - 1j * hcross.data.data
+
+                h_22 = h / sYlm(-2, 2, 2, 0, 0)
+
+                times = np.arange(len(h_22)) * params["deltaT"]
+                times -= times[np.argmax(abs(h_22))]
+                h_lm = {(2, 2): h_22, (2, -2): np.conjugate(h_22)}
 
         else:
             h_lm = self.h_lm
