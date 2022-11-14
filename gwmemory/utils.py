@@ -1,21 +1,22 @@
+from typing import Tuple
+
 import numpy as np
 
-from .harmonics import sYlm, lmax_modes
-
+from .harmonics import lmax_modes, sYlm
 
 # Constants for conversions
 # taken from astropy==5.0.1
 CC = 299792458.0
 GG = 6.6743e-11
-SOLAR_MASS = 1.988409870698051e+30
+SOLAR_MASS = 1.988409870698051e30
 KG = 1 / SOLAR_MASS
-METRE = CC ** 2 / (GG * SOLAR_MASS)
+METRE = CC**2 / (GG * SOLAR_MASS)
 SECOND = CC * METRE
 
-MPC = 3.085677581491367e+22
+MPC = 3.085677581491367e22
 
 
-def nfft(ht, sampling_frequency):
+def nfft(ht: np.ndarray, sampling_frequency: float) -> Tuple[np.ndarray, np.ndarray]:
     """
     performs an FFT while keeping track of the frequency bins
     assumes input time series is real (positive frequencies only)
@@ -52,7 +53,9 @@ def nfft(ht, sampling_frequency):
     return hf, ff
 
 
-def load_sxs_waveform(file_name, modes=None, extraction="OutermostExtraction.dir"):
+def load_sxs_waveform(
+    file_name: str, modes: list = None, extraction: str = "OutermostExtraction.dir"
+) -> Tuple[dict, np.ndarray]:
     """
     Load the spherical harmonic modes of an SXS numerical relativity waveform.
 
@@ -86,7 +89,7 @@ def load_sxs_waveform(file_name, modes=None, extraction="OutermostExtraction.dir
     return output, times
 
 
-def combine_modes(h_lm, inc, phase):
+def combine_modes(h_lm: dict, inc: float, phase: float) -> np.ndarray:
     """
     Calculate the plus and cross polarisations of the waveform from the
     spherical harmonic decomposition.

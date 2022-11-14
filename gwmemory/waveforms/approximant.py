@@ -1,7 +1,9 @@
+from typing import Tuple
+
 import numpy as np
 
 from ..harmonics import sYlm
-from ..utils import combine_modes, MPC, SOLAR_MASS
+from ..utils import MPC, SOLAR_MASS, combine_modes
 from . import MemoryGenerator
 
 
@@ -13,18 +15,18 @@ class Approximant(MemoryGenerator):
 
     def __init__(
         self,
-        name,
-        q,
-        total_mass=60,
-        spin_1=None,
-        spin_2=None,
-        distance=400,
-        times=None,
-        minimum_frequency=20.0,
-        reference_frequency=20.0,
-        duration=4.0,
-        sampling_frequency=2048.0,
-        l_max=4,
+        name: str,
+        q: float,
+        total_mass: float = 60,
+        spin_1: Tuple[float, float, float] = None,
+        spin_2: Tuple[float, float, float] = None,
+        distance: float = 400,
+        times: np.ndarray = None,
+        minimum_frequency: float = 20.0,
+        reference_frequency: float = 20.0,
+        duration: float = 4.0,
+        sampling_frequency: float = 2048.0,
+        l_max: int = 4,
     ):
         """
         Initialise Surrogate MemoryGenerator
@@ -109,7 +111,7 @@ class Approximant(MemoryGenerator):
         return self._name
 
     @name.setter
-    def name(self, name):
+    def name(self, name: str):
         if name in self.no_hm:
             self._kind = "no_hm"
         elif name in self.td:
@@ -123,7 +125,13 @@ class Approximant(MemoryGenerator):
             )
         self._name = name
 
-    def time_domain_oscillatory(self, delta_t=None, modes=None, inc=None, phase=None):
+    def time_domain_oscillatory(
+        self,
+        delta_t: float = None,
+        modes: list = None,
+        inc: float = None,
+        phase: float = None,
+    ) -> Tuple[dict, np.ndarray]:
         """
         Get the mode decomposition of the waveform approximant.
 
@@ -152,16 +160,8 @@ class Approximant(MemoryGenerator):
         times: np.array
             Times on which waveform is evaluated.
         """
+        import lalsimulation as lalsim
         from lal import CreateDict
-        from lalsimulation import (
-            GetApproximantFromString,
-            SimInspiralTD,
-            SimInspiralChooseTDModes,
-            SimInspiralChooseFDModes,
-            SimInspiralCreateModeArray,
-            SimInspiralModeArrayActivateMode,
-            SimInspiralWaveformParamsInsertModeArray,
-        )
 
         if self.h_lm is None:
 
@@ -169,7 +169,7 @@ class Approximant(MemoryGenerator):
                 f_min=self.minimum_frequency,
                 f_ref=self.reference_frequency,
                 phiRef=0.0,
-                approximant=GetApproximantFromString(self.name),
+                approximant=lalsim.GetApproximantFromString(self.name),
                 LALpars=None,
                 m1=self.m1_SI,
                 m2=self.m2_SI,
@@ -191,10 +191,10 @@ class Approximant(MemoryGenerator):
             if self._kind in ["td", "fd"]:
                 if modes is not None:
                     WFdict = CreateDict()
-                    mode_array = SimInspiralCreateModeArray()
+                    mode_array = lalsim.SimInspiralCreateModeArray()
                     for mode in modes:
-                        SimInspiralModeArrayActivateMode(mode_array, *mode)
-                    SimInspiralWaveformParamsInsertModeArray(WFdict, modes)
+                        lalsim.SimInspiralModeArrayActivateMode(mode_array, *mode)
+                    lalsim.SimInspiralWaveformParamsInsertModeArray(WFdict, modes)
                 else:
                     WFdict = None
                 params["LALpars"] = WFdict
@@ -206,16 +206,20 @@ class Approximant(MemoryGenerator):
                 duration = self.duration
                 params["deltaF"] = 1 / duration
                 params["f_max"] = self.sampling_frequency / 2
-                waveform_modes = SimInspiralChooseFDModes(**params)
+                waveform_modes = lalsim.SimInspiralChooseFDModes(**params)
                 times = np.arange(0, duration, 1 / self.sampling_frequency)
 
                 h_lm = dict()
                 while waveform_modes is not None:
                     mode = (waveform_modes.l, waveform_modes.m)
                     data = waveform_modes.mode.data.data[:-1]
-                    h_lm[mode] = np.roll(
-                        np.fft.ifft(np.roll(data, int(duration * params["f_max"]))),
-                        int((duration - 1) * self.sampling_frequency)) * self.sampling_frequency
+                    h_lm[mode] = (
+                        np.roll(
+                            np.fft.ifft(np.roll(data, int(duration * params["f_max"]))),
+                            int((duration - 1) * self.sampling_frequency),
+                        )
+                        * self.sampling_frequency
+                    )
                     if mode == (2, 2):
                         times -= times[np.argmax(abs(h_lm[mode]))]
                     waveform_modes = waveform_modes.next
@@ -223,7 +227,7 @@ class Approximant(MemoryGenerator):
                 del params["inclination"]
                 params["r"] = params.pop("distance")
                 params["lmax"] = self.l_max
-                waveform_modes = SimInspiralChooseTDModes(**params)
+                waveform_modes = lalsim.SimInspiralChooseTDModes(**params)
                 times = np.arange(len(waveform_modes.mode.data.data)) * params["deltaT"]
 
                 h_lm = dict()
@@ -238,7 +242,7 @@ class Approximant(MemoryGenerator):
                 params["eccentricity"] = 0.0
                 params["meanPerAno"] = 0.0
                 params["LALparams"] = params.pop("LALpars")
-                hplus, hcross = SimInspiralTD(**params)
+                hplus, hcross = lalsim.SimInspiralTD(**params)
                 h = hplus.data.data - 1j * hcross.data.data
 
                 h_22 = h / sYlm(-2, 2, 2, 0, 0)

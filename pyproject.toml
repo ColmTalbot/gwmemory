@@ -16,7 +16,7 @@ authors = [
 ]
 description = "Calculate the gravitational-wave memory for arbitrary time series"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",

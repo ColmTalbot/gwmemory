@@ -1,8 +1,9 @@
 import warnings
+from typing import Tuple
 
 import numpy as np
-from scipy.interpolate import interp1d
 from scipy.integrate import cumulative_trapezoid
+from scipy.interpolate import interp1d
 
 from ..angles import analytic_gamma
 from ..harmonics import lmax_modes
@@ -10,7 +11,7 @@ from ..utils import CC, GG, MPC, SOLAR_MASS, combine_modes
 
 
 class MemoryGenerator(object):
-    def __init__(self, name, h_lm, times, l_max=4):
+    def __init__(self, name: str, h_lm: dict, times: np.ndarray, l_max: int = 4):
 
         self.name = name
         self.h_lm = h_lm
@@ -22,14 +23,14 @@ class MemoryGenerator(object):
         if self.MTot is None or self.distance is None:
             return 1
         else:
-            return self.distance * MPC / self.MTot / SOLAR_MASS / GG * CC ** 2
+            return self.distance * MPC / self.MTot / SOLAR_MASS / GG * CC**2
 
     @property
     def t_to_geo(self):
         if self.MTot is None or self.distance is None:
             return 1
         else:
-            return 1 / self.MTot / SOLAR_MASS / GG * CC ** 3
+            return 1 / self.MTot / SOLAR_MASS / GG * CC**3
 
     @property
     def modes(self):
@@ -47,7 +48,13 @@ class MemoryGenerator(object):
     def delta_t(self):
         return self.times[1] - self.times[0]
 
-    def time_domain_memory(self, inc=None, phase=None, modes=None, gamma_lmlm=None):
+    def time_domain_memory(
+        self,
+        inc: float = None,
+        phase: float = None,
+        modes: list = None,
+        gamma_lmlm: dict = None,
+    ) -> Tuple[dict, np.ndarray]:
         """
         Calculate the spherical harmonic decomposition of the nonlinear
         memory from a dictionary of spherical mode time series
@@ -94,9 +101,7 @@ class MemoryGenerator(object):
                     pass
 
         if gamma_lmlm is not None:
-            warnings.warn(
-                f"The gamma_lmlm argument is deprecated and will be removed."
-            )
+            warnings.warn(f"The gamma_lmlm argument is deprecated and will be removed.")
 
         # constant terms in SI units
         const = 1 / 4 / np.pi
@@ -107,11 +112,14 @@ class MemoryGenerator(object):
 
         modes = lmax_modes(self.l_max)
         for ell, delta_m in modes:
-            dh_mem_dt_lm[(ell, int(delta_m))] = np.sum([
-                dhlm_dt_sq[(lm1, lm2)] * analytic_gamma(lm1, lm2, ell)
-                for lm1, lm2 in dhlm_dt_sq.keys()
-                if delta_m == lm1[1] - lm2[1]
-            ], axis=0) * np.ones(len(self.times), dtype=complex)
+            dh_mem_dt_lm[(ell, int(delta_m))] = np.sum(
+                [
+                    dhlm_dt_sq[(lm1, lm2)] * analytic_gamma(lm1, lm2, ell)
+                    for lm1, lm2 in dhlm_dt_sq.keys()
+                    if delta_m == lm1[1] - lm2[1]
+                ],
+                axis=0,
+            ) * np.ones(len(self.times), dtype=complex)
         h_mem_lm = {
             lm: const * cumulative_trapezoid(dh_mem_dt_lm[lm], self.times, initial=0)
             for lm in dh_mem_dt_lm

@@ -2,11 +2,12 @@
 # Modified Colm Talbot
 # This code package includes code for calculating the properties of quasinormal
 # black hole modes
+from typing import Tuple
 
 import numpy as np
 
 
-def freq_damping(mass, spin, nn=0):
+def freq_damping(mass: float, spin: float, nn: int = 0) -> Tuple[float, float]:
     """
     Calculate the quasinormal mode freq and damping time for a black hole.
     This version uses OBSERVER'S UNITS.
@@ -20,10 +21,6 @@ def freq_damping(mass, spin, nn=0):
         BH mass in solar masses
     spin: float
         BH dimensionless spin
-    ell: int, optional
-        Spherical harmonic l, default=2
-    mm: int, optional
-        Spherical harmonic m, default=2
     nn: int, optional
         QNM harmonic, default=0 is the fundamental
 
@@ -58,7 +55,7 @@ def freq_damping(mass, spin, nn=0):
     return omega_lmn, tau_lmn
 
 
-def final_mass_spin(mass_1, mass_2):
+def final_mass_spin(mass_1: float, mass_2: float) -> Tuple[float, float]:
     """
     Given initial total mass and mass ratio, calculate the final mass, M_f
     and dimensionless spin parameter, jj,
@@ -88,14 +85,14 @@ def final_mass_spin(mass_1, mass_2):
     # expansion coefficients for the mass
     m_f1 = 1.0
     m_f2 = (np.sqrt(8.0 / 9.0) - 1.0) * eta
-    m_f3 = -0.498 * eta ** 2
+    m_f3 = -0.498 * eta**2
 
     # final mass
     final_mass = total_mass * (m_f1 + m_f2 + m_f3)
 
     # expansion coefficients for spin parameter
     a_f1 = np.sqrt(12.0) * eta
-    a_f2 = -2.9 * eta ** 2
+    a_f2 = -2.9 * eta**2
 
     # final spin parameter -- dimensions of mass
     a_f = final_mass * (a_f1 + a_f2)
