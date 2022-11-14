@@ -47,7 +47,7 @@ class MemoryGenerator(object):
     def delta_t(self):
         return self.times[1] - self.times[0]
 
-    def time_domain_memory(self, inc=None, phase=None, gamma_lmlm=None):
+    def time_domain_memory(self, inc=None, phase=None, modes=None, gamma_lmlm=None):
         """
         Calculate the spherical harmonic decomposition of the nonlinear
         memory from a dictionary of spherical mode time series
@@ -60,6 +60,9 @@ class MemoryGenerator(object):
         phase: float, optional
             Reference phase of the source, if None, the spherical harmonic
             modes will be returned. For CBCs this is the phase at coalescence.
+        modes: list
+            The modes to consider when computing the memory. By default all
+            available modes will be used.
         gamma_lmlm: dict, deprecated
             Dictionary of arrays defining the angular dependence of the
             different memory modes, these are now computed/cached on the fly.
@@ -72,7 +75,10 @@ class MemoryGenerator(object):
             Time series on which memory is evaluated.
         """
 
-        lms = self.modes
+        if modes is None:
+            lms = self.modes
+        else:
+            lms = modes
 
         dhlm_dt = dict()
         for lm in lms:

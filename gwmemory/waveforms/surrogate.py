@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import numpy as np
 
 from ..utils import combine_modes
@@ -222,7 +224,7 @@ class Surrogate(MemoryGenerator):
             h_lm = {(ell, m): h_lm[ell, m] for ell, m in modes}
 
         else:
-            h_lm = self.h_lm
+            h_lm = deepcopy(self.h_lm)
             times = self.times
 
         if inc is None or phase is None:
