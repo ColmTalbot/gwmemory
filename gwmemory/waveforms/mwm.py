@@ -88,14 +88,10 @@ class MWM(MemoryGenerator):
 
         # calculate the QNM frequencies and damping times
         # from the fits in Table VIII of Berti et al. (2006)
-        omega220, tau220 = freq_damping(Mf_geo, jj, nn=0)
-        omega221, tau221 = freq_damping(Mf_geo, jj, nn=1)
-        omega222, tau222 = freq_damping(Mf_geo, jj, nn=2)
-        print(omega222, tau221)
+        omega, tau = np.array([freq_damping(Mf_geo, jj, nn=nn) for nn in range(3)]).T
 
-        sigma220 = 1j * omega220 + 1 / tau220
-        sigma221 = 1j * omega221 + 1 / tau221
-        sigma222 = 1j * omega222 + 1 / tau222
+        sigma = 1j * omega + 1 / tau
+        sigma_plus_sigma_star = np.add.outer(sigma, sigma.conj())
 
         # set the matching time to be at t = 0
         tm = 0
@@ -110,104 +106,26 @@ class MWM(MemoryGenerator):
         xi = 2 * np.sqrt(2 * np.pi / 5) * eta * MM * rm**2
         chi = -2 * 1j * np.sqrt(MM / rm**3)
 
-        A220 = (
+        amplitude = (
             xi
-            * (
-                sigma221 * sigma222 * chi**2
-                + sigma221 * chi**3
-                + sigma222 * chi**3
-                + chi**4
+            * chi**2
+            * np.array(
+                [
+                    (sigma[(ii + 1) % 3] + chi)
+                    * (sigma[(ii + 2) % 3] + chi)
+                    / (sigma[ii % 3] - sigma[(ii + 1) % 3])
+                    / (sigma[ii % 3] - sigma[(ii + 2) % 3])
+                    for ii in range(3)
+                ]
             )
-            / ((sigma220 - sigma221) * (sigma220 - sigma222))
-        )
-        A221 = (
-            xi
-            * (
-                sigma220 * sigma222 * chi**2
-                + sigma220 * chi**3
-                + sigma222 * chi**3
-                + chi**4
-            )
-            / ((sigma221 - sigma220) * (sigma221 - sigma222))
-        )
-        A222 = (
-            xi
-            * (
-                sigma220 * sigma221 * chi**2
-                + sigma220 * chi**3
-                + sigma221 * chi**3
-                + chi**4
-            )
-            / ((sigma221 - sigma222) * (sigma220 - sigma222))
         )
 
         # Calculate the coefficients in the summed term of equation (9)
         # from Favata (2009) this is a double sum, with each variable going
         # from n = 0 to 2; therefore 9 terms
-        coeffSum00 = (
-            sigma220
-            * np.conj(sigma220)
-            * A220
-            * np.conj(A220)
-            / (sigma220 + np.conj(sigma220))
-        )
-        coeffSum01 = (
-            sigma220
-            * np.conj(sigma221)
-            * A220
-            * np.conj(A221)
-            / (sigma220 + np.conj(sigma221))
-        )
-        coeffSum02 = (
-            sigma220
-            * np.conj(sigma222)
-            * A220
-            * np.conj(A222)
-            / (sigma220 + np.conj(sigma222))
-        )
-
-        coeffSum10 = (
-            sigma221
-            * np.conj(sigma220)
-            * A221
-            * np.conj(A220)
-            / (sigma221 + np.conj(sigma220))
-        )
-        coeffSum11 = (
-            sigma221
-            * np.conj(sigma221)
-            * A221
-            * np.conj(A221)
-            / (sigma221 + np.conj(sigma221))
-        )
-        coeffSum12 = (
-            sigma221
-            * np.conj(sigma222)
-            * A221
-            * np.conj(A222)
-            / (sigma221 + np.conj(sigma222))
-        )
-
-        coeffSum20 = (
-            sigma222
-            * np.conj(sigma220)
-            * A222
-            * np.conj(A220)
-            / (sigma222 + np.conj(sigma220))
-        )
-        coeffSum21 = (
-            sigma222
-            * np.conj(sigma221)
-            * A222
-            * np.conj(A221)
-            / (sigma222 + np.conj(sigma221))
-        )
-        coeffSum22 = (
-            sigma222
-            * np.conj(sigma222)
-            * A222
-            * np.conj(A222)
-            / (sigma222 + np.conj(sigma222))
+        coeffs = (
+            np.outer(sigma * amplitude, sigma.conj() * amplitude.conj())
+            / sigma_plus_sigma_star
         )
 
         # radial separation
@@ -217,42 +135,31 @@ class MWM(MemoryGenerator):
         h_MWM = np.zeros(len(TT))
 
         # calculate strain for TT < 0.
-        h_MWM[TT <= 0] = 8 * np.pi * MM / rr[TT <= 0]
+        post_merger = TT > 0
+        h_MWM[~post_merger] = 8 * np.pi * MM / rr[~post_merger]
+
+        TT = TT[post_merger]
 
         # calculate strain for TT > 0.
-        term00 = coeffSum00 * (1 - np.exp(-TT[TT > 0] * (sigma220 + np.conj(sigma220))))
-        term01 = coeffSum01 * (1 - np.exp(-TT[TT > 0] * (sigma220 + np.conj(sigma221))))
-        term02 = coeffSum02 * (1 - np.exp(-TT[TT > 0] * (sigma220 + np.conj(sigma222))))
-
-        term10 = coeffSum10 * (1 - np.exp(-TT[TT > 0] * (sigma221 + np.conj(sigma220))))
-        term11 = coeffSum11 * (1 - np.exp(-TT[TT > 0] * (sigma221 + np.conj(sigma221))))
-        term12 = coeffSum12 * (1 - np.exp(-TT[TT > 0] * (sigma221 + np.conj(sigma222))))
-
-        term20 = coeffSum20 * (1 - np.exp(-TT[TT > 0] * (sigma222 + np.conj(sigma220))))
-        term21 = coeffSum21 * (1 - np.exp(-TT[TT > 0] * (sigma222 + np.conj(sigma221))))
-        term22 = coeffSum22 * (1 - np.exp(-TT[TT > 0] * (sigma222 + np.conj(sigma222))))
-
-        sum_terms = np.real(
-            term00
-            + term01
-            + term02
-            + term10
-            + term11
-            + term12
-            + term20
-            + term21
-            + term22
+        terms = coeffs * (
+            1 - np.exp(-TT[:, np.newaxis, np.newaxis] * sigma_plus_sigma_star)
         )
 
-        h_MWM[TT > 0] = 8 * np.pi * MM / rm + sum_terms / (eta * MM)
+        alt_sum_terms = terms.sum(axis=(1, 2))
+
+        h_MWM[post_merger] = 8 * np.pi * MM / rm + alt_sum_terms / (eta * MM)
 
         # calculate the plus polarisation of GWs: eqn. (5) from Favata (2009)
-        sT = np.sin(inc)
-        cT = np.cos(inc)
-
         h_plus_coeff = (
-            0.77 * eta * MM / (384 * np.pi) * sT**2 * (17 + cT**2) / dist_geo
+            0.77
+            * eta
+            * MM
+            / (384 * np.pi)
+            * np.sin(inc) ** 2
+            * (17 + np.cos(inc) ** 2)
+            / dist_geo
         )
         h_mem = dict(plus=h_plus_coeff * h_MWM, cross=np.zeros_like(h_MWM))
+        h_mem["plus"] -= h_mem["plus"][0]
 
         return h_mem, times
