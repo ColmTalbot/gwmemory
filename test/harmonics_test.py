@@ -1,7 +1,6 @@
-import pytest
-
 import lal
 import numpy as np
+import pytest
 
 from gwmemory import harmonics
 
@@ -17,4 +16,3 @@ def test_spherical_harmonics_match_lal(lm):
         )
         assert abs(np.real(diff)) < 1e-6
         assert abs(np.imag(diff)) < 1e-6
-

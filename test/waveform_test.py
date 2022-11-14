@@ -1,13 +1,13 @@
-import h5py
 import os
 
 import gwsurrogate as gws
+import h5py
 import numpy as np
 import pytest
 from gwtools import sxs_memory
 
 import gwmemory
-from gwmemory import time_domain_memory, frequency_domain_memory
+from gwmemory import frequency_domain_memory, time_domain_memory
 from gwmemory.waveforms import Approximant, Surrogate, SXSNumericalRelativity
 
 TEST_MODELS = [
@@ -57,7 +57,9 @@ def test_waveform_multiple_runs(model):
         assert np.allclose(mem_1[mode], mem_2[mode])
 
 
-@pytest.mark.parametrize(("model", "name"), ([Surrogate, "NRSur7dq4"], [Approximant, "IMRPhenomT"]))
+@pytest.mark.parametrize(
+    ("model", "name"), ([Surrogate, "NRSur7dq4"], [Approximant, "IMRPhenomT"])
+)
 def test_minimal_arguments(model, name):
     """
     Test calculating memory with default arguments.
@@ -90,7 +92,7 @@ def test_nr_waveform():
         for mode in h_osc:
             grp.create_dataset(
                 f"Y_l{mode[0]}_m{mode[1]}.dat",
-                data=np.vstack([times, h_osc[mode].real, h_osc[mode].imag]).T
+                data=np.vstack([times, h_osc[mode].real, h_osc[mode].imag]).T,
             )
     loaded = SXSNumericalRelativity("test_waveform.h5")
     mem1, times_1 = test.time_domain_memory()
@@ -112,6 +114,10 @@ def test_memory_matches_sxs():
     for ii, mode in enumerate(modes):
         gwmem = h_mem[mode]
         sxsmem = h_mem_sxs[mode]
-        overlap = np.vdot(gwmem, sxsmem) / np.vdot(gwmem, gwmem) ** 0.5 / np.vdot(sxsmem, sxsmem) ** 0.5
+        overlap = (
+            np.vdot(gwmem, sxsmem)
+            / np.vdot(gwmem, gwmem) ** 0.5
+            / np.vdot(sxsmem, sxsmem) ** 0.5
+        )
         assert overlap.real > 1 - 1e-8
         assert abs(overlap.imag) < 1e-5

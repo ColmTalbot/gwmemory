@@ -1,4 +1,5 @@
 from copy import deepcopy
+from typing import Tuple
 
 import numpy as np
 
@@ -28,12 +29,12 @@ class SXSNumericalRelativity(MemoryGenerator):
 
     def __init__(
         self,
-        name,
-        modes=None,
-        extraction="OutermostExtraction.dir",
-        total_mass=None,
-        distance=None,
-        times=None,
+        name: str,
+        modes: list = None,
+        extraction: str = "OutermostExtraction.dir",
+        total_mass: float = None,
+        distance: float = None,
+        times: np.ndarray = None,
     ):
         """
         Initialise SXSNumericalRelativity MemoryGenerator
@@ -49,16 +50,16 @@ class SXSNumericalRelativity(MemoryGenerator):
             h5 file.
         total_mass: float
             Lab-frame total mass of the binary in solar masses.
-        distace: float
+        distance: float
             Luminosity distance to the binary in MPC.
         times: array
             Time array to evaluate the waveforms on, default is time array
             in h5 file.
         """
-        h_lm, times = load_sxs_waveform(
-            name, modes=modes, extraction=extraction
+        h_lm, times = load_sxs_waveform(name, modes=modes, extraction=extraction)
+        super(SXSNumericalRelativity, self).__init__(
+            name=name, h_lm=h_lm, times=times, l_max=4
         )
-        super(SXSNumericalRelativity, self).__init__(name=name, h_lm=h_lm, times=times, l_max=4)
 
         self.MTot = total_mass
         self.distance = distance
@@ -70,7 +71,13 @@ class SXSNumericalRelativity(MemoryGenerator):
         if times is not None:
             self.set_time_array(times)
 
-    def time_domain_oscillatory(self, times=None, modes=None, inc=None, phase=None):
+    def time_domain_oscillatory(
+        self,
+        times: np.ndarray = None,
+        modes: list = None,
+        inc: float = None,
+        phase: float = None,
+    ) -> Tuple[dict, np.ndarray]:
         """
         Get the mode decomposition of the numerical relativity waveform.
 

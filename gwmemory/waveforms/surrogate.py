@@ -1,4 +1,5 @@
 from copy import deepcopy
+from typing import Tuple
 
 import numpy as np
 
@@ -34,17 +35,17 @@ class Surrogate(MemoryGenerator):
 
     def __init__(
         self,
-        q,
-        name="nrsur7dq2",
-        total_mass=None,
-        spin_1=None,
-        spin_2=None,
-        distance=None,
-        l_max=4,
-        modes=None,
-        times=None,
-        minimum_frequency=0,
-        sampling_frequency=None,
+        q: float,
+        name: str = "nrsur7dq2",
+        total_mass: float = None,
+        spin_1: Tuple[float, float, float] = None,
+        spin_2: Tuple[float, float, float] = None,
+        distance: float = None,
+        l_max: int = 4,
+        modes: list = None,
+        times: np.ndarray = None,
+        minimum_frequency: float = 0,
+        sampling_frequency: float = None,
     ):
         """
         Initialise Surrogate MemoryGenerator
@@ -81,7 +82,7 @@ class Surrogate(MemoryGenerator):
                 print("$ python -m pip install nrsur7dq2")
                 raise
 
-            self.sur = NRSurrogate7dq2()
+            self.surrogate = NRSurrogate7dq2()
 
             if q < 1:
                 q = 1 / q
@@ -106,9 +107,11 @@ class Surrogate(MemoryGenerator):
                 print("$ conda install -c conda-forge gwsurrogate")
                 raise
             try:
-                self.sur = gwsurrogate.LoadSurrogate(name)
+                self.surrogate = gwsurrogate.LoadSurrogate(name)
             except ValueError:
-                raise ValueError(f"Surrogate model {name} not in {gwsurrogate.SURROGATE_CLASSES}")
+                raise ValueError(
+                    f"Surrogate model {name} not in {gwsurrogate.SURROGATE_CLASSES}"
+                )
             if q < 1:
                 q = 1 / q
             self.q = q
@@ -136,7 +139,13 @@ class Surrogate(MemoryGenerator):
         if times is not None:
             self.set_time_array(times)
 
-    def time_domain_oscillatory(self, times=None, modes=None, inc=None, phase=None):
+    def time_domain_oscillatory(
+        self,
+        times: np.ndarray = None,
+        modes: list = None,
+        inc: float = None,
+        phase: float = None,
+    ) -> Tuple[dict, np.ndarray]:
         """
         Get the mode decomposition of the surrogate waveform.
 
@@ -172,7 +181,7 @@ class Surrogate(MemoryGenerator):
                 if times is None:
                     times = np.linspace(-900, 100, 10001)
                 times = times / self.t_to_geo
-                h_lm = self.sur(
+                h_lm = self.surrogate(
                     self.q,
                     self.S1,
                     self.S2,
@@ -190,7 +199,7 @@ class Surrogate(MemoryGenerator):
                     delta_t = 1 / self.sampling_frequency
                 else:
                     delta_t = None
-                times, h_lm, _ = self.sur(
+                times, h_lm, _ = self.surrogate(
                     q=self.q,
                     chiA0=self.S1,
                     chiB0=self.S2,
@@ -219,7 +228,7 @@ class Surrogate(MemoryGenerator):
                     )
                 )
                 modes = list(set(modes).union(available_modes))
-                print("Using modes {}".format(" ".join(modes)))
+                print(f"Using modes {' '.join(modes)}")
 
             h_lm = {(ell, m): h_lm[ell, m] for ell, m in modes}
 

@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from functools import lru_cache
+from typing import Tuple
 
 import numpy as np
 from sympy.physics.wigner import wigner_3j
@@ -8,7 +9,7 @@ from . import harmonics
 
 
 @lru_cache
-def memory_correction(ell, ss=0):
+def memory_correction(ell: int, ss: int = 0) -> float:
     """
     Correction to the Gamma function for the operator in Eq. (12) of
     arXiv:2011.01309
@@ -28,13 +29,14 @@ def memory_correction(ell, ss=0):
     if ell < 2:
         return 0
     return (
-        ((ell - (ss - 1)) * (ell + ss) * (ell - (ss - 2)) * (ell + (ss - 1)))**0.5
-        * 4 / ((ell + 2) * (ell + 1) * ell * (ell - 1))
+        ((ell - (ss - 1)) * (ell + ss) * (ell - (ss - 2)) * (ell + (ss - 1))) ** 0.5
+        * 4
+        / ((ell + 2) * (ell + 1) * ell * (ell - 1))
     )
 
 
 @lru_cache()
-def analytic_gamma(lm1, lm2, ell):
+def analytic_gamma(lm1: Tuple[int, int], lm2: Tuple[int, int], ell: int) -> float:
     """
     Analytic function to compute gamma_lmlm_l Eq. (8) of arXiv:1807.0090
 
@@ -61,14 +63,27 @@ def analytic_gamma(lm1, lm2, ell):
     m3 = m1 + m2
     return (
         (-1.0) ** (ell1 + ell2 + ell + m3 + m2)
-        * (2 * ell1 + 1)**0.5 * (2 * ell2 + 1)**0.5 * (2 * ell + 1)**0.5
-        * float(wigner_3j(ell1, ell2, ell, s1, s2, -s3) * wigner_3j(ell1, ell2, ell, m1, m2, -m3))
-        * np.pi**0.5 / 2
+        * (2 * ell1 + 1) ** 0.5
+        * (2 * ell2 + 1) ** 0.5
+        * (2 * ell + 1) ** 0.5
+        * float(
+            wigner_3j(ell1, ell2, ell, s1, s2, -s3)
+            * wigner_3j(ell1, ell2, ell, m1, m2, -m3)
+        )
+        * np.pi**0.5
+        / 2
         * memory_correction(ell)
     )
 
 
-def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
+def gamma(
+    lm1: str,
+    lm2: str,
+    incs: np.ndarray = None,
+    theta: np.ndarray = None,
+    phi: np.ndarray = None,
+    y_lmlm_factor: np.ndarray = None,
+) -> list:
     """
     Coefficients mapping the spherical harmonic components of the oscillatory
     strain to the memory.
@@ -131,21 +146,23 @@ def gamma(lm1, lm2, incs=None, theta=None, phi=None, y_lmlm_factor=None):
         if ell < abs(delta_m):
             gammas.append(0)
         else:
-            gammas.append(np.real(
-                2
-                * np.pi
-                * np.trapz(
-                    lambda_lm1_lm2
-                    * np.conjugate(harm[f"{ell}{-delta_m}"])
-                    * sin_inc,
-                    incs,
+            gammas.append(
+                np.real(
+                    2
+                    * np.pi
+                    * np.trapz(
+                        lambda_lm1_lm2
+                        * np.conjugate(harm[f"{ell}{-delta_m}"])
+                        * sin_inc,
+                        incs,
+                    )
                 )
-            ))
+            )
 
     return gammas
 
 
-def ylmlm_factor(theta, phi, lm1, lm2):
+def ylmlm_factor(theta: np.ndarray, phi: np.ndarray, lm1: str, lm2: str) -> np.ndarray:
     if theta is None:
         theta = np.linspace(0, np.pi, 250)
     if phi is None:
@@ -166,7 +183,15 @@ def ylmlm_factor(theta, phi, lm1, lm2):
     return y_lmlm_factor, theta, phi
 
 
-def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
+def lambda_matrix(
+    inc: float,
+    phase: float,
+    lm1: str,
+    lm2: str,
+    theta: np.ndarray = None,
+    phi: np.ndarray = None,
+    y_lmlm_factor: np.ndarray = None,
+) -> np.ndarray:
     r"""
     Angular integral for a specific ll'mm' as given by equation 7 of Talbot
     et al. (2018), arXiv:1807.00990.
@@ -205,17 +230,21 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
     if y_lmlm_factor is None:
         y_lmlm_factor, theta, phi = ylmlm_factor(theta=theta, phi=phi, lm1=lm1, lm2=lm2)
 
-    n = np.array([
-        np.outer(np.cos(phi), np.sin(theta)),
-        np.outer(np.sin(phi), np.sin(theta)),
-        np.outer(np.ones_like(phi), np.cos(theta)),
-    ])
-    line_of_sight = np.array([np.sin(inc) * np.cos(phase), np.sin(inc) * np.sin(phase), np.cos(inc)])
+    n = np.array(
+        [
+            np.outer(np.cos(phi), np.sin(theta)),
+            np.outer(np.sin(phi), np.sin(theta)),
+            np.outer(np.ones_like(phi), np.cos(theta)),
+        ]
+    )
+    line_of_sight = np.array(
+        [np.sin(inc) * np.cos(phase), np.sin(inc) * np.sin(phase), np.cos(inc)]
+    )
     n_dot_line_of_sight = sum(n_i * N_i for n_i, N_i in zip(n, line_of_sight))
     n_dot_line_of_sight[n_dot_line_of_sight == 1] = 0
     denominator = 1 / (1 - n_dot_line_of_sight)
 
-    sin_array = np.outer(phi ** 0, np.sin(theta))
+    sin_array = np.outer(phi**0, np.sin(theta))
 
     angle_integrals_r = np.zeros((3, 3))
     angle_integrals_i = np.zeros((3, 3))
@@ -228,8 +257,9 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
                 * y_lmlm_factor
                 * (
                     n[j] * n[k]
-                    - (n[j] * line_of_sight[k] + n[k] * line_of_sight[j]) * n_dot_line_of_sight
-                    + line_of_sight[j] * line_of_sight[k] * n_dot_line_of_sight ** 2
+                    - (n[j] * line_of_sight[k] + n[k] * line_of_sight[j])
+                    * n_dot_line_of_sight
+                    + line_of_sight[j] * line_of_sight[k] * n_dot_line_of_sight**2
                 )
             )
             angle_integrals_r[j, k] = np.trapz(np.trapz(np.real(integrand), theta), phi)
@@ -244,7 +274,15 @@ def lambda_matrix(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None
     return lambda_mat
 
 
-def lambda_lmlm(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
+def lambda_lmlm(
+    inc: float,
+    phase: float,
+    lm1: str,
+    lm2: str,
+    theta: np.ndarray = None,
+    phi: np.ndarray = None,
+    y_lmlm_factor: np.ndarray = None,
+) -> complex:
     r"""
     Angular integral for a specific ll'mm' as given by equation 7 of Talbot
     et al. (2018), arXiv:1807.00990.
@@ -290,7 +328,9 @@ def lambda_lmlm(inc, phase, lm1, lm2, theta=None, phi=None, y_lmlm_factor=None):
     return lambda_lmlm
 
 
-def omega_ij_to_omega_pol(omega_ij, inc, phase):
+def omega_ij_to_omega_pol(
+    omega_ij: np.ndarray, inc: float, phase: float
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Map from strain tensor to plus and cross modes.
 
@@ -322,7 +362,7 @@ def omega_ij_to_omega_pol(omega_ij, inc, phase):
     return omega_plus, omega_cross
 
 
-def plus_tensor(wx, wy):
+def plus_tensor(wx: np.ndarray, wy: np.ndarray) -> np.ndarray:
     """
     Calculate the plus polarization tensor for some basis.
     c.f., eq. 2 of https://arxiv.org/pdf/1710.03794.pdf
@@ -331,7 +371,7 @@ def plus_tensor(wx, wy):
     return e_plus
 
 
-def cross_tensor(wx, wy):
+def cross_tensor(wx: np.ndarray, wy: np.ndarray) -> np.ndarray:
     """
     Calculate the cross polarization tensor for some basis.
     c.f., eq. 2 of https://arxiv.org/pdf/1710.03794.pdf
@@ -340,7 +380,9 @@ def cross_tensor(wx, wy):
     return e_cross
 
 
-def wave_frame(theta, phi, psi=0):
+def wave_frame(
+    theta: float, phi: float, psi: float = 0
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Generate wave-frame basis from three angles, see Nishizawa et al. (2009)
     """

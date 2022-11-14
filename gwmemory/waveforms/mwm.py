@@ -1,12 +1,21 @@
+from typing import Tuple
+
 import numpy as np
 
-from ..utils import CC, GG, MPC, SOLAR_MASS
 from ..qnms import final_mass_spin, freq_damping
+from ..utils import CC, GG, MPC, SOLAR_MASS
 from . import MemoryGenerator
 
 
 class MWM(MemoryGenerator):
-    def __init__(self, q, total_mass=60, distance=400, name="MWM", times=None):
+    def __init__(
+        self,
+        q: float,
+        total_mass: float = 60,
+        distance: float = 400,
+        name: str = "MWM",
+        times: np.ndarray = None,
+    ):
         super(MWM, self).__init__(name=name, h_lm=dict(), times=times)
         self.name = name
         if q > 1:
@@ -21,20 +30,22 @@ class MWM(MemoryGenerator):
             times = np.linspace(-900, 100, 10001) / self.t_to_geo
         self.times = times
 
-    def time_domain_memory(self, inc, phase, times=None, rm=3):
+    def time_domain_memory(
+        self, inc: float, phase: float, times: np.ndarray = None, rm: float = 3
+    ) -> Tuple[dict, np.ndarray]:
         """
         Calculates the plus and cross polarisations for the
         minimal waveform model memory waveform:
         eqns (5) and (9) from Favata (2009. ApJL 159)
 
-        TODO: Impement spherical harmonic decomposition?
+        TODO: Implement spherical harmonic decomposition?
 
         Parameters
         ----------
         inc: float
             Binary inclination angle
         phase: float
-            Binary phase at coalscence
+            Binary phase at coalescence
         times: array, optional
             Time array on which the memory is calculated
         rm: float, optional
@@ -54,7 +65,7 @@ class MWM(MemoryGenerator):
 
         time_geo = times * CC
 
-        mass_solar_to_geometric = SOLAR_MASS * GG / CC ** 2
+        mass_solar_to_geometric = SOLAR_MASS * GG / CC**2
         m1_geo = self.m1 * mass_solar_to_geometric
         m2_geo = self.m2 * mass_solar_to_geometric
 
@@ -91,41 +102,41 @@ class MWM(MemoryGenerator):
         TT = time_geo - tm
 
         # some quantity defined after equation (7) of Favata
-        trr = 5 * MM * rm ** 4 / (256 * eta * MM ** 4)
+        trr = 5 * MM * rm**4 / (256 * eta * MM**4)
 
         # calculate the A_{ell m n} matching coefficients.  Note that
         # I've solved a matrix equation that solved for the three coefficients
         # from three equations
-        xi = 2 * np.sqrt(2 * np.pi / 5) * eta * MM * rm ** 2
-        chi = -2 * 1j * np.sqrt(MM / rm ** 3)
+        xi = 2 * np.sqrt(2 * np.pi / 5) * eta * MM * rm**2
+        chi = -2 * 1j * np.sqrt(MM / rm**3)
 
         A220 = (
             xi
             * (
-                sigma221 * sigma222 * chi ** 2
-                + sigma221 * chi ** 3
-                + sigma222 * chi ** 3
-                + chi ** 4
+                sigma221 * sigma222 * chi**2
+                + sigma221 * chi**3
+                + sigma222 * chi**3
+                + chi**4
             )
             / ((sigma220 - sigma221) * (sigma220 - sigma222))
         )
         A221 = (
             xi
             * (
-                sigma220 * sigma222 * chi ** 2
-                + sigma220 * chi ** 3
-                + sigma222 * chi ** 3
-                + chi ** 4
+                sigma220 * sigma222 * chi**2
+                + sigma220 * chi**3
+                + sigma222 * chi**3
+                + chi**4
             )
             / ((sigma221 - sigma220) * (sigma221 - sigma222))
         )
         A222 = (
             xi
             * (
-                sigma220 * sigma221 * chi ** 2
-                + sigma220 * chi ** 3
-                + sigma221 * chi ** 3
-                + chi ** 4
+                sigma220 * sigma221 * chi**2
+                + sigma220 * chi**3
+                + sigma221 * chi**3
+                + chi**4
             )
             / ((sigma221 - sigma222) * (sigma220 - sigma222))
         )
@@ -240,7 +251,7 @@ class MWM(MemoryGenerator):
         cT = np.cos(inc)
 
         h_plus_coeff = (
-            0.77 * eta * MM / (384 * np.pi) * sT ** 2 * (17 + cT ** 2) / dist_geo
+            0.77 * eta * MM / (384 * np.pi) * sT**2 * (17 + cT**2) / dist_geo
         )
         h_mem = dict(plus=h_plus_coeff * h_MWM, cross=np.zeros_like(h_MWM))
 

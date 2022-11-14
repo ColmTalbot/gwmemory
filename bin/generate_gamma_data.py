@@ -30,10 +30,9 @@ for ell1, m1 in tqdm(lms):
     label_1 = f"{ell1}{m1}"
     for ell2, m2 in lms:
         label_2 = f"{ell2}{m2}"
-        gammalmlm = np.array([
-            angles.analytic_gamma((ell1, m1), (ell2, m2), ell)
-            for ell in range(2, 21)
-        ])
+        gammalmlm = np.array(
+            [angles.analytic_gamma((ell1, m1), (ell2, m2), ell) for ell in range(2, 21)]
+        )
         delta_m = m1 - m2
         new[str(delta_m)][label_1 + label_2] = np.real(gammalmlm)
 for key in new:

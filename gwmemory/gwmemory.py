@@ -1,21 +1,24 @@
-from . import waveforms
-from . import utils
 import inspect
+from typing import Tuple
+
+import numpy as np
+
+from . import utils, waveforms
 
 
 def time_domain_memory(
-    model=None,
-    h_lm=None,
-    times=None,
-    q=None,
-    total_mass=None,
-    spin_1=None,
-    spin_2=None,
-    distance=None,
-    inc=None,
-    phase=None,
+    model: str = None,
+    h_lm: dict = None,
+    times: np.ndarray = None,
+    q: float = None,
+    total_mass: float = None,
+    spin_1: Tuple[float, float, float] = None,
+    spin_2: Tuple[float, float, float] = None,
+    distance: float = None,
+    inc: float = None,
+    phase: float = None,
     **kwargs,
-):
+) -> Tuple[dict, np.ndarray]:
     """
     Calculate the time domain memory waveform according to __reference__.
 
@@ -137,16 +140,16 @@ def time_domain_memory(
 
 
 def frequency_domain_memory(
-    model=None,
-    q=None,
-    total_mass=None,
-    spin_1=None,
-    spin_2=None,
-    distance=None,
-    inc=None,
-    phase=None,
+    model: str = None,
+    q: float = None,
+    total_mass: float = None,
+    spin_1: Tuple[float, float, float] = None,
+    spin_2: Tuple[float, float, float] = None,
+    distance: float = None,
+    inc: float = None,
+    phase: float = None,
     **kwargs,
-):
+) -> Tuple[dict, np.ndarray]:
     """
     Calculate the frequency domain memory waveform according to __reference__.
 
