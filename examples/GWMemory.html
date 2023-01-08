@@ -14954,7 +14954,7 @@ class="
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">)</span>
-<span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">ell</span><span class="p">,</span> <span class="n">delta_m</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">ell</span><span class="p">,</span> <span class="n">delta_m</span> <span class="ow">in</span> <span class="n">gwmemory</span><span class="o">.</span><span class="n">harmonics</span><span class="o">.</span><span class="n">lmax_modes</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">ell</span><span class="p">,</span><span class="w"> </span><span class="n">delta_m</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">ell</span><span class="p">,</span> <span class="n">delta_m</span> <span class="ow">in</span> <span class="n">gwmemory</span><span class="o">.</span><span class="n">harmonics</span><span class="o">.</span><span class="n">lmax_modes</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Memory $(\ell, m)$&quot;</span><span class="p">)</span>
@@ -15014,7 +15014,7 @@ class="
 <h2 id="Orientation-Dependance">Orientation Dependance<a class="anchor-link" href="#Orientation-Dependance">&#182;</a></h2><p>Next we plot the orientation dependance of the + and x polarized memory as a function of source inclination (zenith) and orbital phase (azimuth).</p>
 <p><em>NOTE: this plot requires <a href="https://github.com/matplotlib/basemap"><code>Basemap</code></a> for the projection.</em></p>
 <p>Install with</p>
-<div class="highlight"><pre><span></span><span class="gp">$ </span>conda install -c conda-forge basemap
+<div class="highlight"><pre><span></span><span class="gp">$ </span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>basemap
 </pre></div>
 
 </div>

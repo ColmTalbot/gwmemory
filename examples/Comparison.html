@@ -14773,11 +14773,11 @@ Loaded NRHybSur3dq8 model
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>GWMemory time:
-CPU times: user 608 ms, sys: 200 ms, total: 808 ms
-Wall time: 810 ms
+CPU times: user 531 ms, sys: 204 ms, total: 736 ms
+Wall time: 737 ms
 SXS time:
-CPU times: user 26.4 s, sys: 1.25 s, total: 27.7 s
-Wall time: 27.7 s
+CPU times: user 26.3 s, sys: 1.19 s, total: 27.5 s
+Wall time: 27.5 s
 </pre>
 </div>
 </div>
@@ -14822,7 +14822,7 @@ Wall time: 27.7 s
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times_sxs</span><span class="p">,</span> <span class="n">sxsmem</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;SXS&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mode: (</span><span class="si">{</span><span class="n">mode</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">mode</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s2">&quot;axes fraction&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Mismatch: </span><span class="si">{</span><span class="mi">1</span> <span class="o">-</span> <span class="n">overlap</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s2">&quot;axes fraction&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Mismatch: </span><span class="si">{</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">overlap</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s2">&quot;axes fraction&quot;</span>
     <span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;$t [M]$&quot;</span><span class="p">)</span>
