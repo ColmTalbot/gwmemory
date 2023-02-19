@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Compare memory calculation codes &mdash; GWMemory 1.1.1.dev1+g661b04e documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -10,10 +11,8 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -30,14 +29,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> GWMemory
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GWMemory
           </a>
               <div class="version">
                 1.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -68,7 +71,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Compare memory calculation codes</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/comparison.ipynb.txt" rel="nofollow"> View page source</a>
@@ -358,7 +361,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Compare-memory-calculation-codes">
+<section id="Compare-memory-calculation-codes">
 <h1>Compare memory calculation codes<a class="headerlink" href="#Compare-memory-calculation-codes" title="Permalink to this heading"></a></h1>
 <p>Since the initial release of <code class="docutils literal notranslate"><span class="pre">GWMemory</span></code> other packages to compute the waveform have been released. For example, the <code class="docutils literal notranslate"><span class="pre">sxs</span></code> package has a method to compute memory.</p>
 <p>In this notebook we compare the performance of the two packages for a test example.</p>
@@ -443,11 +446,11 @@ Loaded NRHybSur3dq8 model
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 GWMemory time:
-CPU times: user 573 ms, sys: 160 ms, total: 733 ms
-Wall time: 733 ms
+CPU times: user 586 ms, sys: 176 ms, total: 762 ms
+Wall time: 761 ms
 SXS time:
-CPU times: user 16.9 s, sys: 1.1 s, total: 18 s
-Wall time: 17.9 s
+CPU times: user 18.7 s, sys: 1.05 s, total: 19.8 s
+Wall time: 19.7 s
 </pre></div></div>
 </div>
 <p>Now we plot the various memory modes along with the mismatches between the waveforms obtained with both methods.</p>
@@ -490,7 +493,7 @@ Wall time: 17.9 s
 <img alt="_images/comparison_8_0.png" src="_images/comparison_8_0.png" />
 </div>
 </div>
-</div>
+</section>
 
 
            </div>
