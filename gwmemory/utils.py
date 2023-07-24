@@ -1,6 +1,7 @@
 from typing import Tuple
 
 import numpy as np
+from scipy.special import expit
 
 from .harmonics import lmax_modes, sYlm
 
