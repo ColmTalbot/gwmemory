@@ -1,6 +1,7 @@
 from typing import Tuple
 
 import numpy as np
+from scipy.special import expit
 
 from .harmonics import lmax_modes, sYlm
 
@@ -97,3 +98,26 @@ def combine_modes(h_lm: dict, inc: float, phase: float) -> np.ndarray:
     total = sum([h_lm[(l, m)] * sYlm(-2, l, m, inc, phase) for l, m in h_lm])
     h_plus_cross = dict(plus=total.real, cross=-total.imag)
     return h_plus_cross
+
+
+def planck_taper(frequencies: np.ndarray, minimum: float, maximum: float):
+    """
+    A low-pass Planck taper for the provided frequencies.
+    This is intended to apply a frequency-domain high-pass filter.
+    This function takes the absolute value of the passed frequencies.
+
+    Parameters
+    ==========
+    frequencies: np.ndarray
+        Array containing the frequencies to calcualte the taper over.
+    minimum: float
+        The start point of the taper (the last frequency where the response
+        is 0)
+    maximum: float
+        The end point of the taper (the first frequency where the response
+        is 1)
+    """
+    normalized = (abs(frequencies) - minimum) / (maximum - minimum)
+    normalized = np.maximum(np.minimum(normalized, 1), 0)
+    with np.errstate(divide='ignore'):
+        return 2 * expit(1 - 1 / normalized)
