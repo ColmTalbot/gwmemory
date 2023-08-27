@@ -11,11 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=1402144d"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -86,11 +86,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-gwmemory.qnms">
-<span id="quasi-normal-mode-functions"></span><h1>Quasi-normal mode functions<a class="headerlink" href="#module-gwmemory.qnms" title="Permalink to this heading"></a></h1>
-<dl class="py function">
+  <section id="quasi-normal-mode-functions">
+<h1>Quasi-normal mode functions<a class="headerlink" href="#quasi-normal-mode-functions" title="Link to this heading"></a></h1>
+<span class="target" id="module-gwmemory.qnms"></span><dl class="py function">
 <dt class="sig sig-object py" id="gwmemory.qnms.final_mass_spin">
-<span class="sig-prename descclassname"><span class="pre">gwmemory.qnms.</span></span><span class="sig-name descname"><span class="pre">final_mass_spin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gwmemory.qnms.final_mass_spin" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">gwmemory.qnms.</span></span><span class="sig-name descname"><span class="pre">final_mass_spin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gwmemory.qnms.final_mass_spin" title="Link to this definition"></a></dt>
 <dd><p>Given initial total mass and mass ratio, calculate the final mass, M_f
 and dimensionless spin parameter, jj,
 using fits in Buonanno et al. (2007) – see the caption of their Table I.</p>
@@ -116,7 +116,7 @@ using fits in Buonanno et al. (2007) – see the caption of their Table I.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gwmemory.qnms.freq_damping">
-<span class="sig-prename descclassname"><span class="pre">gwmemory.qnms.</span></span><span class="sig-name descname"><span class="pre">freq_damping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gwmemory.qnms.freq_damping" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">gwmemory.qnms.</span></span><span class="sig-name descname"><span class="pre">freq_damping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gwmemory.qnms.freq_damping" title="Link to this definition"></a></dt>
 <dd><p>Calculate the quasinormal mode freq and damping time for a black hole.
 This version uses OBSERVER’S UNITS.</p>
 <p>The magic numbers come from
