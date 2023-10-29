@@ -105,6 +105,36 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/share/miniconda/envs/__setup_conda/lib/python3.9/site-packages/gwtools/const.py:52: UserWarning: Wswiglal-redir-stdio:
+
+SWIGLAL standard output/error redirection is enabled in IPython.
+This may lead to performance penalties. To disable locally, use:
+
+with lal.no_swig_redirect_standard_output_error():
+    ...
+
+To disable globally, use:
+
+lal.swig_redirect_standard_output_error(True)
+
+Note however that this will likely lead to error messages from
+LAL functions being either misdirected or lost when called from
+Jupyter notebooks.
+
+To suppress this warning, use:
+
+import warnings
+warnings.filterwarnings(&#34;ignore&#34;, &#34;Wswiglal-redir-stdio&#34;)
+import lal
+
+  import lal
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
@@ -170,11 +200,11 @@ Loaded NRHybSur3dq8 model
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 GWMemory time:
-CPU times: user 570 ms, sys: 163 ms, total: 733 ms
-Wall time: 732 ms
+CPU times: user 651 ms, sys: 203 ms, total: 854 ms
+Wall time: 853 ms
 SXS time:
-CPU times: user 15.8 s, sys: 990 ms, total: 16.8 s
-Wall time: 16.7 s
+CPU times: user 17.9 s, sys: 1.06 s, total: 19 s
+Wall time: 18.9 s
 </pre></div></div>
 </div>
 <p>Now we plot the various memory modes along with the mismatches between the waveforms obtained with both methods.</p>

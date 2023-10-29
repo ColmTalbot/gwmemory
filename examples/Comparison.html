@@ -7517,6 +7517,35 @@ For example, the <code>sxs</code> package has a method to compute memory.</p>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>/usr/share/miniconda/envs/__setup_conda/lib/python3.9/site-packages/gwtools/const.py:52: UserWarning: Wswiglal-redir-stdio:
+
+SWIGLAL standard output/error redirection is enabled in IPython.
+This may lead to performance penalties. To disable locally, use:
+
+with lal.no_swig_redirect_standard_output_error():
+    ...
+
+To disable globally, use:
+
+lal.swig_redirect_standard_output_error(True)
+
+Note however that this will likely lead to error messages from
+LAL functions being either misdirected or lost when called from
+Jupyter notebooks.
+
+To suppress this warning, use:
+
+import warnings
+warnings.filterwarnings("ignore", "Wswiglal-redir-stdio")
+import lal
+
+  import lal
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>lal.MSUN_SI != Msun
 setting __package__ to gwsurrogate.new so relative imports work
@@ -7627,11 +7656,11 @@ Loaded NRHybSur3dq8 model
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>GWMemory time:
-CPU times: user 572 ms, sys: 152 ms, total: 724 ms
-Wall time: 724 ms
+CPU times: user 639 ms, sys: 180 ms, total: 819 ms
+Wall time: 818 ms
 SXS time:
-CPU times: user 31.7 s, sys: 1.05 s, total: 32.8 s
-Wall time: 32.7 s
+CPU times: user 35.9 s, sys: 1.25 s, total: 37.2 s
+Wall time: 37.6 s
 </pre>
 </div>
 </div>

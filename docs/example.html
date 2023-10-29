@@ -617,6 +617,29 @@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
+/usr/share/miniconda/envs/__setup_conda/lib/python3.9/site-packages/lalsimulation/lalsimulation.py:8: UserWarning: Wswiglal-redir-stdio:
+
+SWIGLAL standard output/error redirection is enabled in IPython.
+This may lead to performance penalties. To disable locally, use:
+
+with lal.no_swig_redirect_standard_output_error():
+    ...
+
+To disable globally, use:
+
+lal.swig_redirect_standard_output_error(True)
+
+Note however that this will likely lead to error messages from
+LAL functions being either misdirected or lost when called from
+Jupyter notebooks.
+
+To suppress this warning, use:
+
+import warnings
+warnings.filterwarnings(&#34;ignore&#34;, &#34;Wswiglal-redir-stdio&#34;)
+import lal
+
+  import lal
 /usr/share/miniconda/envs/__setup_conda/lib/python3.9/site-packages/gwmemory/waveforms/mwm.py:132: RuntimeWarning: invalid value encountered in power
   rr = rm * (1 - TT / trr) ** (1 / 4)
 /usr/share/miniconda/envs/__setup_conda/lib/python3.9/site-packages/gwmemory/waveforms/mwm.py:150: ComplexWarning: Casting complex values to real discards the imaginary part
