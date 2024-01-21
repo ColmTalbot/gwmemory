@@ -7331,11 +7331,12 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.esm.min.mjs")).default;
     const parser = new DOMParser();
 
     mermaid.initialize({
       maxTextSize: 100000,
+      maxEdges: 100000,
       startOnLoad: false,
       fontFamily: window
         .getComputedStyle(document.body)
@@ -7668,8 +7669,8 @@ setting __package__ to gwsurrogate.new so relative imports work
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>CPU times: user 301 ms, sys: 68.3 ms, total: 370 ms
-Wall time: 369 ms
+<pre>CPU times: user 299 ms, sys: 63.9 ms, total: 363 ms
+Wall time: 362 ms
 SXS time:
 </pre>
 </div>
@@ -7677,8 +7678,8 @@ SXS time:
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>CPU times: user 22 s, sys: 297 ms, total: 22.3 s
-Wall time: 22.3 s
+<pre>CPU times: user 22 s, sys: 389 ms, total: 22.4 s
+Wall time: 22.4 s
 </pre>
 </div>
 </div>
