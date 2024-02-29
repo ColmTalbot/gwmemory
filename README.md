@@ -23,17 +23,9 @@ $ cd gwmemory
 $ python -m pip install .
 ```
 
-Note that it is no longer to install using
-```bash
-$ python setup.py install
-```
-The `pip` version is more stable.
-
-**TODO: make pip/conda installable**
-
 ## Examples
 
-Demonstrations of how to calculate memory waveforms can be found in the examples directory.
+Demonstrations of how to calculate memory waveforms can be found in the [documentation](https://colmtalbot.github.io/gwmemory/) and in the examples directory.
 
 ## Supported waveforms
 
