@@ -1,4 +1,3 @@
-import warnings
 from typing import Tuple
 
 import numpy as np
@@ -10,7 +9,7 @@ from ..harmonics import lmax_modes
 from ..utils import CC, GG, MPC, SOLAR_MASS, combine_modes
 
 
-class MemoryGenerator(object):
+class MemoryGenerator:
     def __init__(self, name: str, h_lm: dict, times: np.ndarray, l_max: int = 4):
 
         self.name = name
@@ -53,7 +52,6 @@ class MemoryGenerator(object):
         inc: float = None,
         phase: float = None,
         modes: list = None,
-        gamma_lmlm: dict = None,
     ) -> Tuple[dict, np.ndarray]:
         """
         Calculate the spherical harmonic decomposition of the nonlinear
@@ -70,9 +68,6 @@ class MemoryGenerator(object):
         modes: list
             The modes to consider when computing the memory. By default all
             available modes will be used.
-        gamma_lmlm: dict, deprecated
-            Dictionary of arrays defining the angular dependence of the
-            different memory modes, these are now computed/cached on the fly.
 
         Return
         ------
@@ -99,9 +94,6 @@ class MemoryGenerator(object):
                     dhlm_dt_sq[index] = dhlm_dt[lm] * np.conjugate(dhlm_dt[lmp])
                 except KeyError:
                     pass
-
-        if gamma_lmlm is not None:
-            warnings.warn(f"The gamma_lmlm argument is deprecated and will be removed.")
 
         # constant terms in SI units
         const = 1 / 4 / np.pi

@@ -38,9 +38,7 @@ jobs:
       run: |
         conda install pip setuptools
         conda install flake8 pytest-cov
-        conda install -c conda-forge numpy pandas scipy
-        conda install -c conda-forge gwsurrogate python-lalsimulation
-        conda install -c conda-forge sympy sxs
+        conda install -c conda-forge --file requirements.txt --file optional_requirements.txt
         python -m pip install nrsur7dq2
     - name: Install gwmemory
       run: |
@@ -48,12 +46,6 @@ jobs:
     - name: List installed
       run: |
         conda list
-#    - name: Run pre-commit checks
-#      run: |
-#        pre-commit run --all-files --verbose --show-diff-on-failure
-#        jupyter nbconvert --clear-output --inplace examples/*.ipynb
-#        codespell examples/*.ipynb -L "hist"
-#        git reset --hard
     - name: Test with pytest
       run: |
         pytest --cov gwmemory -ra --color yes --cov-report=xml --junitxml=pytest.xml

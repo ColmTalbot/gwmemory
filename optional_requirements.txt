@@ -1,2 +1,4 @@
-lalsuite
-NRSur7dq2
+python-lalsimulation
+gwsurrogate
+sxs
+pytest
