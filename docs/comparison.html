@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Compare memory calculation codes &mdash; GWMemory 1.1.1.dev2+ge9b50c4 documentation</title>
+  <title>Compare memory calculation codes &mdash; GWMemory 1.1.1.dev4+g406a71d documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
@@ -16,7 +16,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=581ba93c"></script>
+        <script src="_static/documentation_options.js?v=a0277077"></script>
         <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -112,7 +112,7 @@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/usr/share/miniconda/envs/__setup_conda/lib/python3.9/site-packages/gwtools/const.py:52: UserWarning: Wswiglal-redir-stdio:
+/usr/share/miniconda/envs/__setup_conda/lib/python3.11/site-packages/gwtools/const.py:52: UserWarning: Wswiglal-redir-stdio:
 
 SWIGLAL standard output/error redirection is enabled in IPython.
 This may lead to performance penalties. To disable locally, use:
@@ -187,7 +187,7 @@ Loaded NRHybSur3dq8 model
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GWMemory time:&quot;</span><span class="p">)</span>
-<span class="o">%</span><span class="k">time</span> h_mem, times = tdm(h_lm=h, times=t)
+<span class="o">%</span><span class="k">time</span> h_mem, times = tdm(h_lm=h, times=t, l_max=4)
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SXS time:&quot;</span><span class="p">)</span>
 <span class="o">%</span><span class="k">time</span> h_mem_sxs, times_sxs = sxs_memory(h, t)
 </pre></div>
@@ -206,8 +206,8 @@ GWMemory time:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 549 ms, sys: 292 ms, total: 841 ms
-Wall time: 840 ms
+CPU times: user 558 ms, sys: 284 ms, total: 842 ms
+Wall time: 841 ms
 SXS time:
 </pre></div></div>
 </div>
@@ -216,17 +216,22 @@ SXS time:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-CPU times: user 6.18 s, sys: 81 ms, total: 6.26 s
-Wall time: 6.26 s
+CPU times: user 6.4 s, sys: 105 ms, total: 6.51 s
+Wall time: 6.5 s
 </pre></div></div>
 </div>
 <p>Now we plot the various memory modes along with the mismatches between the waveforms obtained with both methods.</p>
+<p>There are some differences in strongly subdominant modes, this is likely due to numerical error accumulating for small amplitude modes. We explicitly skip these in the plotting below.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">h_mem</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">h_mem_sxs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">modes</span><span class="o">.</span><span class="n">copy</span><span class="p">():</span>
+    <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">h_mem</span><span class="p">[</span><span class="n">mode</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="mf">1e-15</span><span class="p">:</span>
+        <span class="n">modes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">modes</span><span class="p">):</span>
     <span class="n">gwmem</span> <span class="o">=</span> <span class="n">h_mem</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
     <span class="n">sxsmem</span> <span class="o">=</span> <span class="n">h_mem_sxs</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
@@ -258,6 +263,14 @@ Wall time: 6.26 s
 </div>
 <div class="output_area docutils container">
 <img alt="_images/comparison_8_0.png" src="_images/comparison_8_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
 </div>
 </div>
 </section>

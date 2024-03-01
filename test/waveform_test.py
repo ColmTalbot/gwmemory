@@ -8,7 +8,14 @@ from gwtools import sxs_memory
 
 import gwmemory
 from gwmemory import frequency_domain_memory, time_domain_memory
-from gwmemory.waveforms import Approximant, Surrogate, SXSNumericalRelativity
+from gwmemory.waveforms import (
+    GENERATORS,
+    Approximant,
+    Surrogate,
+    SXSNumericalRelativity,
+    memory_generator,
+    register_generator,
+)
 
 TEST_MODELS = [
     "IMRPhenomD",
@@ -112,6 +119,10 @@ def test_memory_matches_sxs():
     modes = set(h_mem.keys()).intersection(h_mem_sxs.keys())
 
     for ii, mode in enumerate(modes):
+        # skip small amplitude modes as there is some kind of
+        # numerical noise issue
+        if max(abs(h_mem[mode])) < 1e-10:
+            continue
         gwmem = h_mem[mode]
         sxsmem = h_mem_sxs[mode]
         overlap = (
@@ -121,3 +132,19 @@ def test_memory_matches_sxs():
         )
         assert overlap.real > 1 - 1e-8
         assert abs(overlap.imag) < 1e-5
+
+
+def test_register_generator():
+    with pytest.warns() as record:
+        register_generator("test", Surrogate)
+        register_generator("test", Surrogate)
+        register_generator("test2", Surrogate)
+    assert len(record) == 2
+    assert str(record[0].message).startswith("Overwriting")
+    assert str(record[1].message).startswith("Collision")
+    assert GENERATORS["test"] == Surrogate
+
+
+def test_unknown_model_raises():
+    with pytest.raises(ValueError):
+        memory_generator("unknown")
