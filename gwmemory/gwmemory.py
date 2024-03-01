@@ -89,49 +89,25 @@ def time_domain_memory(
     times, array
         Time series corresponding to the memory waveform.
     """
-    if h_lm is not None and times is not None:
-        wave = waveforms.MemoryGenerator(name=model, h_lm=h_lm, times=times)
-    elif "NRSur" in model or "NRHybSur" in model:
-        all_keys = inspect.signature(waveforms.Surrogate).parameters.keys()
-        model_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
-        wave = waveforms.Surrogate(
-            q=q,
-            name=model,
-            total_mass=total_mass,
-            spin_1=spin_1,
-            spin_2=spin_2,
-            distance=distance,
-            times=times,
-            **model_kwargs,
-        )
-    elif "EOBNR" in model or "Phenom" in model:
-        all_keys = inspect.signature(waveforms.Approximant).parameters.keys()
-        model_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
-        wave = waveforms.Approximant(
-            q=q,
-            name=model,
-            total_mass=total_mass,
-            spin_1=spin_1,
-            spin_2=spin_2,
-            distance=distance,
-            times=times,
-            **model_kwargs,
-        )
-    elif model == "MWM":
-        all_keys = inspect.signature(waveforms.MWM).parameters.keys()
-        model_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
-        wave = waveforms.MWM(
-            q=q,
-            name=model,
-            total_mass=total_mass,
-            distance=distance,
-            times=times,
-            **model_kwargs,
-        )
-    else:
-        print(f"Model {model} unknown")
-        return None
+    from .waveforms import memory_generator
 
+    if h_lm is not None and times is not None and model is None:
+        model = "base"
+
+    kwargs.update(
+        dict(
+            name=model,
+            h_lm=h_lm,
+            q=q,
+            total_mass=total_mass,
+            spin_1=spin_1,
+            spin_2=spin_2,
+            distance=distance,
+            times=times,
+        )
+    )
+
+    wave = memory_generator(model=model, **kwargs)
     all_keys = inspect.signature(wave.time_domain_memory).parameters.keys()
     function_kwargs = {key: kwargs[key] for key in all_keys if key in kwargs}
     h_mem, times = wave.time_domain_memory(inc=inc, phase=phase, **function_kwargs)

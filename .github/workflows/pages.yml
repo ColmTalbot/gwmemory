@@ -23,20 +23,14 @@ jobs:
         run: git fetch --prune --unshallow
       - uses: s-weigand/setup-conda@v1
         with:
-          python-version: 3.9
+          python-version: 3.11
 
       - name: Install dependencies
         run: |
           sudo apt-get install texlive-latex-extra texlive-fonts-recommended dvipng cm-super
           conda install pip setuptools
-          conda install flake8 pytest-cov
-          conda install -c conda-forge numpy scipy sympy
-          conda update -c conda-forge numpy scipy sympy
-          conda install -c conda-forge gwsurrogate python-lalsimulation sxs
-          conda install -c conda-forge matplotlib "basemap>=1.3.6"
+          conda install -c conda-forge --file requirements.txt --file optional_requirements.txt --file pages_requirements.txt
           python -m pip install nrsur7dq2
-          conda install -c conda-forge ipykernel jupyter ipython
-          conda install -c conda-forge ipython_genutils jinja2 nbsphinx numpydoc pandoc pygments sphinx sphinx_rtd_theme
       - name: Install gwmemory
         run: |
           pip install .
