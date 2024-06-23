@@ -27,6 +27,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo apt-get update
           sudo apt-get install texlive-latex-extra texlive-fonts-recommended dvipng cm-super
           conda install pip setuptools
           conda install -c conda-forge --file requirements.txt --file optional_requirements.txt --file pages_requirements.txt
