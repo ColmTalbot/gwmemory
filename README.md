@@ -2,8 +2,6 @@
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/gwmemory.svg)](https://anaconda.org/conda-forge/gwmemory)
 [![codecov](https://codecov.io/github/ColmTalbot/gwmemory/branch/master/graph/badge.svg?token=QAASCHZ7QI)](https://codecov.io/github/ColmTalbot/gwmemory)
 
-Text for dummy commit
-
 # `GWMemory`
 
 `GWMemory` calculates the nonlinear (Christodoulou) gravitational-wave memory waveform from arbitrary time-domain gravitational-waveforms.
