@@ -1,27 +1,25 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Demonstration &mdash; GWMemory 1.1.1.dev7+ga97ef5c documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+  <title>Demonstration &mdash; GWMemory 1.1.1.dev8+g2645aa065 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=32cde907"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=a56980d6"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -40,9 +38,6 @@
           <a href="index.html" class="icon icon-home">
             GWMemory
           </a>
-              <div class="version">
-                1.1
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -105,11 +100,11 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gwmemory</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gwmemory</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
@@ -185,11 +180,26 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+&lt;&gt;:40: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+&lt;&gt;:41: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+&lt;&gt;:40: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+&lt;&gt;:41: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+/tmp/ipykernel_5697/2767251234.py:40: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+  ax[0].set_ylabel(&#34;$\delta h_{+} \, \left[10^{-22}\\right]$&#34;)
+/tmp/ipykernel_5697/2767251234.py:41: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+  ax[1].set_ylabel(&#34;$\delta h_{\\times} \, \left[10^{-22}\\right]$&#34;)
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_4_0.png" src="_images/example_4_0.png" />
+<img alt="_images/example_4_1.png" src="_images/example_4_1.png" />
 </div>
 </div>
 </section>
@@ -287,11 +297,26 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+&lt;&gt;:78: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+&lt;&gt;:79: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+&lt;&gt;:78: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+&lt;&gt;:79: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+/tmp/ipykernel_5697/1751815205.py:78: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+  plt.xlabel(&#34;Oscillatory $(\ell, |m|)_{\mathrm{last}}$&#34;)
+/tmp/ipykernel_5697/1751815205.py:79: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+  plt.ylabel(&#34;$\delta h(t=\infty) \, \left[10^{-22}\\right]$&#34;)
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_6_0.png" src="_images/example_6_0.png" />
+<img alt="_images/example_6_1.png" src="_images/example_6_1.png" />
 </div>
 </div>
 </section>
@@ -371,11 +396,26 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+&lt;&gt;:54: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+&lt;&gt;:58: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+&lt;&gt;:54: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+&lt;&gt;:58: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+/tmp/ipykernel_5697/1830094978.py:54: SyntaxWarning: invalid escape sequence &#39;\e&#39;
+  plt.xlabel(&#34;Memory $(\ell, m)$&#34;)
+/tmp/ipykernel_5697/1830094978.py:58: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+  plt.ylabel(&#34;$|\delta h_{\ell m}(t=\infty)|$&#34;)
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_8_0.png" src="_images/example_8_0.png" />
+<img alt="_images/example_8_1.png" src="_images/example_8_1.png" />
 </div>
 </div>
 </section>
@@ -391,7 +431,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mpl_toolkits.basemap</span> <span class="kn">import</span> <span class="n">Basemap</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.basemap</span><span class="w"> </span><span class="kn">import</span> <span class="n">Basemap</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 
@@ -552,11 +592,22 @@
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+&lt;&gt;:45: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+&lt;&gt;:45: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+/tmp/ipykernel_5697/2779073275.py:45: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+  plt.ylabel(&#34;$\max(|h^i|)$&#34;)
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_12_0.png" src="_images/example_12_0.png" />
+<img alt="_images/example_12_1.png" src="_images/example_12_1.png" />
 </div>
 </div>
 </section>
@@ -619,7 +670,11 @@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/usr/share/miniconda/envs/__setup_conda/lib/python3.11/site-packages/lalsimulation/lalsimulation.py:8: UserWarning: Wswiglal-redir-stdio:
+&lt;&gt;:32: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+&lt;&gt;:32: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+/tmp/ipykernel_5697/3986731586.py:32: SyntaxWarning: invalid escape sequence &#39;\d&#39;
+  plt.ylabel(&#34;$\delta h$&#34;)
+/home/runner/work/gwmemory/gwmemory/.venv/lib/python3.13/site-packages/lalsimulation/_lalsimulation_swig.py:8: UserWarning: Wswiglal-redir-stdio:
 
 SWIGLAL standard output/error redirection is enabled in IPython.
 This may lead to performance penalties. To disable locally, use:
@@ -642,9 +697,9 @@ warnings.filterwarnings(&#34;ignore&#34;, &#34;Wswiglal-redir-stdio&#34;)
 import lal
 
   import lal
-/usr/share/miniconda/envs/__setup_conda/lib/python3.11/site-packages/gwmemory/waveforms/mwm.py:132: RuntimeWarning: invalid value encountered in power
+/home/runner/work/gwmemory/gwmemory/gwmemory/waveforms/mwm.py:132: RuntimeWarning: invalid value encountered in power
   rr = rm * (1 - TT / trr) ** (1 / 4)
-/usr/share/miniconda/envs/__setup_conda/lib/python3.11/site-packages/gwmemory/waveforms/mwm.py:150: ComplexWarning: Casting complex values to real discards the imaginary part
+/home/runner/work/gwmemory/gwmemory/gwmemory/waveforms/mwm.py:150: ComplexWarning: Casting complex values to real discards the imaginary part
   h_MWM[post_merger] = 8 * np.pi * MM / rm + alt_sum_terms / (eta * MM)
 </pre></div></div>
 </div>

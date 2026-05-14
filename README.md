@@ -11,6 +11,7 @@
 `GWMemory` is available via `conda-forge` and `pypi`
 
 ```console
+$ uv pip install gwmemory
 $ conda install -c conda-forge gwmemory
 $ python -m pip install gwmemory
 ```
@@ -20,8 +21,10 @@ You can also install from this repository in the usual way:
 ```console
 $ git clone https://github.com/ColmTalbot/gwmemory.git
 $ cd gwmemory
-$ python -m pip install .
+$ uv sync
 ```
+
+Use `uv sync --extra full` for the optional runtime and test dependencies, and `uv sync --extra full --extra docs` when building the documentation stack.
 
 ## Examples
 

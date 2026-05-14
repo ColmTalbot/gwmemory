@@ -104,7 +104,7 @@ class Surrogate(MemoryGenerator):
                 import gwsurrogate
             except ModuleNotFoundError:
                 print("gwsurrogate is required for the Surrogate memory generator.")
-                print("$ conda install -c conda-forge gwsurrogate")
+                print("$ python -m pip install gwsurrogate")
                 raise
             try:
                 self.surrogate = gwsurrogate.LoadSurrogate(name)

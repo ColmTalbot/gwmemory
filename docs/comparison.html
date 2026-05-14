@@ -1,27 +1,25 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Compare memory calculation codes &mdash; GWMemory 1.1.1.dev7+ga97ef5c documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+  <title>Compare memory calculation codes &mdash; GWMemory 1.1.1.dev8+g2645aa065 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=32cde907"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=a56980d6"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -39,9 +37,6 @@
           <a href="index.html" class="icon icon-home">
             GWMemory
           </a>
-              <div class="version">
-                1.1
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -96,12 +91,12 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">gwsurrogate</span> <span class="k">as</span> <span class="nn">gws</span>
-<span class="kn">from</span> <span class="nn">gwmemory</span> <span class="kn">import</span> <span class="n">time_domain_memory</span> <span class="k">as</span> <span class="n">tdm</span>
-<span class="kn">from</span> <span class="nn">gwtools</span> <span class="kn">import</span> <span class="n">sxs_memory</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gwsurrogate</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gws</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gwmemory</span><span class="w"> </span><span class="kn">import</span> <span class="n">time_domain_memory</span> <span class="k">as</span> <span class="n">tdm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gwtools</span><span class="w"> </span><span class="kn">import</span> <span class="n">sxs_memory</span>
 
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
@@ -112,7 +107,7 @@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/usr/share/miniconda/envs/__setup_conda/lib/python3.11/site-packages/gwtools/const.py:52: UserWarning: Wswiglal-redir-stdio:
+/home/runner/work/gwmemory/gwmemory/.venv/lib/python3.13/site-packages/gwtools/const.py:52: UserWarning: Wswiglal-redir-stdio:
 
 SWIGLAL standard output/error redirection is enabled in IPython.
 This may lead to performance penalties. To disable locally, use:
@@ -143,8 +138,6 @@ import lal
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 lal.MSUN_SI != Msun
-__name__ = gwsurrogate.new.spline_evaluation
-__package__= gwsurrogate.new
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -199,11 +192,11 @@ Loaded NRHybSur3dq8 model
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 GWMemory time:
-CPU times: user 600 ms, sys: 376 ms, total: 976 ms
-Wall time: 975 ms
+CPU times: user 667 ms, sys: 887 ms, total: 1.55 s
+Wall time: 1.55 s
 SXS time:
-CPU times: user 5.98 s, sys: 109 ms, total: 6.09 s
-Wall time: 6.07 s
+CPU times: user 6.76 s, sys: 103 ms, total: 6.86 s
+Wall time: 6.82 s
 </pre></div></div>
 </div>
 <p>Now we plot the various memory modes along with the mismatches between the waveforms obtained with both methods.</p>
