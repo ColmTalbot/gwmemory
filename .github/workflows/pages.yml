@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install texlive-latex-extra texlive-fonts-recommended dvipng cm-super libgsl-dev
+          sudo apt-get install texlive-latex-extra texlive-fonts-recommended dvipng cm-super pandoc libgsl-dev
           uv sync --extra full --extra docs
         
       - name: Run notebook
