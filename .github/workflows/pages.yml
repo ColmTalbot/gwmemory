@@ -18,31 +18,25 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
       - name: Fetch all history for all tags and branches
         run: git fetch --prune --unshallow
-      - uses: s-weigand/setup-conda@v1
+      - uses: astral-sh/setup-uv@v8.1.0
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          python-version: 3.11
+          python-version: 3.13
 
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install texlive-latex-extra texlive-fonts-recommended dvipng cm-super
-          conda install pip setuptools
-          conda install -c conda-forge --file requirements.txt --file optional_requirements.txt --file pages_requirements.txt
-          python -m pip install nrsur7dq2
-      - name: Install gwmemory
-        run: |
-          pip install .
-      - name: List installed
-        run: |
-          conda list
+          sudo apt-get install texlive-latex-extra texlive-fonts-recommended dvipng cm-super pandoc libgsl-dev
+          uv sync --extra full --extra docs
         
       - name: Run notebook
         run: |
           cd examples
-          jupyter nbconvert --to html --execute *.ipynb
+          uv run jupyter nbconvert --to html --execute *.ipynb
           cd ..
 
       - name: Build documentation
@@ -51,15 +45,15 @@ jobs:
           mv Makefile.gh_pages Makefile
           cp ../examples/GWMemory.ipynb ./example.ipynb
           cp ../examples/Comparison.ipynb ./comparison.ipynb
-          make clean
-          make html
+          uv run make clean
+          uv run make html
           cd ../
           touch _gh-pages/latest/html/.nojekyll
           rm -r docs
           mv _gh-pages/latest/html docs
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

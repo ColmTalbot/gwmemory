@@ -1,4 +1,0 @@
-python-lalsimulation
-gwsurrogate
-sxs
-pytest
