@@ -3,7 +3,7 @@ from typing import Tuple
 import numpy as np
 
 from ..harmonics import sYlm
-from ..utils import MPC, SOLAR_MASS, combine_modes
+from ..utils import MPC, SOLAR_MASS, combine_modes, planck_taper
 from . import MemoryGenerator
 
 
@@ -76,6 +76,8 @@ class Approximant(MemoryGenerator):
         self.sampling_frequency = sampling_frequency
         self.duration = duration
         self.l_max = l_max
+        # The width of the taper for frequency-domain approximants [Hz]
+        self.taper_length = 5
 
         self.m1 = self.MTot / (1 + self.q)
         self.m2 = self.m1 * self.q
@@ -166,7 +168,7 @@ class Approximant(MemoryGenerator):
         if self.h_lm is None:
 
             params = dict(
-                f_min=self.minimum_frequency,
+                f_min=self.minimum_frequency - self.taper_length,
                 f_ref=self.reference_frequency,
                 phiRef=0.0,
                 approximant=lalsim.GetApproximantFromString(self.name),
@@ -208,14 +210,28 @@ class Approximant(MemoryGenerator):
                 params["f_max"] = self.sampling_frequency / 2
                 waveform_modes = lalsim.SimInspiralChooseFDModes(**params)
                 times = np.arange(0, duration, 1 / self.sampling_frequency)
+                n_frequencies = int(duration * params["f_max"])
+                frequencies = waveform_modes.fdata.data[:-1]
+                # We apply a frequency-domain window to avoid introducing Gibbs
+                # artefacts.
+                window = planck_taper(
+                    frequencies,
+                    self.minimum_frequency - self.taper_length,
+                    self.minimum_frequency,
+                )
 
                 h_lm = dict()
                 while waveform_modes is not None:
                     mode = (waveform_modes.l, waveform_modes.m)
-                    data = waveform_modes.mode.data.data[:-1]
+                    data = waveform_modes.mode.data.data[:-1] * window
+                    # The LAL frequency series uses [negative, 0, positive]
+                    # but numpy expects [0, positive, negative], we roll the
+                    # LAL waveform to account for this.
+                    # Finally, we roll the time domain waveform to place the
+                    # merger 1s before the end.
                     h_lm[mode] = (
                         np.roll(
-                            np.fft.ifft(np.roll(data, int(duration * params["f_max"]))),
+                            np.fft.ifft(np.roll(data, n_frequencies)),
                             int((duration - 1) * self.sampling_frequency),
                         )
                         * self.sampling_frequency
