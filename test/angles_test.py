@@ -19,6 +19,6 @@ def test_memory_factor_matches_sxs():
         time=np.array([0, 1]),
     )
     h_test._metadata["spin_weight"] = 0
-    corrected = Dinverse(h_test).ethbar.ethbar.ndarray[0, 3:] / 2
+    corrected = Dinverse(h_test).ethbar.ethbar
     for ell in [2, 3, 4]:
-        assert corrected[h_test.index(ell, 0)] == angles.memory_correction(ell)
+        assert corrected.ndarray[0, corrected.index(ell, 0)] / 2 == angles.memory_correction(ell)
